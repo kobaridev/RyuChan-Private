@@ -1,0 +1,187 @@
+---
+title: "🚀 Umami 官方CSV数据导入自建Umami后端MySQL/PostgreSQL数据库"  
+description: "将Umami云服务的CSV数据导入到自建MySQL或PostgreSQL数据库的完整解决方案，支持批量处理和自动去重。"  
+pubDate: "Aug 14 2025"  
+image: https://img.xiaozhangya.xin/file/post/3q9dhQwh.jpg 
+categories:  
+  - Course  
+tags:  
+  - Umami  
+  - MySQL  
+  - PostgreSQL  
+  - Python  
+  - 数据导入  
+badge: "数据同步"  
+---
+  
+import Info from "../../components/mdx/Info.astro";  
+import Warning from "../../components/mdx/Warning.astro";  
+import Success from "../../components/mdx/Success.astro";  
+import Collapse from "../../components/mdx/Collapse.astro"; 
+import FriendCard from "@/components/mdx/FriendCard.astro";
+import LinkCard from "../../components/mdx/LinkCard.astro";
+
+# 🚀 Umami 官方CSV数据导入自建Umami后端MySQL/PostgreSQL数据库  
+  
+<Info>  
+需要将Umami云服务的CSV数据导入到自建MySQL或PostgreSQL数据库的完整解决方案。  
+</Info>  
+## 介绍  
+  
+说起**Umami**，相信很多朋友都在用它来做网站分析。界面简洁，功能也挺全面的，确实是个不错的选择。不过呢，如果你用的是**Umami Cloud的免费版本**，时间长了可能就会发现一些限制了——比如**数据保留时间不够长**，或者想分析更多域名但**额度不够用**。  
+  
+这时候，很多人就会考虑：要不**自己搭一个Umami**？但问题来了，之前在云端积累的那些**数据怎么办**？总不能就这么丢了吧？  
+  
+别担心，这篇教程就是来解决这个问题的。我会**手把手教你**怎么把**Umami Cloud上的数据完整地迁移**到自己搭建的Umami上，让你的数据分析不中断，还能享受**自托管的各种好处**。  
+<Info>  
+如果您还没有自己的服务器或Umami实例，可以先查看我的博客文章[**_《Umami + Neon + Vercel：免费搭建隐私友好的自己的Umami后端网站分析系统》_**](https://hub.xiaozhangya.xin/blog/umamicourse)，了解如何免费搭建自己的Umami服务。  
+</Info>  
+
+## 核心思路  
+  
+1. 官方数据导出
+![](https://img.xiaozhangya.xin/file/umami/FCkmzRDT.png)
+2. 读取CSV → 清洗数据 → 分表插入  
+3. MySQL使用`INSERT IGNORE`，PostgreSQL使用`ON CONFLICT DO NOTHING`  
+4. 批量处理提升性能  
+
+
+<Warning>  
+⚠️ **安全提醒**：请替换配置中的数据库连接信息为您自己的，不要在代码中硬编码敏感信息。  
+</Warning>
+
+### 关键配置
+
+**MySQL版本**
+```python
+import pymysql
+MYSQL_CONFIG = {
+    'host': 'your-mysql-host.com',
+    'port': 3306,
+    'database': 'umami',
+    'user': 'your_username',
+    'password': 'your_password'
+}
+```
+
+**PostgreSQL版本（Neon数据库）**
+<Collapse title="PostgreSQL连接信息获取（Neon）">
+![](https://img.xiaozhangya.xin/file/umami/EI8EPOlC.png)
+![](https://img.xiaozhangya.xin/file/umami/AE8tP3Vz.png)
+![](https://img.xiaozhangya.xin/file/umami/1wohUTiF.png)
+</Collapse>
+
+```python
+import psycopg2
+POSTGRES_CONFIG = {
+    'host': 'your-project-pooler.region.aws.neon.tech',
+    'port': 5432,
+    'database': 'your_database',
+    'user': 'your_username',
+    'password': 'your_password',
+    'sslmode': 'require'
+}
+# 或者直接使用连接字符串
+POSTGRES_URL = 'postgresql://username:password@host:port/database?sslmode=require&channel_binding=require'
+```
+
+**连接字符串解析**：
+ 组件 | 示例值 | 说明 |  
+|------|--------|------|  
+| **协议类型** | `postgresql://` | PostgreSQL数据库协议标识 |  
+| **用户名** | `username` | 数据库用户名 |  
+| **密码** | `password` | 数据库密码 |  
+| **分隔符** | `@` | 认证信息与服务器地址的分隔符 |  
+| **主机地址** | `host.pooler.region.aws.neon.tech` | 数据库服务器地址（Neon格式） |  
+| **端口** | `5432` | 数据库连接端口 |  
+| **数据库名** | `database` | 目标数据库名称 |  
+| **SSL模式** | `sslmode=require` | SSL连接必须加密 |  
+| **通道绑定** | `channel_binding=require` | 通道绑定安全验证 |  
+  
+
+## 数据库差异对比
+
+| 特性 | MySQL | PostgreSQL |
+|------|-------|------------|
+| **去重语法** | `INSERT IGNORE` | `ON CONFLICT DO NOTHING` |
+| **字段引用** | \`field\` | "field" |
+| **连接库** | pymysql | psycopg2 |
+| **UUID类型** | VARCHAR(36) | UUID |
+| **时间戳** | DATETIME | TIMESTAMP |
+
+
+## 📥 完整代码生成  
+  
+<LinkCard  
+  title="Umami CSV导入脚本"  
+  desc="完整的Python脚本，支持MySQL和PostgreSQL双数据库导入"  
+  url="https://umjs.131714.xyz"  
+  img="https://img.xiaozhangya.xin/file/Avatar/1753524991293_avatar8.jpg"  
+/>
+
+**由于代码较长，完整版本已通过上方网页自行生成 ，包含以下功能：**
+
+- ✅ 支持MySQL和PostgreSQL双数据库
+- ✅ 自动数据清洗和验证
+- ✅ 批量插入和去重处理
+- ✅ 完善的错误处理机制
+- ✅ 实时进度显示和统计
+
+**主要模块：**
+
+- 数据库连接管理
+- CSV数据读取和清洗
+- 批量数据插入
+- 结果验证和统计
+🚀 使用说明 
+1. **安装依赖包** 
+```bash
+pip install pandas numpy pymysql psycopg2-binary
+```
+2. **修改配置** 
+
+**根据您的实际数据库信息修改配置参数：**
+
+- 数据库连接信息
+- CSV文件路径
+- 目标website_id
+3. **选择数据库类型** 
+
+脚本会提示您选择MySQL或PostgreSQL，然后自动处理数据导入。
+
+⚠️ **使用前须知** 
+**安全提醒：**
+
+- 请替换配置中的数据库连接信息为您自己的
+- 不要在代码中硬编码敏感信息
+- 建议使用环境变量存储数据库密码
+- 运行前请备份您的数据库
+
+**注意事项：**
+
+- 确保目标数据库有足够的存储空间
+- 建议在测试环境先验证导入流程
+- 大数据量导入可能需要较长时间
+
+## 🤝 特别感谢  
+**在数据导入后端的实现过程中，得到了以下朋友的大力帮助：**  
+<FriendCard
+  name="April"
+  avatar="https://picbed.xiaozhangya.xin/picbed/20250726061546364.png"
+  description="人间四月芳菲尽！"
+  url="https://www.zhaocloud.work"
+  type="friend"
+/>
+
+## 📚 参考资料  
+  
+本文参考了以下资源：  
+  
+- [Umami数据导出与迁移实践](https://blog.closex.org/posts/29bdb155/) - 提供了数据迁移的思路和方法  
+- 完整的Python导入脚本由AI辅助生成，经过实际测试验证  
+  
+<Success>  
+感谢开源社区的分享精神，让技术知识得以传播和改进。如果这篇文章对您有帮助，也欢迎分享给更多需要的朋友。  
+</Success>  
+  
+---
