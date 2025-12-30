@@ -9,31 +9,29 @@ const friends = [
     name: "April",
     avatar: "https://picbed.xiaozhangya.xin/picbed/20250726061546364.png",
     description: "人间四月芳菲尽！",
-    url: "https://www.zhaocloud.work"
+    url: "https://www.zhaocloud.work",
+    badge: "邻居"
   },
   {
     name: "zzz",
     avatar: "https://zzz2929.github.io/PicGo/%E5%A4%B4%E5%83%8F.jpg",
     description: "冠以名则六欲泛生，止于此则七情方休。",
-    url: "https://blog.904002.xyz"
-  },
-  {
-    name: "安知鱼",
-    avatar: "https://npm.elemecdn.com/anzhiyu-blog-static@1.0.4/img/avatar.jpg",
-    description: "生活明朗，万物可爱",
-    url: "https://blog.anheyu.com/"
+    url: "https://blog.904002.xyz",
+    badge: "室友"
   },
   {
     name: "YC",
     avatar: "https://picbed.xiaozhangya.xin/picbed/20250726181930154.png",
     description: "Creazing a better world with code.",
-    url: "https://github.com/ycyang004"
+    url: "https://github.com/ycyang004",
+    badge: "室友"
   },
   {
     name: "kuncode",
     avatar: "https://www.kuncodeascension.fun/img/logo.jpg",
     description: "代码飞升",
-    url: "https://www.kuncodeascension.fun"
+    url: "https://www.kuncodeascension.fun",
+    badge: "邻居"
   }
 ];
 
@@ -58,6 +56,7 @@ const sites = [{ name: "Ryuchan Demo", url: "https://demo.131714.xyz/" }];
           avatar={friend.avatar}
           description={friend.description}
           url={friend.url}
+          badge={friend.badge}
         />
       ))}
     </div>

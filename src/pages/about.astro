@@ -14,12 +14,12 @@ import GitHubStats from "@/components/mdx/GitHubStats.astro";
           <div
             class="w-32 h-32 md:w-40 md:h-40 rounded-xl ring ring-primary ring-offset-base-100 ring-offset-2 overflow-hidden"
           >
-            <img src="/profile.png" alt="XZ" width="160" height="160" loading="eager" />
+            <img src="https://github.com/kobaridev.png" alt="XZ" width="160" height="160" loading="eager" />
           </div>
         </div>
 
         <div class="flex-1 text-center md:text-left">
-          <h1 class="text-3xl md:text-4xl font-bold mb-2">小张</h1>
+          <h1 class="text-3xl md:text-4xl font-bold mb-2">Xiaozhang</h1>
           <p class="text-xl text-base-content/80 mb-4">Developer & Open-Source Enthusiast</p>
 
           <div class="flex flex-wrap gap-3 justify-center md:justify-start mb-6">
@@ -47,22 +47,10 @@ import GitHubStats from "@/components/mdx/GitHubStats.astro";
             </a>
           </div>
 
-          <p class="text-base-content/80">
-            <img src="https://count.getloli.com/get/@:kobaridev?theme=rule34&num=9131714">
-            <h2>IT爱好者—小张</h2>
-            热爱折腾、热爱技术。小白一枚。
-          </p>
+          <div class="text-base-content/80 leading-relaxed">
+            <p>IT爱好者，热爱折腾、热爱技术。小白一枚。</p>
+          </div>
         </div>
-      </section>
-
-      <!-- GitHub Stats -->
-      <section>
-        <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
-          <Icon name="lucide:github" class="w-6 h-6 text-primary" />
-          <span>GitHub Statistics</span>
-        </h2>
-
-        <GitHubStats username="kobaridev" showLanguages={false} showCommitGraph={true} />
       </section>
 
       <!-- About This Site -->
@@ -87,6 +75,16 @@ import GitHubStats from "@/components/mdx/GitHubStats.astro";
             <li>📡 <strong>RSS 订阅</strong>：内置 RSS 支持，方便读者订阅更新。</li>
           </ul>
         </div>
+      </section>
+
+      <!-- GitHub Stats -->
+      <section>
+        <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
+          <Icon name="lucide:github" class="w-6 h-6 text-primary" />
+          <span>GitHub Statistics</span>
+        </h2>
+
+        <GitHubStats username="kobaridev" showLanguages={false} showCommitGraph={true} />
       </section>
 
       <!-- Tech Stack -->

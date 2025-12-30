@@ -89,8 +89,8 @@ const typedMenu = SITE_MENU as MenuItem[];
 </nav>      
       
 <!-- 移动端顶部悬浮导航栏 -->
-<nav id="navbar-mobile" class="fixed top-6 left-0 right-0 z-50 md:hidden transition-all duration-500 ease-in-out">
-  <div class="max-w-blog mx-auto px-4">
+<nav id="navbar-mobile" class="fixed top-0 left-0 right-0 z-50 md:hidden transition-all duration-500 ease-in-out">
+  <div class="max-w-blog mx-auto px-2 pt-2">
     <div class="flex items-center justify-between px-4 py-3 bg-base-100/80 backdrop-blur-xl rounded-full shadow-2xl border border-white/20 w-full">
       {typedMenu.map((item) => {
         const isActive = currentPath === item.href || (item.href !== '/' && currentPath.startsWith(item.href));
@@ -109,7 +109,7 @@ const typedMenu = SITE_MENU as MenuItem[];
             )}
             {isHome ? (
               <div class:list={["relative w-10 h-10 rounded-full overflow-hidden border-2 transition-colors duration-300", isActive ? "border-primary" : "border-transparent group-hover:border-primary/50"]}>
-                <img src={USER_AVATAR} alt={item.text} class="w-full h-full object-cover" />
+                <img src="/mobileProfile.png" alt={item.text} class="w-full h-full object-cover" />
               </div>
             ) : (
               <Icon name={item.svg} class="w-6 h-6" />

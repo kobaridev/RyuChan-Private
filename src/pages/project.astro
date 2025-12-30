@@ -8,49 +8,57 @@ const projects = [
     name: "HomePage",
     avatar: "https://img.xiaozhangya.xin/file/Avatar/1753366550828_avatar1.jpg",
     description: "🏠 小张的个人主页！",
-    url: "https://xiaozhangya.xin"
+    url: "https://xiaozhangya.xin",
+    badge: "Web"
   },
   {
     name: "Blog",
     avatar: "https://img.xiaozhangya.xin/file/Avatar/1753366547338_avatar2.jpg",
     description: "🚂 二次元风格的Blog,第一次加载可能比较慢~ (ﾉ>ω<)ﾉ",
-    url: "https://blog.xiaozhangya.xin"
+    url: "https://blog.xiaozhangya.xin",
+    badge: "Blog"
   },
   {
     name: "ImgBed",
     avatar: "https://img.xiaozhangya.xin/file/Avatar/1753366548855_avatar3.jpg",
     description: "🌄 Cloudflare-ImgBed + Telegram实现的无限存储图床~",
-    url: "https://img.xiaozhangya.xin"
+    url: "https://img.xiaozhangya.xin",
+    badge: "Tool"
   },
   {
     name: "OpenList",
     avatar: "https://img.xiaozhangya.xin/file/Avatar/1753366556506_avatar4.jpg",
     description: "✨ 网盘挂载器~当然也可以添加本机的存储哇 (≧∇≦)ﾉ",
-    url: "https://op.xiaozhangya.xin"
+    url: "https://op.xiaozhangya.xin",
+    badge: "Tool"
   },
   {
     name: "LibreTV",
     avatar: "https://picbed.xiaozhangya.xin/picbed/20250726182011085.png",
     description: "📺 LibreTV - 个人视频点播站，支持多种格式",
-    url: "https://libretv.131714.xyz"
+    url: "https://libretv.131714.xyz",
+    badge: "Media"
   },
   {
     name: "MoonTV",
     avatar: "https://img.xiaozhangya.xin/file/Avatar/1753524992480_avatar11.jpg",
     description: "🌙 MoonTV - 个人视频点播站，支持多种格式",
-    url: "https://moontv.131714.xyz"
+    url: "https://moontv.131714.xyz",
+    badge: "Media"
   },
   {
     name: "Tipdm",
     avatar: "https://img.xiaozhangya.xin/file/Avatar/1753366554462_avatar5.jpg",
     description: "🏆 泰迪杯的一些项目代码🌷",
-    url: "https://github.com/kobaridev/Tipdm"
+    url: "https://github.com/kobaridev/Tipdm",
+    badge: "Code"
   },
   {
     name: "PicBed",
     avatar: "https://img.xiaozhangya.xin/file/Avatar/1753366550329_avatar6.jpg",
     description: "🌄 PicGo+Github仓库的小图床awa",
-    url: "https://github.com/kobaridev/PicBed"
+    url: "https://github.com/kobaridev/PicBed",
+    badge: "图床"
   }
 ];
 ---
@@ -73,6 +81,7 @@ const projects = [
         avatar={project.avatar}
         description={project.description}
         url={project.url}
+        badge={project.badge}
       />
     ))}
   </div>
