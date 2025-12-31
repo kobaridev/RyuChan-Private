@@ -1,6 +1,9 @@
 ---      
 import { Icon } from "astro-icon/components";      
 import ThemeToggle from "./widgets/ThemeToggle.astro";      
+import ThemeSelector from "./widgets/ThemeSelector.astro";
+import BannerSettings from "./widgets/BannerSettings.astro";
+import MobileSettings from "./widgets/MobileSettings.astro";
 import { SITE_TITLE, SITE_MENU, USER_AVATAR } from "../config";      
       
 // Get current path to determine active link      
@@ -45,18 +48,18 @@ const typedMenu = SITE_MENU as MenuItem[];
           {typedMenu.map((item) => (      
             item.subItems ? (      
               <div class="dropdown dropdown-hover">      
-                <div tabindex="0" role="button" class="nav-item btn btn-ghost text-xl md:text-3xl lg:text-xl font-bold px-4 py-2 rounded-lg hover:bg-white/10 transition-all duration-200 text-base-content dark:text-white flex items-center gap-2">      
+                <div tabindex="0" role="button" class="nav-item btn btn-ghost text-xl md:text-3xl lg:text-xl font-bold px-4 py-2 rounded-xl hover:bg-white/10 transition-all duration-200 text-base-content dark:text-white flex items-center gap-2">      
                   <Icon name={item.svg} class="w-5 h-5" />
                   <span>{item.text}</span>      
                   <Icon name="material-symbols:keyboard-arrow-down" class="w-4 h-4 ml-1" />      
                 </div>      
-                <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow-lg bg-base-100 rounded-lg border border-base-200 w-52 mt-2 text-base-content">      
+                <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow-lg bg-base-100 rounded-xl border border-base-200 w-52 mt-2 text-base-content">      
                   {item.subItems.map((subItem) => (      
                     <li>      
                       <a       
                         href={subItem.href}       
                         target={subItem.target || "_self"}       
-                        class="px-4 py-2 hover:bg-base-200 rounded-lg text-base font-bold transition-all duration-200 flex items-center gap-2"      
+                        class="px-4 py-2 hover:bg-base-200 rounded-xl text-base font-bold transition-all duration-200 flex items-center gap-2"      
                       >      
                         <Icon name={subItem.svg} class="w-4 h-4" />
                         {subItem.text}      
@@ -69,7 +72,7 @@ const typedMenu = SITE_MENU as MenuItem[];
               <a       
                 href={item.href}       
                 target={item.target || "_self"}       
-                class="nav-item btn btn-ghost text-lg font-bold px-4 py-2 rounded-lg hover:bg-white/10 transition-all duration-200 text-base-content dark:text-white flex items-center gap-2"      
+                class="nav-item btn btn-ghost text-lg font-bold px-4 py-2 rounded-xl hover:bg-white/10 transition-all duration-200 text-base-content dark:text-white flex items-center gap-2"      
               >      
                 <Icon name={item.svg} class="w-5 h-5" />
                 {item.text}      
@@ -80,6 +83,8 @@ const typedMenu = SITE_MENU as MenuItem[];
               
         <!-- 右侧工具栏 -->      
         <div class="flex items-center space-x-2">      
+          <ThemeSelector />
+          <BannerSettings />
           <!-- 主题切换 -->      
           <ThemeToggle className="btn btn-ghost btn-circle hover:bg-white/10 text-primary" />      
         </div>      
@@ -118,9 +123,9 @@ const typedMenu = SITE_MENU as MenuItem[];
         );
       })}
 
-      {/* 主题切换 */}
+      {/* 移动端设置菜单 */}
       <div class="relative flex items-center justify-center w-10 h-10">
-          <ThemeToggle className="btn btn-ghost btn-circle btn-sm hover:bg-transparent text-primary" />
+          <MobileSettings />
       </div>
     </div>
   </div>

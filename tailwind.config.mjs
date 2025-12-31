@@ -9,7 +9,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['"Nunito"', '"Noto Sans SC"', "sans-serif"],
+        sans: ['"M PLUS Rounded 1c"', '"Nunito"', '"Noto Sans SC"', "sans-serif"],
         banner: ['"ZCOOL KuaiLe"', "cursive"],
         mono: ['"JetBrains Mono"', "monospace"],
       },

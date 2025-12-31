@@ -9,7 +9,7 @@ const allItems = NAV_DATA.flatMap(category => category.items);
 ---
 
 <BaseLayout title="导航">
-  <div class="min-h-screen bg-base-200/30 -mt-8 pt-8 pb-20 px-4 sm:px-6 lg:px-8 transition-colors duration-300">
+  <div class="nav-container min-h-screen bg-base-200/30 -mt-8 pt-8 pb-20 px-4 sm:px-6 lg:px-8 transition-colors duration-300">
     <div class="max-w-7xl mx-auto space-y-10">
       
       <!-- 顶部搜索区域 -->
@@ -21,7 +21,7 @@ const allItems = NAV_DATA.flatMap(category => category.items);
           <input
             type="text"
             id="search-input"
-            class="block w-full pl-11 pr-4 py-4 bg-base-100 border-none rounded-2xl text-base-content placeholder-base-content/40 focus:ring-2 focus:ring-primary/50 focus:bg-base-100 shadow-sm transition-all duration-300"
+            class="block w-full pl-11 pr-4 py-4 bg-base-100 border-none rounded-3xl text-base-content placeholder-base-content/40 focus:ring-2 focus:ring-primary/50 focus:bg-base-100 shadow-sm transition-all duration-300"
             placeholder="搜索资源..."
           />
         </div>

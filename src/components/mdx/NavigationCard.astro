@@ -59,8 +59,8 @@ if (badge) {
       <div class="flex items-start gap-4 mb-4">
         <div class="relative shrink-0">
           <!-- Logo -->
-          <div class="w-12 h-12 rounded-xl overflow-hidden bg-base-100 p-1 shadow-sm ring-1 ring-base-200">
-            <Image src={avatar} width={48} height={48} format="webp" alt={name} loading="lazy" class="w-full h-full object-cover rounded-lg" />
+          <div class="w-12 h-12 rounded-2xl overflow-hidden bg-base-100 p-1 shadow-sm ring-1 ring-base-200">
+            <Image src={avatar} width={48} height={48} format="webp" alt={name} loading="lazy" class="w-full h-full object-cover rounded-xl" />
           </div>
         </div>
         <div class="flex-1 min-w-0">
@@ -73,7 +73,7 @@ if (badge) {
 
       <!-- 趣味标签展示 -->
       <div class="flex items-center gap-3 mb-3">
-        <div class={`flex items-center gap-1.5 text-xs font-bold px-2.5 py-1 rounded-lg border transition-colors ${tag.color} ${tag.bg} ${tag.border}`}>
+        <div class={`flex items-center gap-1.5 text-xs font-bold px-2.5 py-1 rounded-xl border transition-colors ${tag.color} ${tag.bg} ${tag.border}`}>
           <Icon name={tag.icon} class="w-3.5 h-3.5" />
           <span>{tag.text}</span>
         </div>
