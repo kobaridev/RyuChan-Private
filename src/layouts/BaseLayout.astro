@@ -85,9 +85,6 @@ const bannerSubtitle = pageConfig?.subtitle || "";
       (function () {
         const storedTheme = localStorage.getItem("theme");
         const storedBannerMode = localStorage.getItem("banner-mode") || "normal";
-        const prefersDark = window.matchMedia(
-          "(prefers-color-scheme: dark)",
-        ).matches;
         
         let theme;
         if (storedTheme) {
@@ -102,20 +99,6 @@ const bannerSubtitle = pageConfig?.subtitle || "";
         const isDark = theme === SITE_THEME.dark || ['dark', 'synthwave', 'halloween', 'forest', 'black', 'luxury', 'dracula', 'business', 'night', 'coffee'].includes(theme);
         const themeType = isDark ? "dark" : "light";
         document.documentElement.setAttribute("data-theme-type", themeType);
-        window
-          .matchMedia("(prefers-color-scheme: dark)")
-          .addEventListener("change", (e) => {
-            if (!localStorage.getItem("theme")) {
-              const newTheme = e.matches ? SITE_THEME.dark : SITE_THEME.light;
-              document.documentElement.setAttribute("data-theme", newTheme);
-              const newThemeType = e.matches ? "dark" : "light";
-              document.documentElement.setAttribute(
-                "data-theme-type",
-                newThemeType,
-              );
-              localStorage.setItem("theme", newTheme);
-            }
-          });
       })();
     </script>
   </head>
