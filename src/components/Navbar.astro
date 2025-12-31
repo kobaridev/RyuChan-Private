@@ -3,6 +3,7 @@ import { Icon } from "astro-icon/components";
 import ThemeToggle from "./widgets/ThemeToggle.astro";      
 import ThemeSelector from "./widgets/ThemeSelector.astro";
 import BannerSettings from "./widgets/BannerSettings.astro";
+import MobileSettings from "./widgets/MobileSettings.astro";
 import { SITE_TITLE, SITE_MENU, USER_AVATAR } from "../config";      
       
 // Get current path to determine active link      
@@ -122,9 +123,9 @@ const typedMenu = SITE_MENU as MenuItem[];
         );
       })}
 
-      {/* 主题切换 */}
+      {/* 移动端设置菜单 */}
       <div class="relative flex items-center justify-center w-10 h-10">
-          <ThemeToggle className="btn btn-ghost btn-circle btn-sm hover:bg-transparent text-primary" />
+          <MobileSettings />
       </div>
     </div>
   </div>
