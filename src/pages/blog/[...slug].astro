@@ -12,6 +12,7 @@ import Giscus from "@components/comments/Giscus.astro";
 import Waline from "@components/comments/Waline.astro";
 import { commentsConfig } from "@config";
 import "@fancyapps/ui/dist/fancybox/fancybox.css";
+import { Icon } from "astro-icon/components";
 
 export async function getStaticPaths() {
   const posts = await getCollection("blog");
@@ -62,6 +63,12 @@ const url = new URL(`/blog/${blog.slug}`, Astro.url.origin);
     image={blog.data.image}
     infoIcon="lucide:info"
   >
+    <div class="flex justify-end">
+      <a href={`/write?slug=${blog.slug}`} class="btn btn-ghost btn-sm" aria-label="Edit Article">
+        <Icon name="lucide:edit" class="w-4 h-4" />
+        <span class="hidden sm:inline">Edit</span>
+      </a>
+    </div>
     <!-- Article info using PostInfo component -->
     <PostInfo
       pubDate={displayDate}
