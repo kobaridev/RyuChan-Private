@@ -1,218 +1,165 @@
-# 网站的基本信息
 site:
-  tab: RyuChan # 浏览器标签栏上显示的文本
-  title: RyuChan # 网站的标题
-  description: 🌸 轻盈、优雅、纯净 —— 用文字与图片记录生活与创意 # 网站的描述，用于SEO等
-  language: zh  # 网站的语言，例如 "en" 是英文
-  favicon: /favicon.ico # 网站的图标，用于浏览器标签栏和其他地方显示
-  theme: # 更多主题 https://daisyui.com/docs/themes/
-    light: garden # 主题的浅色模式
-    dark: dracula # 主题的深色模式
-    code: github-dark # 代码块的主题 https://shiki.style/themes
-  date_format: ddd MMM DD YYYY # 日期格式设置，支持自定义格式
-  blog: # 博客相关配置
-    pageSize: 8 # 每页显示的文章数量
-  tmdb:
-    apiKey: "08a6bef260044f70c150251c79f2e476" # TMDB API Key (v3 auth)
-    listId: "8556173" # TMDB List ID
+  tab: RyuChan
+  title: RyuChan
+  description: 🌸 轻盈、优雅、纯净 —— 用文字与图片记录生活与创意
+  language: zh
+  favicon: /favicon.ico
+  theme:
+    light: garden
+    dark: dracula
+    code: github-dark
+  date_format: ddd MMM DD YYYY
+  blog:
+    pageSize: 8
   banner:
-    # 是否启用随机图 API (启用后将忽略 images 列表)
     enableRandom: true
-    # 随机图 API 地址，会自动追加 ?random=x 参数以防止重复
-    # 常用 API: 
-    # - https://picsum.photos/1920/1080
-    # - https://source.unsplash.com/random/1920x1080
-    # - https://api.oick.cn/random/api.php
-    randomUrl: "https://t.alcy.cc/lai"
-    # 生成的随机图数量
+    randomUrl: https://t.alcy.cc/lai
     randomCount: 5
-    # Banner 高度配置
-    height: "60vh"
-    images:  
-      - "https://tc.alcy.cc/q/20250908/b2d656670551cb9ea6eda7b46b6c8ec0.webp"
-  # Banner 页面标题配置
+    height: 60vh
+    images:
+      - https://tc.alcy.cc/q/20250908/b2d656670551cb9ea6eda7b46b6c8ec0.webp
   pages:
-    home:  
-      title: "RyuChan's Blog"  
-      subtitle: "欲买桂花同载酒，终不似，少年游！"   
-      typewriterTexts: # 新增打字机文本配置  
-        - "🌸 欲买桂花同载酒，终不似，少年游！"  
-        - "🌸花有重开日，人无再少年！"  
-        - "🌿 记录生活的点滴，分享美好的瞬间！"  
-        - "📚 纸上得来终觉浅，绝知此事要躬行！" 
-    friend:  
-      title: "友人帐"  
-      subtitle: "记录那些珍贵的友谊，分享彼此的故事"  
-    about:  
-      title: "About Me"  
-      subtitle: "一个热爱生活与技术的普通人！" 
-    navigation:  
-      title: "网站导航"  
-      subtitle: "收藏的常用网站和工具链接"  
+    home:
+      title: RyuChan's Blog
+      subtitle: 欲买桂花同载酒，终不似，少年游！
+      typewriterTexts:
+        - 🌸 欲买桂花同载酒，终不似，少年游！
+        - 🌸花有重开日，人无再少年！
+        - 🌿 记录生活的点滴，分享美好的瞬间！
+        - 📚 纸上得来终觉浅，绝知此事要躬行！
+    friend:
+      title: 友人帐
+      subtitle: 记录那些珍贵的友谊，分享彼此的故事
+    about:
+      title: About Me
+      subtitle: 一个热爱生活与技术的普通人！
+    navigation:
+      title: 网站导航
+      subtitle: 收藏的常用网站和工具链接
     anime:
-      title: "追番"  
-      subtitle: "记录和分享我喜欢的动漫作品"
-    project:  
-      title: "Projects"  
-      subtitle: "展示一些个人搭建的项目，搬运工！"
-  menu: # 菜单配置
-    - id: home # 菜单项的唯一标识符
-      text: 首页 # 菜单项显示的文本
-      href: / # 菜单项链接的地址
-      svg: "material-symbols:home-outline-rounded"
+      title: 追番
+      subtitle: 记录和分享我喜欢的动漫作品
+    project:
+      title: Projects
+      subtitle: 展示一些个人搭建的项目，搬运工！
+  menu:
+    - id: home
+      text: 首页
+      href: /
+      svg: material-symbols:home-outline-rounded
       target: _self
-    - id: navigation  
-      text: 导航  
-      href: /navigation  
-      svg: "material-symbols:explore-outline"  
+    - id: write
+      text: 写作
+      href: /write
+      svg: material-symbols:edit-square-outline-rounded
       target: _self
-    # - id: blog
-    #   text: 博客
-    #   href: /blog
-    #   svg: "material-symbols:book-2-outline-rounded"
-    #   target: _self
-      # subItems:
-      #   - id: all
-      #     text: All
-      #     href: /blog
-      #     svg: "material-symbols:ink-pen-outline-rounded"
-      #     target: _self
-      #   - id: course
-      #     text: 教程
-      #     href: /blog/category/Course
-      #     svg: "material-symbols:book-outline"
-      #     target: _self
-      #   - id: anime  
-      #     text: 动漫  
-      #     href: /blog/category/Anime  
-      #     svg: "material-symbols:movie-outline"  
-      #     target: _self 
-      #   - id: tv  
-      #     text: TV  
-      #     href: /blog/category/TV  
-      #     svg: "material-symbols:movie-outline"  
-      #     target: _self 
-      #   - id: documentation
-      #     text: 文章
-      #     href: /blog/category/Documentation
-      #     svg: "material-symbols:unknown-document-outline-rounded"
-      #     target: _self
-        # - id: examples
-        #   text: Examples
-        #   href: /blog/category/Examples
-        #   svg: "material-symbols:deployed-code-outline"
-        #   target: _self
-        # 子菜单项配置
-    - id: anime  
-      text: 追番  
-      href: /anime  
-      svg: "material-symbols:movie-outline"  
-      target: _self 
+    - id: navigation
+      text: 导航
+      href: /navigation
+      svg: material-symbols:explore-outline
+      target: _self
+    - id: anime
+      text: 追番
+      href: /anime
+      svg: material-symbols:movie-outline
+      target: _self
     - id: project
       text: 项目
       href: /project
-      svg: "material-symbols:code-blocks-outline"
+      svg: material-symbols:code-blocks-outline
       target: _self
     - id: friend
       text: 友人帐
       href: /friend
-      svg: "material-symbols:supervisor-account-outline-rounded"
+      svg: material-symbols:supervisor-account-outline-rounded
       target: _self
     - id: about
       text: 关于
       href: /about
-      svg: "material-symbols:info-outline-rounded"
+      svg: material-symbols:info-outline-rounded
       target: _self
-    # - id: contact
-    #   text: Contact
-    #   href: "mailto:contact.evesunmaple@outlook.com"
-    #   target: _blank # 在新标签页打开
-    #   svg: "material-symbols:attach-email-outline-rounded"
-
-# 用户的个人信息
+anime:
+  bilibili:
+    uid: '1536411565'
+  tmdb:
+    apiKey: 08a6bef260044f70c150251c79f2e476
+    listId: '8556173'
+github:
+  owner: kobaridev
+  repo: RyuChan
+  branch: main
+  appId: '-'
+  encryptKey: wudishiduomejimo
 user:
-  name: RyuChan # 用户名
-  site: "https://hub.xiaozhangya.xin" # 用户的网站链接
-  avatar: /profile.png # 用户头像路径
-  sidebar: # 侧边栏配置
+  name: RyuChan
+  site: https://hub.xiaozhangya.xin
+  avatar: /images/uploads/1767534109675-0p1nho.jpg
+  sidebar:
     social:
-      # - href: "https://afdian.com/a/saroprock" # 链接
-      #   ariaLabel: Support my work # 图标的可访问性标签
-      #   title: Support my work # 图标的悬浮标题
-      #   svg: "ri:cup-line"
-      - href: "https://github.com/kobaridev"
+      - href: https://github.com/kobaridev
         ariaLabel: Github
         title: Github
-        svg: "ri:github-line"
-      - href: "https://space.bilibili.com/1536411565"
+        svg: ri:github-line
+      - href: https://space.bilibili.com/1536411565
         ariaLabel: BiliBili
         title: BiliBili
-        svg: "ri:bilibili-line"
-      - href: "https://x.com/xzz_ya"
-        ariaLabel: X(twitter)
-        title: X(twitter)
-        svg: "ri:twitter-line"
-      # - href: "https://t.me/xzz_ya"
-      #   ariaLabel: Telegram
-      #   title: Telegram
-      #   svg: "ri:telegram-line"
-      - href: "https://app.folo.is/share/feeds/172229198194932736"  
-        ariaLabel: Subscribe via Folo  
-        title: Folo  
-        svg: "ri:rss-fill"
-
+        svg: ri:bilibili-line
+      - href: https://x.com/xzz_ya
+        ariaLabel: Twitter (X)
+        title: Twitter (X)
+        svg: ri:twitter-line
+      - href: https://demo.131714.xyz/rss.xml
+        ariaLabel: Subscribe via Folo
+        title: RSS
+        svg: ri:rss-fill
   footer:
     social:
-      # - href: "https://afdian.com/a/saroprock" # 链接
-      #   ariaLabel: Support my work # 图标的可访问性标签
-      #   title: Support my work # 图标的悬浮标题
-      #   svg: "ri:cup-line"
-      - href: "https://github.com/kobaridev"
+      - href: https://github.com/kobaridev
         ariaLabel: Github
         title: Github
-        svg: "ri:github-line"
-      - href: "https://space.bilibili.com/1536411565"
+        svg: ri:github-line
+      - href: https://space.bilibili.com/1536411565
         ariaLabel: BiliBili
         title: BiliBili
-        svg: "ri:bilibili-line"
-      - href: "https://x.com/xzz_ya"
+        svg: ri:bilibili-line
+      - href: https://x.com/xzz_ya
         ariaLabel: X(twitter)
         title: X(twitter)
-        svg: "ri:twitter-line"
-      - href: "https://t.me/xzz_ya"
+        svg: ri:twitter-line
+      - href: https://t.me/xzz_ya
         ariaLabel: Telegram
         title: Telegram
-        svg: "ri:telegram-line"
-
-# 评论系统配置
+        svg: ri:telegram-line
 comments:
-  enable: true # 是否启用评论
-  type: giscus # giscus/waline/none
+  enable: true
+  type: giscus
   giscus:
-    repo: "kobaridev/gsc"
-    repoId: "R_kgDOPTM-mA"
-    category: "General"
-    categoryId: "DIC_kwDOPTM-mM4CtcFq"
-    mapping: "pathname"
-    lang: "zh-CN"
-    inputPosition: "top"
-    reactionsEnabled: "1"
-    emitMetadata: "0"
-    loading: "lazy"
+    repo: kobaridev/gsc
+    repoId: R_kgDOPTM-mA
+    category: General
+    categoryId: DIC_kwDOPTM-mM4CtcFq
+    mapping: pathname
+    lang: zh-CN
+    inputPosition: top
+    reactionsEnabled: '1'
+    emitMetadata: '0'
+    loading: lazy
   waline:
-    serverURL: "https://your-waline-server"
-    lang: "zh-CN"
+    serverURL: https://your-waline-server
+    lang: zh-CN
     emoji:
-      - "https://unpkg.com/@waline/emojis@1.1.0/weibo"
-      - "https://unpkg.com/@waline/emojis@1.1.0/bilibili"
-    meta: ["nick", "mail", "link"]
+      - https://unpkg.com/@waline/emojis@1.1.0/weibo
+      - https://unpkg.com/@waline/emojis@1.1.0/bilibili
+    meta:
+      - nick
+      - mail
+      - link
     requiredMeta: []
     reaction: false
     pageview: false
-# Umami 统计配置
 umami:
-  enable: false # 是否启用 Umami 统计
-  baseUrl: "https://cloud.umami.is"
-  shareId: "d438VyP7mjcHvTyP"
-  websiteId: "3c570f5b-118c-4a22-9231-8a93bf15c200"
-  timezone: "Asia/Shanghai"
+  enable: false
+  baseUrl: https://cloud.umami.is
+  shareId: d438VyP7mjcHvTyP
+  websiteId: 3c570f5b-118c-4a22-9231-8a93bf15c200
+  timezone: Asia/Shanghai

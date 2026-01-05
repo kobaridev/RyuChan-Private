@@ -1,33 +1,132 @@
-<pre align="center">
-一个简洁、优雅、快速的静态博客模板！🚀 基于 Astro 5.0+ & Tailwind CSS 开发
-</pre>
+<pre align="center">  
+一个革新性的静态博客模板！🚀 基于 Astro 5.0+ & Tailwind CSS 开发  
+<br>✨ 支持在线发布文章 · 可视化配置管理 · 无需本地开发环境  
+</pre>  
 
-<div align="center">
-<img alt="Ryuchan Logo" src="https://picbed.xiaozhangya.xin/blog/logo.png" width="280px">
-</div>
 
-[![license](https://badgen.net/github/license/kobaridev/RyuChan)](https://github.com/kobaridev/RyuChan/blob/main/LICENSE)&nbsp;&nbsp;&nbsp;[![release](https://badgen.net/github/release/kobaridev/RyuChan)](https://github.com/kobaridev/RyuChan/releases)
+<div align="center">  
+<img alt="Ryuchan Logo" src="https://picbed.xiaozhangya.xin/blog/logo.png" width="280px">  
+</div>  
 
-[**🖥️ Ryuchan Demo**](https://demo.131714.xyz)
 
-## 📷 预览
+[![license](https://badgen.net/github/license/kobaridev/RyuChan)](https://github.com/kobaridev/RyuChan/blob/main/LICENSE)&nbsp;&nbsp;&nbsp;[![release](https://badgen.net/github/release/kobaridev/RyuChan)](https://github.com/kobaridev/RyuChan/releases)  
 
-![preview](https://picbed.xiaozhangya.xin/blog/preview-dark.png)
+[**🖥️ Ryuchan Demo**](https://demo.131714.xyz)  
 
-## ✨ 特点
+## 📷 预览  
 
-- ✅ **白天** / **黑夜** 模式可用
-- ✅ 极速的访问速度与优秀的 SEO
-- ✅ 视图过渡动画（使用 ClientRouter）
-- ✅ 支持文章全文搜索（Pagefind）
-- ✅ 移动端优先的响应式设计（优化卡片布局、网格导航）
-- ✅ 高度可配置的 Banner（支持随机图、打字机效果、高度自定义）
-- ✅ 使用 [Tailwind CSS](https://tailwindcss.com/) 与 [daisyUI](https://daisyui.com/) 构建自适应页面
-- ✅ RSS 订阅支持
-- 🛠️ 博客易上手
-  - 只需在 `ryuchan.config.yaml` 配置你的博客内容
+![preview](https://picbed.xiaozhangya.xin/blog/ryuchan_preview.png)  
 
-## ✒️ 文章信息
+## ✨ 核心亮点  
+
+### 🚀 革命性的在线管理体验  
+
+- ✅ **📝 在线发布文章** - 浏览器中直接编写、预览、发布文章，支持Markdown编辑、图片上传、实时预览  
+- ✅ **⚙️ 可视化配置管理** - Web界面管理网站配置，无需编辑YAML文件，支持实时预览和一键保存  
+- ✅ **🔐 GitHub集成** - 基于GitHub App的安全认证，所有变更直接提交到仓库，保持版本控制
+
+
+![preview](https://picbed.xiaozhangya.xin/blog/ryuchan_online_demo1.png)
+![preview](https://picbed.xiaozhangya.xin/blog/ryuchan_online_demo2.png)
+
+### 🎨 优雅的设计与功能  
+
+- ✅ **白天** / **黑夜** 模式可用  
+- ✅ 极速的访问速度与优秀的 SEO  
+- ✅ 视图过渡动画（使用 ClientRouter）  
+- ✅ 支持文章全文搜索（Pagefind）  
+- ✅ 移动端优先的响应式设计（优化卡片布局、网格导航）  
+- ✅ 高度可配置的 Banner（支持随机图、打字机效果、高度自定义）  
+- ✅ 使用 [Tailwind CSS](https://tailwindcss.com/) 与 [daisyUI](https://daisyui.com/) 构建自适应页面  
+- ✅ RSS 订阅支持  
+- ✅ 追番管理（集成 TMDB API，支持动漫追踪和评分）  
+- ✅ 网站导航（分类资源导航，支持搜索和筛选）  
+- ✅ 静态页面（About、Friends、Projects 页面）  
+- ✅ 文章增强功能（阅读统计、赞赏、分享）  
+
+---
+
+## 📝 在线发布文章  
+
+RyuChan 提供了强大的在线文章发布功能，让你无需本地开发环境即可直接在浏览器中编写、预览和发布文章。  
+
+### 🚀 核心功能  
+
+- **📝 富文本编辑器**: 支持Markdown语法，提供快捷键操作（Ctrl+B加粗、Ctrl+I斜体、Ctrl+K链接）  
+- **🖼️ 图片管理**: 支持本地上传和URL链接，拖拽操作，自动生成Markdown引用  
+- **🎨 封面设置**: 拖拽或上传图片作为文章封面  
+- **👀 实时预览**: 边写边预览，所见即所得的渲染效果  
+- **📊 元信息管理**: 标签、分类、发布时间、草稿状态等  
+- **📥 Markdown导入**: 支持导入本地.md文件继续编辑  
+
+### 🔐 认证与安全  
+
+使用GitHub App私钥（.pem文件）进行身份验证，确保只有授权用户可以发布内容。  
+
+### 📱 使用流程  
+
+1. **访问写作页面**: 浏览器打开 `/write`  
+2. **导入私钥**: 点击"导入密钥"按钮，选择GitHub App的.pem私钥文件  
+3. **编写文章**:   
+   - 输入标题和内容  
+   - 设置封面图片  
+   - 添加标签和分类  
+   - 使用快捷键提升编辑效率  
+4. **预览确认**: 点击"预览"查看最终效果  
+5. **发布文章**: 点击"发布"按钮，文章将自动提交到GitHub仓库  
+
+### ✏️ 编辑模式  
+
+通过 `/write?slug=文章slug` 可以编辑已发布的文章，编辑模式下提供：  
+
+- 更新按钮替代发布按钮  
+- 删除文章功能  
+- 取消编辑选项  
+
+---
+
+## ⚙️ 在线配置网站  
+
+RyuChan 提供了革命性的可视化配置编辑器，让你通过Web界面轻松管理网站的所有设置，无需手动编辑YAML文件。  
+
+### 🎯 核心功能  
+
+- **🎨 可视化界面**: 直观的表单控件替代复杂的YAML语法 [4-cite-0](#4-cite-0)   
+- **📸 图片上传**: 直接上传网站图标、头像等图片资源 [4-cite-1](#4-cite-1)   
+- **🔗 社交链接管理**: 可视化添加、删除、排序社交媒体链接 [4-cite-2](#4-cite-2)   
+- **⚡ 实时预览**: 配置更改即时生效，支持可视化/代码模式切换 [4-cite-3](#4-cite-3)   
+- **🔒 安全保存**: 基于GitHub API的安全认证，配置变更直接提交到仓库 [4-cite-4](#4-cite-4)   
+
+### 📋 支持的配置项  
+
+- **网站基本信息**: 标题、描述、图标、头像等  
+- **主题设置**: 浅色/深色主题、代码高亮样式  
+- **Banner配置**: 随机图API、高度设置、打字机效果  
+- **功能集成**: TMDB追番、Bilibili追番、评论系统、统计工具  
+- **菜单导航**: 动态添加、删除、排序菜单项  
+- **社交媒体**: 侧边栏和页脚社交链接管理  
+
+### 🚀 快速开始  
+
+1. **访问配置页面**: 浏览器打开 `/config` [4-cite-5](#4-cite-5)   
+2. **身份验证**: 导入GitHub App的.pem私钥文件  
+3. **可视化编辑**:   
+   - 在表单中修改各项设置  
+   - 上传图片资源  
+   - 配置功能集成  
+4. **实时预览**: 切换预览模式查看效果  
+5. **一键保存**: 点击保存按钮，配置自动提交到GitHub  
+
+### 💡 特色优势  
+
+- **零学习成本**: 无需学习YAML语法，通过直观的界面完成所有配置  
+- **即时反馈**: 配置更改可以立即预览效果  
+- **版本控制**: 所有配置变更都有Git版本记录  
+- **安全可靠**: 基于GitHub App的安全认证机制  
+
+---
+
+## ✒️ 文章信息  
 
 |    名称     |   含义   | 是否必要 |
 | :---------: | :------: | :------: |
@@ -40,214 +139,138 @@
 |    badge    | 文章徽标 |    否    |
 |    draft    | 草稿状态 |    否    |
 
-> [!TIP]
+> [!TIP]  
 >
-> - 你可以通过把 `badge` 属性设置为 `Pin` 来置顶你的文章
-> - 设置 `draft: true` 可将文章标记为草稿，草稿文章不会在列表显示
+> - 你可以通过把 `badge` 属性设置为 `Pin` 来置顶你的文章  
+> - 设置 `draft: true` 可将文章标记为草稿，草稿文章不会在列表显示  
 
-## ⬇️ 使用方法
+## ⬇️ 使用方法  
 
-1. 安装 pnpm 包管理器（如果你没有安装过的话）
+1. 安装 pnpm 包管理器（如果你没有安装过的话）  
 
-```sh
+```sh  
 npm i -g pnpm
 ```
 
-2. 克隆项目
+1. 克隆项目
 
-```sh
+```
 git clone https://github.com/kobaridev/RyuChan.git Ryuchan
 ```
 
-3. 进入项目文件夹
+1. 进入项目文件夹
 
-```sh
+```
 cd Ryuchan
 ```
 
-4. 安装依赖
+1. 安装依赖
 
-```sh
+```
 pnpm i
 ```
 
-5. 调试、运行项目
+1. 调试、运行项目
 
 **首次运行或更新内容后**，请先执行 `search:index` 来生成搜索索引：
 
-```sh
-# 生成搜索索引以供开发时使用
-pnpm run search:index
-
+```
+# 生成搜索索引以供开发时使用  [2](#header-2)
+pnpm run search:index  
+  
 pnpm run dev
 ```
 
 ## 🔧 配置
 
-Ryuchan 使用 `ryuchan.config.yaml` 作为配置文件，你可以在此文件中配置网站的基本信息、导航栏、页脚等内容。
+Ryuchan 使用 `ryuchan.config.yaml` 作为配置文件，你可以通过在线配置编辑器或直接编辑此文件来管理网站设置。
 
 ### 网站基本信息 (site)
 
-```yaml
-site:
-  tab: Ryuchan # 浏览器标签栏上显示的文本
-  title: Ryuchan # 网站的主标题
-  description: A clean, elegant, and fast static blog template! # 网站描述，用于SEO
-  language: zh # 网站的语言代码，如"en"表示英文，"zh"表示中文
+```
+site:  
+  tab: Ryuchan # 浏览器标签栏上显示的文本  
+  title: Ryuchan # 网站的主标题  
+  description: A clean, elegant, and fast static blog template! # 网站描述，用于SEO  
+  language: zh # 网站的语言代码，如"en"表示英文，"zh"表示中文  
   favicon: /favicon.ico # 网站图标路径
 ```
 
 ### 主题设置 (theme)
 
-```yaml
-theme:
-  light: winter # 浅色模式的主题，基于daisyUI的主题
-  dark: dracula # 深色模式的主题，基于daisyUI的主题
+```
+theme:  
+  light: winter # 浅色模式的主题，基于daisyUI的主题  
+  dark: dracula # 深色模式的主题，基于daisyUI的主题  
   code: github-dark # 代码块的主题样式
 ```
 
 - 主题基于 [daisyUI](https://daisyui.com/docs/themes/) 提供的主题选项
 - 代码块主题使用 [Shiki](https://shiki.style/themes) 提供的样式
 
-### 日期格式 (date_format)
+### TMDB 配置 (追番功能)
 
-```yaml
-date_format: ddd MMM DD YYYY # 日期显示格式
+```
+tmdb:  
+  apiKey: "your-tmdb-api-key" # TMDB API Key (v3 auth)  
+  listId: "your-list-id" # TMDB List ID
 ```
 
-### Banner 设置 (banner)
+### Bilibili 配置 (追番功能)
 
-```yaml
-banner:
-  enableRandom: true # 是否启用随机图 API
-  randomUrl: "https://t.alcy.cc/lai" # 随机图 API 地址
-  randomCount: 5 # 生成的随机图数量
-  height: "60vh" # Banner 高度配置
-  images: # 如果不启用随机图，则使用此列表中的图片
-    - "https://example.com/image1.jpg"
 ```
-
-### 页面标题配置 (pages)
-
-可以为不同页面配置独立的标题、副标题和打字机效果：
-
-```yaml
-pages:
-  home:  
-    title: "RyuChan's Blog"  
-    subtitle: "欲买桂花同载酒，终不似，少年游！"   
-    typewriterTexts: # 打字机文本列表
-      - "🌸 欲买桂花同载酒，终不似，少年游！"  
-      - "🌸花有重开日，人无再少年！"
+bilibili:  
+  uid: "your-bilibili-uid" # Bilibili 用户 ID
 ```
 
 ### 菜单配置 (menu)
 
-```yaml
-menu:
-  - id: home # 菜单项唯一标识符
-    text: Home # 菜单显示的文本
-    href: / # 链接地址
-    svg: "material-symbols:home-outline-rounded" # 图标
-    target: _self # 链接打开方式
+```
+menu:  
+  - id: home # 菜单项唯一标识符  
+    text: 首页 # 菜单显示的文本  
+    href: / # 链接地址  
+    svg: "material-symbols:home-outline-rounded" # 图标  
+    target: _self # 链接打开方式  
+  - id: write  
+    text: 写作  
+    href: /write  
+    svg: "material-symbols:edit-outline"  
+    target: _self  
+  - id: config  
+    text: 配置  
+    href: /config  
+    svg: "material-symbols:settings-outline"  
+    target: _self
 ```
 
-每个菜单项包含以下属性：
+## 📄 其他页面功能
 
-- `id`: 唯一标识符
-- `text`: 显示的文本
-- `href`: 链接地址
-- `svg`: 图标代码，使用 [Iconify](https://icon-sets.iconify.design/) 的图标集
-- `target`: 链接打开方式(`_self`当前窗口或`_blank`新窗口)
+### 追番页面
 
-#### 子菜单项 (subItems)
+- 集成 TMDB API 获取动漫元数据
+- 支持 Bilibili 追番列表同步
+- 实时搜索和筛选功能
+- 按类型、评分排序
 
-你可以通过添加 `subItems` 配置子菜单项，格式与主菜单项相同。
+### 导航页面
 
-### 用户信息 (user)
+- 分类资源导航
+- 支持搜索和分类筛选
+- 响应式卡片布局
 
-```yaml
-user:
-  name: kobaridev # 用户名称
-  site: "https://example.com" # 用户网站
-  avatar: /profile.png # 用户头像
-```
+### 静态页面
 
-### 社交媒体配置 (social)
+- **About 页面**: 个人简介、技术栈展示
+- **Friends 页面**: 友链展示和站点展示
+- **Projects 页面**: 个人项目展示
 
-侧边栏和页脚可以配置不同的社交媒体链接：
+## 📝 许可证
 
-```yaml
-sidebar:
-  social:
-    - href: "https://github.com/kobaridev" # 链接地址
-      ariaLabel: Github # 无障碍标签
-      title: Github # 鼠标悬停时的提示
-      svg: "ri:github-line" # 图标代码
-```
+本项目采用 [MIT 许可证](https://app.devin.ai/search/LICENSE)。
 
-### 图标设置 (icon)
+## 🤝 贡献
 
-Ryuchan 使用 [Iconify](https://icon-sets.iconify.design/) 作为图标库。你可以在其网站上搜索你喜欢的图标，然后复制图标的代码到配置文件中的 `svg` 字段。
+欢迎提交 Issue 和 Pull Request！
 
-### 语言设置 (language)
-
-Ryuchan 支持多语言，通过以下方式配置：
-
-1. 在 `ryuchan.config.yaml` 中设置网站默认语言：
-
-```yaml
-site:
-  language: zh # 设置为 "zh" 使用中文，"en" 使用英文
-```
-
-2. 通过 `src/i18n/translations.yaml` 文件管理所有界面文本翻译：
-
-```yaml
-en: # 英文翻译
-  label:
-    noTag: No tags assigned
-    tagCard: Tags
-    # 其他英文标签...
-
-zh: # 中文翻译
-  label:
-    noTag: 未分配标签
-    tagCard: 标签
-    # 其他中文标签...
-```
-
-#### 添加或修改翻译
-
-要添加新的语言支持或修改现有翻译：
-
-1. 在 `translations.yaml` 文件中添加新的语言代码和对应翻译，或修改现有翻译
-2. 在 `ryuchan.config.yaml` 中更改 `site.language` 为你要使用的语言代码
-
-## 🚀 自动更新
-
-你可以使用我们提供的更新脚本保持项目与 Ryuchan 的最新版本同步：
-
-```sh
-bash ryuchan.update.sh
-```
-
-该脚本将：
-
-1.  **克隆最新版本** 的 Ryuchan 仓库。
-2.  **安全地更新** 你的项目文件，根据 `.updateignore` 文件添加和覆盖文件。
-3.  **智能地删除** 官方仓库中已移除的文件，而不会影响你忽略的文件。
-4.  **清理** 任何残留的空文件夹和临时文件。
-5.  使用 `pnpm` **安装或更新** 依赖项。
-
-## 👀 问题
-
-如果你有任何问题或建议，可以通过提交 Issues 来反馈或同开发者交流！
-
-## 🎉 感谢
-
-
-@[EveSunMaple](https://github.com/EveSunMaple) 本博客模板在其[Frosti](https://github.com/EveSunMaple/Frosti)模板基础上进行二创！
-
-@[WhitePaper233](https://github.com/WhitePaper233) 
-本博客部分设计，参考自其[yukina](https://github.com/WhitePaper233/yukina)！
+------

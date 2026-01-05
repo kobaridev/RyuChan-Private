@@ -25,6 +25,8 @@ const {
   showTOC = false,
   isIndexed = true,
   isPostPage = false,
+  showSidebar = true,
+  showBanner = true,
 } = Astro.props;
 
 // 根据当前路径从配置中获取 Banner 内容
@@ -57,6 +59,7 @@ const bannerSubtitle = pageConfig?.subtitle || "";
     {
       umamiConfig.enable && (
         <script
+          is:inline
           defer
           src={`${umamiConfig.baseUrl}/script.js`}
           data-website-id={umamiConfig.websiteId}
@@ -65,7 +68,7 @@ const bannerSubtitle = pageConfig?.subtitle || "";
     }
 
     <!-- Microsoft Clarity -->
-    <script type="text/javascript">
+    <script type="text/javascript" is:inline>
       (function (c, l, a, r, i, t, y) {
         c[a] =
           c[a] ||
@@ -108,24 +111,28 @@ const bannerSubtitle = pageConfig?.subtitle || "";
     class="flex flex-col min-h-screen bg-[var(--banner-wave-bg)]"
     {...isIndexed ? { "data-pagefind-body": true } : {}}
   >
-    <Banner title={bannerTitle} subtitle={bannerSubtitle} />
+    {showBanner && <Banner title={bannerTitle} subtitle={bannerSubtitle} />}
     <Navbar />
-    <div class="max-w-blog mx-auto w-full flex-grow mt-8 page-content-animate">
+    <div class={`max-w-blog mx-auto w-full flex-grow page-content-animate ${showBanner ? 'mt-8' : 'mt-24'}`}>
       <div
-        class="grid grid-cols-1 md:grid-cols-5 lg:grid-cols-4 gap-4 px-4 pb-4 h-full"
+        class={`grid grid-cols-1 ${showSidebar ? "md:grid-cols-5 lg:grid-cols-4" : ""} gap-4 px-4 pb-4 h-full`}
       >
         <main
-          class="col-span-1 md:col-span-4 lg:col-span-3 bg-transparent order-1 md:order-2 flex flex-col gap-4"
+          class={`col-span-1 ${showSidebar ? "md:col-span-4 lg:col-span-3" : "w-full"} bg-transparent order-1 md:order-2 flex flex-col gap-4`}
         >
           <div class="flex-grow flex flex-col gap-4">
             <slot />
           </div>
           <Footer />
         </main>
-        <aside class="col-span-1 bg-transparent order-2 md:order-1 md:top-4 hidden md:block">
-          <Sidebar headings={headings} showTOC={showTOC} />
-          <slot name="sidebar" />
-        </aside>
+        {
+          showSidebar && (
+            <aside class="col-span-1 bg-transparent order-2 md:order-1 md:top-4 hidden md:block">
+              <Sidebar headings={headings} showTOC={showTOC} />
+              <slot name="sidebar" />
+            </aside>
+          )
+        }
       </div>
     </div>
 

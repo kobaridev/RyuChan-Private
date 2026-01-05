@@ -222,7 +222,7 @@ const socialLinks = [
           </div>
           <div class="flex items-center gap-1 md:gap-2 text-success font-bold text-xs md:text-base">
             <Icon name="ri:wechat-pay-line" class="w-4 h-4 md:w-6 md:h-6" />
-            <span>微信支付</span>
+            <span>微信</span>
           </div>
         </div>
 
@@ -253,7 +253,7 @@ const socialLinks = [
 </div>  
   
 {slug && umamiConfig.enable && (  
-  <script define:vars={{ slug, umamiConfig }}>  
+  <script define:vars={{ slug, umamiConfig }} is:inline>  
     // 获取浏览量统计  
     async function fetchLicensePageViews() {  
       if (!umamiConfig.enable) {  

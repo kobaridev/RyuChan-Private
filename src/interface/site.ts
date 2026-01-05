@@ -67,6 +67,18 @@ export interface TmdbConfig {
   listId: string;
 }
 
+export interface BilibiliConfig {
+  uid: string;
+}
+
+export interface GithubConfig {
+  owner: string;
+  repo: string;
+  branch: string;
+  appId: string;
+  encryptKey: string;
+}
+
 export interface SiteConfig {
   tab: string;
   title: string;
@@ -80,7 +92,6 @@ export interface SiteConfig {
   };
   date_format: string;
   blog: BlogConfig;
-  tmdb?: TmdbConfig;
   menu: MenuItem[];
   banner?: {
     images: string[];
@@ -147,10 +158,17 @@ export interface Translations {
   [language: string]: LanguageTranslation;
 }
 
+export interface AnimeConfig {
+  bilibili?: BilibiliConfig;
+  tmdb?: TmdbConfig;
+}
+
 import type { UmamiConfig } from "../config";
 export interface Config {
   site: SiteConfig;
   user: UserConfig;
   umami?: UmamiConfig;
   comments?: CommentsConfig;
+  anime?: AnimeConfig;
+  github?: GithubConfig;
 }

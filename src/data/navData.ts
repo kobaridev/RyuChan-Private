@@ -6,6 +6,8 @@ export interface NavItem {
     category: string;
     id?: string;
     badge?: string;
+    badgeIcon?: string;
+    badgeColor?: string;
 }
 
 export interface NavCategory {
@@ -19,6 +21,15 @@ export const NAV_DATA: NavCategory[] = [
         title: "开发工具",
         icon: "lucide:code",
         items: [
+            /* 
+             * 徽章 (Badge) 配置示例：
+             * badge: "徽章文本"
+             * badgeIcon: "图标名称" (如 "lucide:heart")
+             * badgeColor: 支持以下格式
+             *   - Tailwind 颜色名: "rose", "sky", "amber" (自动适配深浅色)
+             *   - Hex 颜色: "#FF5733"
+             *   - RGB 颜色: "rgb(34, 197, 94)"
+             */
             {
                 name: "Umami",
                 avatar: "https://img.xiaozhangya.xin/file/Logo/1753850918996_umami.png",
@@ -173,7 +184,10 @@ export const NAV_DATA: NavCategory[] = [
                 description: "网络代理服务",
                 url: "https://52pokemon.huxx.top/login",
                 category: "代理服务",
-                id: "ENT003"
+                id: "ENT003",
+                badge: "好用的加速器",
+                badgeIcon: "lucide:zap",
+                badgeColor: "amber"
             }
         ]
     },

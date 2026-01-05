@@ -1,11 +1,18 @@
 /// <reference path="../.astro/types.d.ts" />
 /// <reference types="astro/client" />
 
+interface ImportMetaEnv {
+  readonly YAML_GITHUB_CONFIG: {
+    owner?: string;
+    repo?: string;
+    branch?: string;
+    appId?: string;
+    encryptKey?: string;
+  } | undefined;
+}
+
 interface ImportMeta {
-  env: {
-    PROD: boolean;
-    DEV: boolean;
-  };
+  readonly env: ImportMetaEnv;
 }
 
 declare module "dayjs" {

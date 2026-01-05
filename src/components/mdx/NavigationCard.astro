@@ -6,10 +6,12 @@ export interface NavigationCardProps {
   url: string;      
   category: string;      
   id?: string;
-  badge?: string;      
+  badge?: string;
+  badgeIcon?: string;
+  badgeColor?: string;
 }      
       
-const { name, avatar, description, url, category, id, badge } = Astro.props as NavigationCardProps;      
+const { name, avatar, description, url, category, id, badge, badgeIcon, badgeColor } = Astro.props as NavigationCardProps;      
       
 import { Image } from "astro:assets";      
 import { Icon } from "astro-icon/components";      
@@ -34,20 +36,44 @@ const cuteTags = [
   { icon: "lucide:star", text: "五星推荐", color: "text-orange-500", bg: "bg-orange-500/10", border: "border-orange-500/20" },
 ];
 
-let tag;
+let tag: { icon: string; text: string; className: string; style?: any };
+
 if (badge) {
-  // 如果提供了自定义 badge，使用自定义内容，样式使用主题色
-  tag = { 
-    icon: "lucide:award", 
-    text: badge, 
-    color: "text-primary", 
-    bg: "bg-primary/10", 
-    border: "border-primary/20" 
-  };
+  // 如果提供了自定义 badge，使用自定义内容
+  // 如果提供了 badgeColor，则使用对应的颜色样式，否则默认使用 primary
+  const color = badgeColor || "primary";
+  
+  // 检查是否是 CSS 颜色值 (Hex, RGB, HSL 等)
+  const isCssColor = /^[#]|rgb|hsl|var/.test(color);
+
+  if (isCssColor) {
+    tag = {
+      icon: badgeIcon || "lucide:award",
+      text: badge,
+      className: "",
+      style: {
+        color: color,
+        backgroundColor: `color-mix(in srgb, ${color}, transparent 90%)`,
+        borderColor: `color-mix(in srgb, ${color}, transparent 80%)`
+      }
+    };
+  } else {
+    const isPrimary = color === "primary";
+    tag = { 
+      icon: badgeIcon || "lucide:award", 
+      text: badge, 
+      className: `${isPrimary ? "text-primary" : `text-${color}-500`} ${isPrimary ? "bg-primary/10" : `bg-${color}-500/10`} ${isPrimary ? "border-primary/20" : `border-${color}-500/20`}`
+    };
+  }
 } else {
   // 否则使用随机标签
   const tagIndex = getHash(name) % cuteTags.length;
-  tag = cuteTags[tagIndex];
+  const t = cuteTags[tagIndex];
+  tag = {
+    icon: t.icon,
+    text: t.text,
+    className: `${t.color} ${t.bg} ${t.border}`
+  };
 }
 ---      
       
@@ -73,7 +99,7 @@ if (badge) {
 
       <!-- 趣味标签展示 -->
       <div class="flex items-center gap-3 mb-3">
-        <div class={`flex items-center gap-1.5 text-xs font-bold px-2.5 py-1 rounded-xl border transition-colors ${tag.color} ${tag.bg} ${tag.border}`}>
+        <div class={`flex items-center gap-1.5 text-xs font-bold px-2.5 py-1 rounded-xl border transition-colors ${tag.className}`} style={tag.style}>
           <Icon name={tag.icon} class="w-3.5 h-3.5" />
           <span>{tag.text}</span>
         </div>

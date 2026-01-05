@@ -1,6 +1,7 @@
 import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
 import tailwind from "@astrojs/tailwind";
+import react from "@astrojs/react";
 import playformCompress from "@playform/compress";
 import terser from "@rollup/plugin-terser";
 import icon from "astro-icon";
@@ -8,7 +9,7 @@ import { defineConfig } from "astro/config";
 import rehypeExternalLinks from "rehype-external-links";
 import rehypeKatex from "rehype-katex";
 import remarkMath from "remark-math";
-import { CODE_THEME, USER_SITE } from "./src/config.ts";
+import { CODE_THEME, USER_SITE, GITHUB_CONFIG } from "./src/config.ts";
 
 import updateConfig from "./src/integration/updateConfig.ts";
 
@@ -16,6 +17,12 @@ import { remarkReadingTime } from "./src/plugins/remark-reading-time.mjs";
 
 // https://astro.build/config
 export default defineConfig({
+  vite: {
+    envPrefix: ['PUBLIC_', 'NEXT_PUBLIC_'],
+    define: {
+      'import.meta.env.YAML_GITHUB_CONFIG': JSON.stringify(GITHUB_CONFIG || null)
+    }
+  },
   site: USER_SITE,
   output: "static",
   style: {
@@ -25,6 +32,7 @@ export default defineConfig({
   },
   integrations: [
     updateConfig(),
+    react(),
     mdx(),
     icon(),
     terser({
