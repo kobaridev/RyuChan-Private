@@ -80,7 +80,7 @@ site:
       target: _self
 anime:
   bilibili:
-    uid: '1536411565'
+    uid: ''
   tmdb:
     apiKey: 08a6bef260044f70c150251c79f2e476
     listId: '8556173'
