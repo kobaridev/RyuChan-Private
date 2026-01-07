@@ -93,8 +93,8 @@ github:
 umami:
   enable: true
   baseUrl: "https://umami.131714.xyz"
-  shareId: "jToXL5Z3hnA1gKUw"
-  websiteId: "3f9afc6c-f0bd-4734-be15-6d053960d34d"
+  shareId: "d62IQPHZDlNtHfC6"
+  websiteId: "01923022-a812-4369-b896-862fa37d32b1"
   timezone: "Asia/Shanghai"
 user:
   name: RyuChan
