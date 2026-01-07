@@ -8,23 +8,23 @@ import { toast } from 'sonner'
 import { stringifyFrontmatter } from '@/lib/frontmatter'
 
 export type PushBlogParams = {
-	form: PublishForm
-	cover?: ImageItem | null
-	images?: ImageItem[]
-	mode?: 'create' | 'edit'
-	originalSlug?: string | null
+    form: PublishForm
+    cover?: ImageItem | null
+    images?: ImageItem[]
+    mode?: 'create' | 'edit'
+    originalSlug?: string | null
 }
 
 export async function pushBlog(params: PushBlogParams): Promise<void> {
-	const { form, cover, images, mode = 'create', originalSlug } = params
+    const { form, cover, images, mode = 'create', originalSlug } = params
 
-	if (!form?.slug) throw new Error('需要 slug')
+    if (!form?.slug) throw new Error('需要 slug')
 
-	// if (mode === 'edit' && originalSlug && originalSlug !== form.slug) {
-	// 	throw new Error('编辑模式下不支持修改 slug，请保持原 slug 不变')
-	// }
+    // if (mode === 'edit' && originalSlug && originalSlug !== form.slug) {
+    // 	throw new Error('编辑模式下不支持修改 slug，请保持原 slug 不变')
+    // }
 
-	const token = await getAuthToken()
+    const token = await getAuthToken()
     const toastId = toast.loading('正在初始化发布...')
 
     try {
@@ -100,8 +100,7 @@ export async function pushBlog(params: PushBlogParams): Promise<void> {
             image: coverPath,
             draft: form.hidden,
             tags: form.tags,
-            categories: form.categories,
-            badge: form.badge
+            categories: form.categories
         }
         const finalContent = stringifyFrontmatter(frontmatter, mdToUpload)
 

@@ -44,7 +44,6 @@ const initialForm: PublishForm = {
 	tags: [],
 	date: formatDateTimeLocal(),
 	summary: '',
-    badge: '',
 	hidden: false,
 	categories: []
 }
@@ -180,9 +179,9 @@ export const useWriteStore = create<WriteStore>((set, get) => ({
 				mode: 'edit',
 				originalSlug: slug,
 				form: {
-                    ...form,
-                    date: form.date ? form.date : formatDateTimeLocal(),
-                },
+					...form,
+					date: form.date ? form.date : formatDateTimeLocal(),
+				},
 				images,
 				cover,
 				loading: false

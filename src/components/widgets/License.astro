@@ -95,13 +95,18 @@ const socialLinks = [
             )  
           }  
   
-          <!-- 添加浏览量显示 -->  
           {  
             slug && umamiConfig.enable && (  
-              <div class="flex items-center gap-1">  
-                <Icon name="lucide:eye" class="h-4 w-4" />  
-                <span id="license-page-views">加载中...</span>  
-              </div>  
+              <>
+                <div class="flex items-center gap-1">  
+                  <Icon name="lucide:eye" class="h-4 w-4 text-primary" />  
+                  <span id="license-page-views">-</span>  
+                </div>  
+                <div class="flex items-center gap-1">  
+                  <Icon name="lucide:user" class="h-4 w-4 text-primary" />  
+                  <span id="license-page-visitors">-</span>  
+                </div>
+              </>
             )  
           }   
         </div>  
@@ -260,52 +265,44 @@ const socialLinks = [
         return;  
       }  
         
-      try {  
-        // 第一步：获取网站ID和token  
-        const shareResponse = await fetch(`${umamiConfig.baseUrl}/api/share/${umamiConfig.shareId}`);  
-        if (!shareResponse.ok) {  
-          throw new Error('获取分享信息失败');  
-        }  
-        const shareData = await shareResponse.json();  
-        const { websiteId, token } = shareData;  
-          
-        // 第二步：获取统计数据  
-        const currentTimestamp = Date.now();  
-        const statsUrl = `${umamiConfig.baseUrl}/api/websites/${websiteId}/stats?startAt=0&endAt=${currentTimestamp}&unit=hour&timezone=${encodeURIComponent(umamiConfig.timezone)}&url=%2Fblog%2F${slug}&compare=false`;  
-          
-        const statsResponse = await fetch(statsUrl, {  
-          headers: {  
-            'x-umami-share-token': token  
-          }  
-        });  
-          
-        if (!statsResponse.ok) {  
-          throw new Error('获取统计数据失败');  
-        }  
-          
-        const statsData = await statsResponse.json();  
-        const pageViews = statsData.pageviews?.value || 0;  
-        const visits = statsData.visits?.value || 0;  
-          
-        const displayElement = document.getElementById('license-page-views');  
-        if (displayElement) {  
-          displayElement.textContent = `浏览量 ${pageViews} · 访问数 ${visits}`;  
-        }  
-      } catch (error) {  
-        console.error('Error fetching page views for license:', error);  
-        const displayElement = document.getElementById('license-page-views');  
-        if (displayElement) {  
-          displayElement.textContent = '统计不可用';  
-        }  
-      }  
+      const checkInterval = setInterval(async () => {
+        if (typeof window.fetchUmamiStats === 'function') {
+          clearInterval(checkInterval);
+          try {
+            const queryPath = `/blog/${slug}`;
+            
+            const statsData = await window.fetchUmamiStats(umamiConfig.baseUrl, umamiConfig.shareId, {
+              timezone: umamiConfig.timezone,
+              path: queryPath
+            });
+            
+            const pageViews = (typeof statsData.pageviews === 'object' ? statsData.pageviews.value : statsData.pageviews) || 0;
+            const visits = (typeof statsData.visitors === 'object' ? statsData.visitors.value : statsData.visitors) || 0;
+            
+            const viewsElement = document.getElementById('license-page-views');
+            const visitorsElement = document.getElementById('license-page-visitors');
+            
+            if (viewsElement) viewsElement.textContent = `${pageViews} 浏览`;
+            if (visitorsElement) visitorsElement.textContent = `${visits} 人`;
+            
+          } catch (error) {
+            console.error('Error fetching page views for license:', error);
+            const viewsElement = document.getElementById('license-page-views');
+            const visitorsElement = document.getElementById('license-page-visitors');
+            if (viewsElement) viewsElement.textContent = '-';
+            if (visitorsElement) visitorsElement.textContent = '-';
+          }
+        }
+      }, 100);
+      
+      // Stop checking after 10 seconds
+      setTimeout(() => clearInterval(checkInterval), 10000);
     }  
   
     // 页面加载完成后获取统计数据  
-    if (document.readyState === 'loading') {  
-      document.addEventListener('DOMContentLoaded', fetchLicensePageViews);  
-    } else {  
-      fetchLicensePageViews();  
-    }  
+    document.addEventListener('astro:page-load', fetchLicensePageViews);
+    if (document.readyState === 'complete') fetchLicensePageViews();
+    else document.addEventListener('DOMContentLoaded', fetchLicensePageViews);
   </script>  
 )}  
   

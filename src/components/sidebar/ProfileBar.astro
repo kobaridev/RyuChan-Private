@@ -127,12 +127,22 @@ const getCategoryDisplayName = (category: string): string => {
       
     <!-- 全站访问量统计 -->  
     {umamiConfig.enable && (
-      <div class="text-center text-sm text-base-content/50 mt-3 pt-3 border-t border-base-content/20">  
-        <div class="flex items-center justify-center gap-1">  
-          <Icon name="material-symbols:visibility-outline" class="text-base" />  
-          <span id="site-stats">加载中...</span>  
-        </div>  
-      </div>  
+      <div class="grid grid-cols-2 mt-3 pt-3 border-t border-base-content/20">
+          <div class="text-center">
+              <div class="text-xs text-base-content/50 mb-1 flex items-center justify-center gap-1">
+                  <Icon name="material-symbols:visibility-outline" class="text-base text-primary"></Icon>
+                  <span class="text-xs">访问量</span>
+              </div>
+              <div id="site-views" class="font-bold text-lg text-base-content">-</div>
+          </div>
+          <div class="text-center border-l border-base-content/20">
+              <div class="text-xs text-base-content/50 mb-1 flex items-center justify-center gap-1">
+                  <Icon name="material-symbols:person" class="text-base text-primary"></Icon>
+                  <span class="text-xs">访客数</span>
+              </div>
+              <div id="site-visitors" class="font-bold text-lg text-base-content">-</div>
+          </div>
+      </div>
     )}
   </div>  
 </div>  
@@ -244,67 +254,77 @@ const getCategoryDisplayName = (category: string): string => {
   async function loadSiteStats() {  
     if (!umamiConfig.enable) {  
       return;  
-    }  
-      
-    // 检查是否已经有缓存的数据  
-    const cachedStats = sessionStorage.getItem('siteStatsData');  
-    if (cachedStats) {  
-      statsData = JSON.parse(cachedStats);  
-      updateStatsDisplay();  
-      return;  
-    }  
+    }
+    
+    const CACHE_KEY = 'ryuchan_site_stats_v4';
+    // 缓存时间：5 分钟 (300000 毫秒)
+    // 既能减少请求频率，又能保证数据相对新鲜
+    const CACHE_TTL = 300000; 
+
+    // 1. 尝试读取缓存
+    const cachedStr = sessionStorage.getItem(CACHE_KEY);
+    if (cachedStr) {
+      try {
+        const { data, timestamp } = JSON.parse(cachedStr);
+        // 如果缓存未过期，直接使用
+        if (Date.now() - timestamp < CACHE_TTL) {
+          statsData = data;
+          updateStatsDisplay();
+          return;
+        }
+      } catch (e) {
+        // 缓存解析失败，继续执行下面的获取逻辑
+      }
+    }
           
-    try {  
-      // 第一步：获取网站ID和token  
-      const shareResponse = await fetch(`${umamiConfig.baseUrl}/api/share/${umamiConfig.shareId}`);  
-      if (!shareResponse.ok) {  
-        throw new Error('获取分享信息失败');  
-      }  
-      const shareData = await shareResponse.json();  
-      const { websiteId, token } = shareData;  
-            
-      // 第二步：获取全站统计数据  
-      const currentTimestamp = Date.now();  
-      const statsUrl = `${umamiConfig.baseUrl}/api/websites/${websiteId}/stats?startAt=0&endAt=${currentTimestamp}&unit=hour&timezone=${encodeURIComponent(umamiConfig.timezone)}&compare=false`;  
-            
-      const statsResponse = await fetch(statsUrl, {  
-        headers: {  
-          'x-umami-share-token': token  
+    // 2. 缓存不存在或已过期，发起新请求
+    const checkInterval = setInterval(async () => {
+      if (typeof window.fetchUmamiStats === 'function') {
+        clearInterval(checkInterval);
+        try {
+          const stats = await window.fetchUmamiStats(umamiConfig.baseUrl, umamiConfig.shareId, {
+            timezone: umamiConfig.timezone
+          });
+          
+          statsData = { 
+            pageviews: (typeof stats.pageviews === 'object' ? stats.pageviews.value : stats.pageviews) || 0, 
+            visitors: (typeof stats.visitors === 'object' ? stats.visitors.value : stats.visitors) || 0 
+          };
+
+          // 存入缓存，包含当前时间戳
+          sessionStorage.setItem(CACHE_KEY, JSON.stringify({
+            data: statsData,
+            timestamp: Date.now()
+          }));
+          
+          updateStatsDisplay();
+        } catch (error) {  
+          console.error('获取全站统计失败:', error);  
+          statsData = { error: true };  
+          updateStatsDisplay();  
         }  
-      });  
-            
-      if (!statsResponse.ok) {  
-        throw new Error('获取统计数据失败');  
-      }  
-            
-      const responseData = await statsResponse.json();  
-      const pageviews = responseData.pageviews?.value || 0;  
-      const visitors = responseData.visits?.value || 0;  
-        
-      // 缓存数据  
-      statsData = { pageviews, visitors };  
-      sessionStorage.setItem('siteStatsData', JSON.stringify(statsData));  
-        
-      updateStatsDisplay();  
-    } catch (error) {  
-      console.error('获取全站统计失败:', error);  
-      statsData = { error: true };  
-      sessionStorage.setItem('siteStatsData', JSON.stringify(statsData));  
-      updateStatsDisplay();  
-    }  
+      }
+    }, 100);
+
+    // Stop checking after 10 seconds
+    setTimeout(() => clearInterval(checkInterval), 10000);
   }  
     
   // 更新统计显示  
   function updateStatsDisplay() {  
-    const statsElement = document.getElementById('site-stats');  
-    if (statsElement && statsData) {  
-      if (statsData.error) {  
-        statsElement.textContent = '统计不可用';  
-      } else {  
-        statsElement.textContent = `浏览量 ${statsData.pageviews} · 访问数 ${statsData.visitors}`;  
-      }  
-    }  
+    const viewsElement = document.getElementById('site-views');
+    const visitorsElement = document.getElementById('site-visitors');
+    
+    if (statsData && !statsData.error) {  
+      if (viewsElement) viewsElement.textContent = statsData.pageviews;
+      if (visitorsElement) visitorsElement.textContent = statsData.visitors;
+    } else if (statsData && statsData.error) {
+       if (viewsElement) viewsElement.textContent = '-';
+       if (visitorsElement) visitorsElement.textContent = '-';
+    }
   }  
+    
+  
     
   // 分类展开/折叠功能      
 function initCategoriesToggle() {      
@@ -359,15 +379,8 @@ function initTagsToggle() {
   // 初始化函数  
   function init() {  
     if (umamiConfig.enable) {
-      // 如果已有缓存数据，立即显示  
-      const cachedStats = sessionStorage.getItem('siteStatsData');  
-      if (cachedStats) {  
-        statsData = JSON.parse(cachedStats);  
-        updateStatsDisplay();  
-      } else {  
-        // 否则加载新数据  
-        loadSiteStats();  
-      }  
+      // 总是加载最新数据，以保持实时更新
+      loadSiteStats();  
     }
       
     // 初始化分类切换功能  

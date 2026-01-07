@@ -57,13 +57,18 @@ const bannerSubtitle = pageConfig?.subtitle || "";
 
     <!-- Umami分析（自建） -->
     {
-      umamiConfig.enable && (
+      umamiConfig.enable && umamiConfig.websiteId && (
         <script
           is:inline
           defer
           src={`${umamiConfig.baseUrl}/script.js`}
           data-website-id={umamiConfig.websiteId}
         />
+      )
+    }
+    {
+      umamiConfig.enable && (
+        <script is:inline defer src="/js/umami-share.js"></script>
       )
     }
 
