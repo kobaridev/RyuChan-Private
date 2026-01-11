@@ -29,7 +29,7 @@ export const musicList: MusicItem[] = [
     {
         title: "将故事写成我们",
         artist: "林俊杰",
-        cover: "https://is1-ssl.mzstatic.com/image/thumb/Music111/v4/7a/ed/1f/7aed1f6e-F3f2-4d16-3fa5-3c8ed4d2cb8f/14UMGIM96496.rgb.jpg/592x592bb.webp",
+        cover: "https://is1-ssl.mzstatic.com/image/thumb/Music113/v4/b4/60/09/b4600934-05dd-b5e6-7d41-46cdb2ac304a/190295343361.jpg/592x592bb.webp",
         url: "https://picbed.xiaozhangya.xin/music/%E5%B0%86%E6%95%85%E4%BA%8B%E5%86%99%E6%88%90%E6%88%91%E4%BB%AC%20-%20%E6%9E%97%E4%BF%8A%E6%9D%B0.flac",
         lrc: "https://picbed.xiaozhangya.xin/music/%E5%B0%86%E6%95%85%E4%BA%8B%E5%86%99%E6%88%90%E6%88%91%E4%BB%AC%20-%20%E6%9E%97%E4%BF%8A%E6%9D%B0.lrc"
     },

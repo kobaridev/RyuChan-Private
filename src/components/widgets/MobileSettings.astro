@@ -169,30 +169,43 @@ const themes = [
     // Banner Mode Logic
     const bannerButtons = document.querySelectorAll("[data-set-banner-mobile]");
     
-    const updateActiveBannerButton = (mode) => {
+    const updateActiveBannerButton = () => {
+      const currentMode = document.documentElement.getAttribute("data-banner-mode") || localStorage.getItem("banner-mode") || "normal";
       bannerButtons.forEach(btn => {
-        if (btn.getAttribute("data-set-banner-mobile") === mode) {
-          btn.classList.add("active", "bg-primary/10", "text-primary");
+        if (btn.getAttribute("data-set-banner-mobile") === currentMode) {
+          btn.classList.add("bg-primary/10", "text-primary", "font-bold", "active");
         } else {
-          btn.classList.remove("active", "bg-primary/10", "text-primary");
+          btn.classList.remove("bg-primary/10", "text-primary", "font-bold", "active");
         }
       });
     };
 
-    const currentBannerMode = localStorage.getItem("banner-mode") || "normal";
-    updateActiveBannerButton(currentBannerMode);
+    updateActiveBannerButton();
 
     bannerButtons.forEach(btn => {
       btn.addEventListener("click", () => {
         const mode = btn.getAttribute("data-set-banner-mobile");
         document.documentElement.setAttribute("data-banner-mode", mode);
         localStorage.setItem("banner-mode", mode);
-        updateActiveBannerButton(mode);
+        updateActiveBannerButton();
       });
     });
 
     // Theme Selector Logic
     const themeButtons = document.querySelectorAll('[data-set-theme-mobile]');
+
+    const updateActiveThemeButton = () => {
+      const currentTheme = document.documentElement.getAttribute("data-theme") || localStorage.getItem("theme");
+      themeButtons.forEach(btn => {
+        if (btn.getAttribute('data-set-theme-mobile') === currentTheme) {
+            btn.classList.add("bg-primary/10", "text-primary", "font-bold", "active");
+        } else {
+            btn.classList.remove("bg-primary/10", "text-primary", "font-bold", "active");
+        }
+      });
+    };
+    
+    updateActiveThemeButton();
     
     themeButtons.forEach(btn => {
       btn.addEventListener('click', () => {
@@ -202,7 +215,36 @@ const themes = [
         
         const isDark = ['dark', 'synthwave', 'halloween', 'forest', 'black', 'luxury', 'dracula', 'business', 'night', 'coffee'].includes(theme);
         document.documentElement.setAttribute('data-theme-type', isDark ? 'dark' : 'light');
+
+        updateMobileThemeIcons(isDark);
+        updateActiveThemeButton();
       });
+    });
+
+    // Observer for external changes
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.type === 'attributes') {
+          if (mutation.attributeName === 'data-theme') {
+             updateActiveThemeButton();
+             const currentTheme = document.documentElement.getAttribute("data-theme");
+             // Helper logic for updating icon if present in this scope or make generic
+             // Re-evaluating isDark roughly here for icons update if needed,
+             // or rely on the function defined above if accessible.
+             // Since updateMobileThemeIcons is defined in scope, we can use it.
+             const isDark = ['dark', 'synthwave', 'halloween', 'forest', 'black', 'luxury', 'dracula', 'business', 'night', 'coffee'].includes(currentTheme);
+             updateMobileThemeIcons(isDark);
+          }
+          if (mutation.attributeName === 'data-banner-mode') {
+             updateActiveBannerButton();
+          }
+        }
+      });
+    });
+
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-theme', 'data-banner-mode']
     });
   });
 </script>

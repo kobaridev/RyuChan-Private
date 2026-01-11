@@ -136,7 +136,7 @@
   }
 
   /* Make components semi-transparent in background mode */
-  .bg-base-100, .card-base, .card {
+  .bg-base-100, .card-base, .card, .bg-neu-base {
     background-color: oklch(var(--b1) / 0.7) !important;
     backdrop-filter: blur(10px);
   }
