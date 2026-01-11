@@ -76,13 +76,15 @@ export function ConfigPage() {
     const loadConfig = async () => {
         try {
             setLoading(true)
-            const token = await getAuthToken()
-            if (!token) {
-                // Not authenticated, don't try to load
-                setLoading(false)
-                return
+            let token: string | undefined
+            try {
+                token = await getAuthToken()
+            } catch (e) {
+                // Ignore auth error, try public access
+                console.log('Public access mode')
             }
 
+            // 即使没有 token 也尝试读取（对于公开仓库）
             const content = await readTextFileFromRepo(
                 token,
                 GITHUB_CONFIG.OWNER,
@@ -363,18 +365,24 @@ export function ConfigPage() {
                             <button
                                 className={`join-item btn btn-sm border-none ${mode === 'visual' ? 'btn-primary shadow-md' : 'btn-ghost text-base-content/60'}`}
                                 onClick={() => setMode('visual')}
-                                disabled={!isAuth}
+                                disabled={false}
                             >
                                 可视化
                             </button>
                             <button
                                 className={`join-item btn btn-sm border-none ${mode === 'code' ? 'btn-primary shadow-md' : 'btn-ghost text-base-content/60'}`}
                                 onClick={() => setMode('code')}
-                                disabled={!isAuth}
+                                disabled={false}
                             >
                                 代码
                             </button>
                         </div>
+                        {!isAuth && (
+                            <button onClick={handleImportKey} className="btn btn-sm btn-ghost bg-base-200 gap-1" title="导入密钥以解锁保存功能">
+                                <span className="text-lg">🔑</span>
+                                <span className="hidden sm:inline">验证</span>
+                            </button>
+                        )}
                         <button onClick={handleSave} disabled={saving || loading || !isAuth} className="btn btn-sm btn-primary px-6 shadow-lg shadow-primary/20">
                             {saving ? '保存中...' : '保存配置'}
                         </button>
@@ -385,7 +393,7 @@ export function ConfigPage() {
                     <div className="flex h-64 items-center justify-center text-base-content/50">
                         <span className="loading loading-spinner loading-lg text-primary"></span>
                     </div>
-                ) : !isAuth ? (
+                ) : (!isAuth && !configContent) ? (
                     <div className="flex flex-col items-center justify-center h-full flex-1 p-12 text-center space-y-6">
                         <div className="w-24 h-24 bg-base-200 rounded-full flex items-center justify-center mb-4">
                             <span className="text-4xl">🔒</span>
