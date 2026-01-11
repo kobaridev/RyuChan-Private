@@ -76,13 +76,15 @@ export function ConfigPage() {
     const loadConfig = async () => {
         try {
             setLoading(true)
-            const token = await getAuthToken()
-            if (!token) {
-                // Not authenticated, don't try to load
-                setLoading(false)
-                return
+            let token: string | undefined
+            try {
+                token = await getAuthToken()
+            } catch (e) {
+                // Ignore auth error, try public access
+                console.log('Public access mode')
             }
 
+            // 即使没有 token 也尝试读取（对于公开仓库）
             const content = await readTextFileFromRepo(
                 token,
                 GITHUB_CONFIG.OWNER,
@@ -172,7 +174,7 @@ export function ConfigPage() {
             const token = await getAuthToken()
             if (!token) throw new Error('未授权')
 
-            const toastId = toast.loading('正在初始化保存...')
+            const toastId = toast.loading('🚀 正在初始化保存...')
 
             let configToUpdate = parsedConfig ? JSON.parse(JSON.stringify(parsedConfig)) : null
             const treeItems: TreeItem[] = []
@@ -180,11 +182,11 @@ export function ConfigPage() {
             // 1. Process Images
             if (Object.keys(pendingImages).length > 0) {
                 const totalImages = Object.keys(pendingImages).length
-                toast.loading(`准备上传 ${totalImages} 张图片...`, { id: toastId })
+                toast.loading(`📤 准备上传 ${totalImages} 张图片...`, { id: toastId })
 
                 let idx = 1
                 for (const [target, { file }] of Object.entries(pendingImages)) {
-                    toast.loading(`正在处理第 ${idx}/${totalImages} 张图片: ${file.name}...`, { id: toastId })
+                    toast.loading(`📸 正在处理图片 (${idx}/${totalImages}): ${file.name}...`, { id: toastId })
                     const base64 = await fileToBase64NoPrefix(file)
                     const ext = file.name.split('.').pop() || 'png'
                     const filename = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`
@@ -247,28 +249,33 @@ export function ConfigPage() {
             const baseTreeSha = commit.tree.sha
 
             // Create new tree
-            toast.loading('正在创建文件树...', { id: toastId })
+            toast.loading('🌳 正在构建文件树...', { id: toastId })
             const { sha: newTreeSha } = await createTree(token, GITHUB_CONFIG.OWNER, GITHUB_CONFIG.REPO, treeItems, baseTreeSha)
 
             // Create new commit
-            toast.loading('正在创建提交...', { id: toastId })
+            toast.loading('💾 正在创建提交...', { id: toastId })
             const { sha: newCommitSha } = await createCommit(
                 token,
                 GITHUB_CONFIG.OWNER,
                 GITHUB_CONFIG.REPO,
-                'update: config and images',
+                'chore(config): update site configuration',
                 newTreeSha,
                 [currentCommitSha]
             )
 
             // Update ref
-            toast.loading('正在更新分支...', { id: toastId })
+            toast.loading('🔄 正在同步远程分支...', { id: toastId })
             await updateRef(token, GITHUB_CONFIG.OWNER, GITHUB_CONFIG.REPO, refName, newCommitSha)
 
-            toast.success('配置已更新！请等待部署完成后刷新页面', { id: toastId })
+            toast.success('🎉 配置更新成功！', {
+                id: toastId,
+                description: '更改已推送到仓库，GitHub Actions 将会自动重新部署。'
+            })
         } catch (error: any) {
             console.error(error)
-            toast.error('保存配置失败: ' + error.message)
+            toast.error('❌ 保存配置失败', {
+                description: error.message
+            })
         } finally {
             setSaving(false)
         }
@@ -363,18 +370,24 @@ export function ConfigPage() {
                             <button
                                 className={`join-item btn btn-sm border-none ${mode === 'visual' ? 'btn-primary shadow-md' : 'btn-ghost text-base-content/60'}`}
                                 onClick={() => setMode('visual')}
-                                disabled={!isAuth}
+                                disabled={false}
                             >
                                 可视化
                             </button>
                             <button
                                 className={`join-item btn btn-sm border-none ${mode === 'code' ? 'btn-primary shadow-md' : 'btn-ghost text-base-content/60'}`}
                                 onClick={() => setMode('code')}
-                                disabled={!isAuth}
+                                disabled={false}
                             >
                                 代码
                             </button>
                         </div>
+                        {!isAuth && (
+                            <button onClick={handleImportKey} className="btn btn-sm btn-ghost bg-base-200 gap-1" title="导入密钥以解锁保存功能">
+                                <span className="text-lg">🔑</span>
+                                <span className="hidden sm:inline">验证</span>
+                            </button>
+                        )}
                         <button onClick={handleSave} disabled={saving || loading || !isAuth} className="btn btn-sm btn-primary px-6 shadow-lg shadow-primary/20">
                             {saving ? '保存中...' : '保存配置'}
                         </button>
@@ -385,7 +398,7 @@ export function ConfigPage() {
                     <div className="flex h-64 items-center justify-center text-base-content/50">
                         <span className="loading loading-spinner loading-lg text-primary"></span>
                     </div>
-                ) : !isAuth ? (
+                ) : (!isAuth && !configContent) ? (
                     <div className="flex flex-col items-center justify-center h-full flex-1 p-12 text-center space-y-6">
                         <div className="w-24 h-24 bg-base-200 rounded-full flex items-center justify-center mb-4">
                             <span className="text-4xl">🔒</span>
@@ -519,12 +532,12 @@ export function ConfigPage() {
                                         <div className="grid grid-cols-2 gap-6">
                                             <input type="text" className="input input-bordered w-full bg-base-100 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
                                                 placeholder="例如：京ICP备12345678号"
-                                                value={parsedConfig?.site?.beian?.number || ''}
-                                                onChange={e => updateConfigValue('site.beian.number', e.target.value)} />
+                                                value={parsedConfig?.site?.icp || ''}
+                                                onChange={e => updateConfigValue('site.icp', e.target.value)} />
                                             <input type="text" className="input input-bordered w-full bg-base-100 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
                                                 placeholder="https://beian.miit.gov.cn/"
-                                                value={parsedConfig?.site?.beian?.link || ''}
-                                                onChange={e => updateConfigValue('site.beian.link', e.target.value)} />
+                                                value={parsedConfig?.site?.icp_link || ''}
+                                                onChange={e => updateConfigValue('site.icp_link', e.target.value)} />
                                         </div>
                                     </div>
                                 </div>

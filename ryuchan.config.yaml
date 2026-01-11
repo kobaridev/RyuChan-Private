@@ -18,13 +18,15 @@ site:
     height: 60vh
     images:
       - https://tc.alcy.cc/q/20250908/b2d656670551cb9ea6eda7b46b6c8ec0.webp
+  icp: ''
+  icp_link: ''
   pages:
     home:
       title: RyuChan's Blog
       subtitle: 欲买桂花同载酒，终不似，少年游！
       typewriterTexts:
         - 🌸 欲买桂花同载酒，终不似，少年游！
-        - 🌸花有重开日，人无再少年！
+        - 🌸 花有重开日，人无再少年！
         - 🌿 记录生活的点滴，分享美好的瞬间！
         - 📚 纸上得来终觉浅，绝知此事要躬行！
     friend:
@@ -92,6 +94,9 @@ site:
       href: /about
       svg: material-symbols:info-outline-rounded
       target: _self
+  beian:
+    number: 备案Demo
+    link: https://hub.xiaozhangya.xin
 anime:
   bilibili:
     uid: '1536411565'
@@ -111,7 +116,7 @@ umami:
   websiteId: "01923022-a812-4369-b896-862fa37d32b1"
   timezone: "Asia/Shanghai"
 user:
-  name: RyuChan
+  name: KoBariDev
   description: Ciallo～(∠・ω<)⌒★
   site: https://hub.xiaozhangya.xin
   avatar: /images/uploads/1767534109675-0p1nho.jpg

@@ -1,9 +1,17 @@
 import { motion } from 'motion/react'
-import { marked } from 'marked'
 import { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
 import type { PublishForm } from '../types'
-import { Calendar, Bookmark, BookOpen, Eye, Folder, Tag, Info, X } from 'lucide-react'
+import { Calendar, Bookmark, BookOpen, Folder, Tag, Info, X } from 'lucide-react'
+import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
+import remarkMath from 'remark-math'
+import rehypeKatex from 'rehype-katex'
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
+import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
+
+// Import styles
+import 'katex/dist/katex.min.css'
 
 type WritePreviewProps = {
 	form: PublishForm
@@ -12,18 +20,12 @@ type WritePreviewProps = {
 	slug?: string
 }
 
-export function WritePreview({ form, coverPreviewUrl, onClose, slug }: WritePreviewProps) {
-    const [html, setHtml] = useState('')
+export function WritePreview({ form, coverPreviewUrl, onClose }: WritePreviewProps) {
     const [mounted, setMounted] = useState(false)
 
     useEffect(() => {
         setMounted(true)
-        async function render() {
-            const res = await marked.parse(form.md)
-            setHtml(res)
-        }
-        render()
-    }, [form.md])
+    }, [])
 
     // Estimate reading time and word count
     const wordCount = form.md.length
@@ -118,11 +120,39 @@ export function WritePreview({ form, coverPreviewUrl, onClose, slug }: WritePrev
 
                             {/* Content */}
                             <div className="mt-8">
-                                <div 
+                                <article 
                                     id="content"
                                     className="prose prose-lg prose-code:text-base max-w-none text-justify prose-headings:scroll-mt-20 prose-img:rounded-2xl prose-img:mx-auto prose-img:cursor-pointer"
-                                    dangerouslySetInnerHTML={{ __html: html }} 
-                                />
+                                >
+                                    <ReactMarkdown
+                                        remarkPlugins={[remarkGfm, remarkMath]}
+                                        rehypePlugins={[rehypeKatex]}
+                                        components={{
+                                            code({node, inline, className, children, ...props}: any) {
+                                                const match = /language-(\w+)/.exec(className || '')
+                                                return !inline && match ? (
+                                                    <SyntaxHighlighter
+                                                        style={oneDark}
+                                                        language={match[1]}
+                                                        PreTag="div"
+                                                        {...props}
+                                                    >
+                                                        {String(children).replace(/\n$/, '')}
+                                                    </SyntaxHighlighter>
+                                                ) : (
+                                                    <code className={className} {...props}>
+                                                        {children}
+                                                    </code>
+                                                )
+                                            },
+                                            img: (props: any) => (
+                                                <img {...props} className="rounded-xl shadow-lg mx-auto" loading="lazy" />
+                                            )
+                                        }}
+                                    >
+                                        {form.md}
+                                    </ReactMarkdown>
+                                </article>
                             </div>
 
                             {/* License / Footer */}

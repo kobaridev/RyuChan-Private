@@ -1,10 +1,10 @@
 ---  
 import { Image } from "astro:assets";  
 import dayjs from "@utils/dayjs";  
-import { DATE_FORMAT } from "@config";  
+import { DATE_FORMAT, t } from "@config";  
 import type { PostData } from "@interfaces/data";  
 import Heading from "./widgets/Heading.astro";  
-import PostInfo from "./widgets/PostInfo.astro";  
+import PostStats from "./widgets/PostStats.astro";
 import PostFilter from "./widgets/PostFilter.astro";  
 import Card from "./temple/Card.astro";  
 import { Icon } from "astro-icon/components";  
@@ -33,7 +33,31 @@ const displayDate = pubDate ? dayjs(pubDate).format(DATE_FORMAT) : "";
         <div class="mb-1">
           <Heading url={url} title={title}>{title}</Heading> 
         </div>
-        <PostInfo pubDate={displayDate} badge={badge} word={word} time={time} url={url} />   
+        
+        <div class="grid grid-cols-[auto_auto] w-fit gap-x-2 sm:gap-x-4 gap-y-1 text-sm text-base-content/70 mb-4 opacity-75">
+          {
+            pubDate && (
+              <span class="flex items-center gap-1">
+                <Icon name="lucide:calendar" class="h-4 w-4 flex-shrink-0" />
+                <span class="truncate">{displayDate}</span>
+              </span>
+            )
+          }
+          <div class="flex items-center gap-1">
+            <Icon name="lucide:book-open" class="h-4 w-4 flex-shrink-0" />
+            <span class="truncate">{word} {t("label.wordCount")} · {time} {t("label.readTime")}</span>
+          </div>
+          {
+            badge && (
+              <span class="flex items-center gap-1">
+                <Icon name="lucide:bookmark" class="h-4 w-4 flex-shrink-0" />
+                <span class="truncate">{badge}</span>
+              </span>
+            )
+          }
+          <PostStats url={url} />
+        </div>
+
         <p class="text-sm text-base-content/70 mb-4 hidden lg:block">{description}</p>  
       </div>  
       <div class="hidden lg:block">

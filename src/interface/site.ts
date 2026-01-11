@@ -103,6 +103,8 @@ export interface SiteConfig {
   pages?: {
     [key: string]: PageConfig;
   };
+  icp?: string;
+  icp_link?: string;
 }
 
 export interface UserConfig {
