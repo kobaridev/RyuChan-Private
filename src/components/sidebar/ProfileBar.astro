@@ -1,5 +1,5 @@
 ---  
-import { USER_AVATAR, USER_SIDEBAR_SOCIAL_ICONS, umamiConfig } from "../../config";  
+import { USER_AVATAR, USER_SIDEBAR_SOCIAL_ICONS, umamiConfig, USER_DESCRIPTION, USER_NAME } from "../../config";  
 import { Icon } from "astro-icon/components";   
 import { Image } from "astro:assets";  
 import { getAllPosts, getCategoriesWithPosts, getTagsWithCount } from "@utils/blogUtils";  
@@ -84,7 +84,7 @@ const getCategoryDisplayName = (category: string): string => {
   <div class="px-2">  
     <!-- 用户名 -->  
     <div class="font-bold text-xl text-center mb-1 dark:text-neutral-50 transition">  
-      Xiaozhang  
+      {USER_NAME}  
     </div>  
       
     <!-- 装饰线条 -->  
@@ -96,7 +96,7 @@ const getCategoryDisplayName = (category: string): string => {
     </div>   -->
     <!-- 个人描述 -->       
     <div class="text-center mb-2.5 transition font-bold tracking-wide bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent hover:scale-105 hover:from-purple-400 hover:to-pink-400">      
-     Ciallo～(∠・ω&lt;)⌒★    
+     {USER_DESCRIPTION}    
     </div>
       
     <!-- 社交图标 - 恢复原始样式 -->  

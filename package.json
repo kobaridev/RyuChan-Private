@@ -3,8 +3,8 @@
   "type": "module",
   "version": "2.0.0",
   "scripts": {
-    "dev": "astro dev --port 5555",
-    "start": "astro dev --port 5555",
+    "dev": "astro dev --port 3000",
+    "start": "astro dev --port 3000",
     "check": "astro check",
     "build": "astro check && astro build && pagefind --site dist",
     "search:clean": "rimraf public/pagefind",
@@ -86,6 +86,7 @@
     "prettier-plugin-astro": "^0.14.1",
     "sass-embedded": "^1.89.0",
     "shiki": "^1.29.2",
+    "tailwindcss-animate": "^1.0.7",
     "ts-jest": "^29.3.4",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3"

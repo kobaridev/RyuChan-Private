@@ -463,6 +463,32 @@ export function ConfigPage() {
                                     </div>
                                 </div>
 
+                                {/* User Info */}
+                                <div className="card bg-base-100 shadow-sm border border-base-200 p-6 rounded-2xl space-y-6">
+                                    <h3 className="font-bold text-lg text-primary border-b border-base-200 pb-2">用户信息</h3>
+                                    <div className="grid grid-cols-2 gap-6">
+                                        <div className="form-control w-full">
+                                            <label className="label"><span className="label-text font-medium">用户名称</span></label>
+                                            <input type="text" className="input input-bordered w-full bg-base-100 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+                                                value={parsedConfig?.user?.name || ''}
+                                                onChange={e => updateConfigValue('user.name', e.target.value)} />
+                                        </div>
+                                        <div className="form-control w-full">
+                                            <label className="label"><span className="label-text font-medium">个人主页</span></label>
+                                            <input type="text" className="input input-bordered w-full bg-base-100 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+                                                value={parsedConfig?.user?.site || ''}
+                                                onChange={e => updateConfigValue('user.site', e.target.value)} />
+                                        </div>
+                                    </div>
+                                    <div className="form-control w-full">
+                                        <label className="label"><span className="label-text font-medium">个人描述</span></label>
+                                        <input type="text" className="input input-bordered w-full bg-base-100 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+                                            placeholder="Ciallo～(∠・ω<)⌒★"
+                                            value={parsedConfig?.user?.description || ''}
+                                            onChange={e => updateConfigValue('user.description', e.target.value)} />
+                                    </div>
+                                </div>
+
                                 {/* Basic Info */}
                                 <div className="card bg-base-100 shadow-sm border border-base-200 p-6 rounded-2xl space-y-6">
                                     <div className="grid grid-cols-2 gap-6">

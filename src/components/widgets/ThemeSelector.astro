@@ -58,6 +58,27 @@ const themes = [
   document.addEventListener("astro:page-load", () => {
     const themeButtons = document.querySelectorAll('[data-set-theme]');
     
+    // 更新选中状态的函数
+    const updateActiveTheme = () => {
+      // 获取当前主题，优先从 html 标签获取，其次 localStorage，默认为 garden
+      const currentTheme = document.documentElement.getAttribute('data-theme') || localStorage.getItem('theme') || 'garden';
+      
+      themeButtons.forEach(btn => {
+        const theme = btn.getAttribute('data-set-theme');
+        if (theme === currentTheme) {
+          // 添加高亮样式
+          btn.classList.add('bg-primary/10', 'text-primary', 'font-bold', 'active-theme');
+        } else {
+          // 移除高亮样式
+          btn.classList.remove('bg-primary/10', 'text-primary', 'font-bold', 'active-theme');
+        }
+      });
+    };
+    
+    // 初始化时更新一次
+    updateActiveTheme();
+
+    // 监听按钮点击
     themeButtons.forEach(btn => {
       btn.addEventListener('click', () => {
         const theme = btn.getAttribute('data-set-theme');
@@ -65,10 +86,26 @@ const themes = [
         localStorage.setItem('theme', theme);
         
         // Try to guess if it's dark or light for other components
-        // This is a simple heuristic, ideally we'd know for sure
         const isDark = ['dark', 'synthwave', 'halloween', 'forest', 'black', 'luxury', 'dracula', 'business', 'night', 'coffee'].includes(theme);
         document.documentElement.setAttribute('data-theme-type', isDark ? 'dark' : 'light');
+        
+        // 点击后立即更新状态（虽然 Observer 也会触发，但这样更直接）
+        updateActiveTheme();
       });
+    });
+
+    // 使用 MutationObserver 监听 html 标签属性变化，以便响应其他组件（如 ThemeToggle）的主题切换
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
+          updateActiveTheme();
+        }
+      });
+    });
+
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-theme']
     });
   });
 </script>

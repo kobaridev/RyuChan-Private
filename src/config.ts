@@ -48,6 +48,7 @@ export const CODE_THEME = config.site.theme.code;
 
 // 用户个人信息
 export const USER_NAME = config.user.name;
+export const USER_DESCRIPTION = config.user.description;
 export const USER_SITE = config.user.site;
 export const USER_AVATAR = config.user.avatar;
 

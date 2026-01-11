@@ -107,6 +107,7 @@ export interface SiteConfig {
 
 export interface UserConfig {
   name: string;
+  description?: string;
   site: string;
   avatar: string;
   sidebar: {
