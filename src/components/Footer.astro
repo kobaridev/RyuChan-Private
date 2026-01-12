@@ -21,42 +21,61 @@ import { USER_NAME, USER_SITE, USER_FOOTER_SOCIAL_ICONS, SITE_ICP, SITE_ICP_LINK
       ></path>
     </svg>
     <p class="text-xs md:text-base">
-      Powered by <a href="https://github.com/EveSunMaple/Ryuchan" target="_blank" class="font-bold">Ryuchan Template</a>
+      Powered by <a href="https://github.com/kobaridev/Ryuchan" target="_blank" class="font-bold">RyuChan Template</a>
       <br />
-      Copyright © <a href={USER_SITE} target="_blank" class="font-bold">{USER_NAME}</a>
-      {new Date().getFullYear()} - All right reserved
-      {SITE_ICP && (
-        <>
-          <br />
-          <a href={SITE_ICP_LINK} target="_blank" rel="noopener" class="text-blue-500">{SITE_ICP}</a>
-        </>
-      )}
+      Copyright ©
+      <a href={USER_SITE} target="_blank" class="font-bold">{USER_NAME}</a>
+      2025–{new Date().getFullYear()}
+      <br />
+      All rights reserved
     </p>
   </aside>
   <nav>
-    <span class="footer-title text-xs md:text-sm">Social</span>
-    <div class="grid grid-flow-col gap-3 md:gap-4">
-      {
-        USER_FOOTER_SOCIAL_ICONS.map((icon) => {
-          let href = icon.href;
-          if ((icon.svg.includes('mail') || (icon.svg.includes('at-line') && !icon.svg.includes('wechat'))) && !href.startsWith('mailto:')) {
-            href = `mailto:${href}`;
-          } else if (icon.svg.includes('qq') && /^\d+$/.test(href)) {
-            href = `tencent://message/?uin=${href}&Site=&Menu=yes`;
-          }
-          return (
+  <span class="footer-title text-xs md:text-sm">Social</span>
+
+  {/* 社交按钮行 */}
+  <div class="grid grid-flow-col gap-3 md:gap-4">
+    {
+      USER_FOOTER_SOCIAL_ICONS.map((icon) => {
+        let href = icon.href;
+        if (
+          (icon.svg.includes('mail') ||
+            (icon.svg.includes('at-line') && !icon.svg.includes('wechat'))) &&
+          !href.startsWith('mailto:')
+        ) {
+          href = `mailto:${href}`;
+        } else if (icon.svg.includes('qq') && /^\d+$/.test(href)) {
+          href = `tencent://message/?uin=${href}&Site=&Menu=yes`;
+        }
+        return (
           <div class="tooltip" data-tip={icon.title}>
             <a href={href} aria-label={icon.ariaLabel}>
               <Icon name={icon.svg} class="text-xl md:text-xl" />
             </a>
           </div>
-        )})
-      }
-      <div class="tooltip" data-tip="RSS Feed">
-        <a href="/rss.xml" aria-label="RSS Feed">
-          <Icon name="ri:rss-line" class="text-xl md:text-xl" />
-        </a>
-      </div>
+        );
+      })
+    }
+
+    <div class="tooltip" data-tip="RSS Feed">
+      <a href="/rss.xml" aria-label="RSS Feed">
+        <Icon name="ri:rss-line" class="text-xl md:text-xl" />
+      </a>
     </div>
-  </nav>
+  </div>
+
+  {/* ICP 单独一行 */}
+  {SITE_ICP && (
+    <div class="mt-2 text-xs md:text-sm">
+      <a
+        href={SITE_ICP_LINK}
+        target="_blank"
+        rel="noopener"
+        class="font-bold"
+      >
+        {SITE_ICP}
+      </a>
+    </div>
+  )}
+</nav>
 </footer>
