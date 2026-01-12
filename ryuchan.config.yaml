@@ -18,8 +18,8 @@ site:
     height: 60vh
     images:
       - https://tc.alcy.cc/q/20250908/b2d656670551cb9ea6eda7b46b6c8ec0.webp
-  icp: ''
-  icp_link: ''
+  icp: '萌ICP备20265525号'
+  icp_link: 'https://icp.gov.moe/?keyword=20265525'
   pages:
     home:
       title: RyuChan's Blog
