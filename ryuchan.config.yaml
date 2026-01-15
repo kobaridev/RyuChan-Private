@@ -5,7 +5,7 @@ site:
   language: zh
   favicon: /favicon.ico
   theme:
-    light: retro
+    light: garden
     dark: dracula
     code: github-dark
   date_format: ddd MMM DD YYYY
