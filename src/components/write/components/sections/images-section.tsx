@@ -56,7 +56,7 @@ export function ImagesSection({ delay = 0 }: ImagesSectionProps) {
 				}}
 			/>
 
-			<div className='mt-3 grid grid-cols-4 gap-2'>
+			<div className='mt-3 grid grid-cols-4 gap-2 max-h-[200px] overflow-y-auto'>
 				{/* plus tile */}
 				<div
 					className='group bg-base-100 hover:bg-base-200 relative grid aspect-square cursor-pointer place-items-center rounded-lg border border-base-200 border-dashed transition-colors'

@@ -1,16 +1,18 @@
 ---
-title: Testing Mathematical Formulas in Markdown
-description: A demonstration of various mathematical formulas rendered using LaTeX within Markdown.
+title: Mathematical Formulas in Markdown
+description: >-
+  A demonstration of various mathematical formulas rendered using LaTeX within
+  Markdown.
+pubDate: 2025-05-31T00:00
 image: /image/image5.webp
-pubDate: May 31 2025
-categories:
-  - Documentation
-  - Examples
+draft: false
 tags:
   - Markdown
   - LaTeX
   - Mathematics
-badge: LaTeX
+categories:
+  - Documentation
+  - Examples
 ---
 
 This document serves as a test for rendering mathematical formulas in Markdown using `$$` delimiters.

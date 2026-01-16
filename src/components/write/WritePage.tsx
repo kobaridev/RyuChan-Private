@@ -15,8 +15,8 @@ type WritePageProps = {
 }
 
 export default function WritePage({ categories = [] }: WritePageProps) {
-	const { form, cover, reset } = useWriteStore()
-	const { isPreview, closePreview } = usePreviewStore()
+    const { form, cover, reset } = useWriteStore()
+    const { isPreview, closePreview } = usePreviewStore()
     const [slug, setSlug] = useState<string | null>(null)
 
     useEffect(() => {
@@ -31,13 +31,13 @@ export default function WritePage({ categories = [] }: WritePageProps) {
 
     const { loading } = useLoadBlog(slug || undefined)
 
-	const coverPreviewUrl = cover ? (cover.type === 'url' ? cover.url : cover.previewUrl) : null
+    const coverPreviewUrl = cover ? (cover.type === 'url' ? cover.url : cover.previewUrl) : null
 
-	return (
+    return (
         <>
-            <Toaster 
-                richColors 
-                position="top-center" 
+            <Toaster
+                richColors
+                position="top-center"
                 toastOptions={{
                     className: 'shadow-2xl border-2 border-base-200',
                     style: {
@@ -58,7 +58,7 @@ export default function WritePage({ categories = [] }: WritePageProps) {
                 <WritePreview form={form} coverPreviewUrl={coverPreviewUrl} onClose={closePreview} slug={slug || undefined} />
             ) : (
                 <>
-                    <div className='flex h-full justify-center gap-6 px-6 pt-24 pb-12'>
+                    <div className='flex flex-col md:flex-row h-full justify-center gap-6 px-4 md:px-6 pt-24 pb-12'>
                         <WriteEditor />
                         <WriteSidebar categories={categories} />
                     </div>
@@ -67,5 +67,5 @@ export default function WritePage({ categories = [] }: WritePageProps) {
                 </>
             )}
         </>
-	)
+    )
 }

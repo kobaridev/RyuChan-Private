@@ -359,13 +359,13 @@ export function ConfigPage() {
 
             <div className="rounded-3xl bg-base-100 shadow-2xl flex flex-col overflow-hidden border border-base-200 min-h-[600px]">
                 {/* Header */}
-                <div className="flex items-center justify-between px-8 py-5 border-b border-base-200 bg-base-100/50 backdrop-blur-sm sticky top-0 z-10">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between px-8 py-5 border-b border-base-200 bg-base-100/50 backdrop-blur-sm sticky top-0 z-10 gap-3 sm:gap-0">
                     <div className="flex items-center gap-3">
                         <div className="w-1 h-6 bg-primary rounded-full"></div>
                         <h2 className="text-xl font-bold text-primary">站点配置</h2>
                     </div>
 
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-3 w-full sm:w-auto justify-end">
                         <div className="join bg-base-200 p-1 rounded-lg">
                             <button
                                 className={`join-item btn btn-sm border-none ${mode === 'visual' ? 'btn-primary shadow-md' : 'btn-ghost text-base-content/60'}`}
@@ -412,7 +412,7 @@ export function ConfigPage() {
                         </button>
                     </div>
                 ) : (
-                    <div className="flex-1 overflow-y-auto bg-base-200/30 p-8">
+                    <div className="flex-1 overflow-y-auto bg-base-200/30 p-4 md:p-8">
                         {mode === 'code' ? (
                             <textarea
                                 className="h-[600px] w-full rounded-xl border border-base-300 bg-base-100 p-6 font-mono text-sm focus:border-primary focus:outline-none resize-none shadow-inner"
@@ -423,20 +423,20 @@ export function ConfigPage() {
                         ) : (
                             <div className="max-w-3xl mx-auto space-y-10">
                                 {/* Icons */}
-                                <div className="grid grid-cols-2 gap-12">
-                                    <div className="space-y-4">
-                                        <div className="text-sm font-medium text-base-content/70 ml-1">网站图标</div>
-                                        <div className="group relative flex justify-center p-8 bg-base-100 rounded-3xl border border-base-200 shadow-sm hover:shadow-md transition-all duration-300">
-                                            <div className="w-24 h-24 rounded-2xl overflow-hidden bg-base-200 ring-4 ring-base-100 shadow-xl group-hover:scale-105 transition-transform duration-300">
+                                <div className="grid grid-cols-2 gap-4 md:gap-12">
+                                    <div className="space-y-3">
+                                        <div className="text-xs font-medium text-base-content/70 ml-1">网站图标</div>
+                                        <div className="group relative flex justify-center p-4 md:p-8 bg-base-100 rounded-2xl md:rounded-3xl border border-base-200 shadow-sm hover:shadow-md transition-all duration-300">
+                                            <div className="w-16 h-16 md:w-24 md:h-24 rounded-xl md:rounded-2xl overflow-hidden bg-base-200 ring-4 ring-base-100 shadow-xl group-hover:scale-105 transition-transform duration-300">
                                                 <img src={parsedConfig?.site?.favicon || '/favicon.ico'} alt="Favicon" className="w-full h-full object-cover" />
                                             </div>
-                                            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-base-100/50 backdrop-blur-sm rounded-3xl cursor-pointer" onClick={() => triggerImageUpload('site.favicon')}>
+                                            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-base-100/50 backdrop-blur-sm rounded-2xl md:rounded-3xl cursor-pointer" onClick={() => triggerImageUpload('site.favicon')}>
                                                 <button className="btn btn-circle btn-primary shadow-lg scale-90 group-hover:scale-100 transition-transform">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="17 8 12 3 7 8" /><line x1="12" x2="12" y1="3" y2="15" /></svg>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="17 8 12 3 7 8" /><line x1="12" x2="12" y1="3" y2="15" /></svg>
                                                 </button>
                                             </div>
                                             {uploadingImage && uploadTarget === 'site.favicon' && (
-                                                <div className="absolute inset-0 flex items-center justify-center bg-base-100/80 rounded-3xl z-10">
+                                                <div className="absolute inset-0 flex items-center justify-center bg-base-100/80 rounded-2xl md:rounded-3xl z-10">
                                                     <span className="loading loading-spinner loading-md text-primary"></span>
                                                 </div>
                                             )}
@@ -449,19 +449,19 @@ export function ConfigPage() {
                                             placeholder="图标 URL"
                                         />
                                     </div>
-                                    <div className="space-y-4">
-                                        <div className="text-sm font-medium text-base-content/70 ml-1">用户头像</div>
-                                        <div className="group relative flex justify-center p-8 bg-base-100 rounded-3xl border border-base-200 shadow-sm hover:shadow-md transition-all duration-300">
-                                            <div className="w-24 h-24 rounded-2xl overflow-hidden bg-base-200 ring-4 ring-base-100 shadow-xl group-hover:scale-105 transition-transform duration-300">
+                                    <div className="space-y-3">
+                                        <div className="text-xs font-medium text-base-content/70 ml-1">用户头像</div>
+                                        <div className="group relative flex justify-center p-4 md:p-8 bg-base-100 rounded-2xl md:rounded-3xl border border-base-200 shadow-sm hover:shadow-md transition-all duration-300">
+                                            <div className="w-16 h-16 md:w-24 md:h-24 rounded-xl md:rounded-2xl overflow-hidden bg-base-200 ring-4 ring-base-100 shadow-xl group-hover:scale-105 transition-transform duration-300">
                                                 <img src={parsedConfig?.user?.avatar || '/avatar.png'} alt="Avatar" className="w-full h-full object-cover" />
                                             </div>
-                                            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-base-100/50 backdrop-blur-sm rounded-3xl cursor-pointer" onClick={() => triggerImageUpload('user.avatar')}>
+                                            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-base-100/50 backdrop-blur-sm rounded-2xl md:rounded-3xl cursor-pointer" onClick={() => triggerImageUpload('user.avatar')}>
                                                 <button className="btn btn-circle btn-primary shadow-lg scale-90 group-hover:scale-100 transition-transform">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="17 8 12 3 7 8" /><line x1="12" x2="12" y1="3" y2="15" /></svg>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="17 8 12 3 7 8" /><line x1="12" x2="12" y1="3" y2="15" /></svg>
                                                 </button>
                                             </div>
                                             {uploadingImage && uploadTarget === 'user.avatar' && (
-                                                <div className="absolute inset-0 flex items-center justify-center bg-base-100/80 rounded-3xl z-10">
+                                                <div className="absolute inset-0 flex items-center justify-center bg-base-100/80 rounded-2xl md:rounded-3xl z-10">
                                                     <span className="loading loading-spinner loading-md text-primary"></span>
                                                 </div>
                                             )}
@@ -479,7 +479,7 @@ export function ConfigPage() {
                                 {/* User Info */}
                                 <div className="card bg-base-100 shadow-sm border border-base-200 p-6 rounded-2xl space-y-6">
                                     <h3 className="font-bold text-lg text-primary border-b border-base-200 pb-2">用户信息</h3>
-                                    <div className="grid grid-cols-2 gap-6">
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                                         <div className="form-control w-full">
                                             <label className="label"><span className="label-text font-medium">用户名称</span></label>
                                             <input type="text" className="input input-bordered w-full bg-base-100 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
@@ -504,7 +504,7 @@ export function ConfigPage() {
 
                                 {/* Basic Info */}
                                 <div className="card bg-base-100 shadow-sm border border-base-200 p-6 rounded-2xl space-y-6">
-                                    <div className="grid grid-cols-2 gap-6">
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                                         <div className="form-control w-full">
                                             <label className="label"><span className="label-text font-medium">站点标题</span></label>
                                             <input type="text" className="input input-bordered w-full bg-base-100 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
@@ -529,7 +529,7 @@ export function ConfigPage() {
                                     {/* ICP Info */}
                                     <div className="space-y-3">
                                         <div className="text-sm font-medium text-base-content/70">备案信息</div>
-                                        <div className="grid grid-cols-2 gap-6">
+                                        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6">
                                             <input type="text" className="input input-bordered w-full bg-base-100 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
                                                 placeholder="例如：京ICP备12345678号"
                                                 value={parsedConfig?.site?.icp || ''}
@@ -600,7 +600,7 @@ export function ConfigPage() {
                                                 <div className="badge badge-primary badge-outline">Bilibili</div>
                                                 <span className="text-sm font-medium">追番列表</span>
                                             </div>
-                                            <div className="grid grid-cols-1 gap-6">
+                                            <div className="grid grid-cols-1 gap-4">
                                                 <div className="form-control w-full">
                                                     <label className="label"><span className="label-text text-xs text-base-content/60">Bilibili UID</span></label>
                                                     <input type="text" className="input input-bordered w-full bg-base-100 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
@@ -619,7 +619,7 @@ export function ConfigPage() {
                                                 <div className="badge badge-secondary badge-outline">TMDB</div>
                                                 <span className="text-sm font-medium">电影/剧集</span>
                                             </div>
-                                            <div className="grid grid-cols-2 gap-6">
+                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                                                 <div className="form-control w-full">
                                                     <label className="label"><span className="label-text text-xs text-base-content/60">API Key</span></label>
                                                     <input type="text" className="input input-bordered w-full bg-base-100 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
@@ -661,7 +661,7 @@ export function ConfigPage() {
                                             </div>
 
                                             {parsedConfig?.comments?.type === 'giscus' && (
-                                                <div className="grid grid-cols-2 gap-4">
+                                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                                     <div className="form-control w-full">
                                                         <label className="label"><span className="label-text text-xs text-base-content/60">Repo</span></label>
                                                         <input type="text" className="input input-sm input-bordered w-full bg-base-100 focus:border-primary focus:ring-2 focus:ring-primary/20"
@@ -724,7 +724,7 @@ export function ConfigPage() {
                                                     value={parsedConfig?.umami?.baseUrl || ''}
                                                     onChange={e => updateConfigValue('umami.baseUrl', e.target.value)} />
                                             </div>
-                                            <div className="grid grid-cols-2 gap-6">
+                                            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6">
                                                 <div className="form-control w-full">
                                                     <label className="label"><span className="label-text text-xs text-base-content/60">Website ID</span></label>
                                                     <input type="text" className="input input-bordered w-full bg-base-100 focus:border-primary focus:ring-2 focus:ring-primary/20"

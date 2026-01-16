@@ -34,7 +34,7 @@
 - ✅ **白天** / **黑夜** 模式可用  
 - ✅ 极速的访问速度与优秀的 SEO  
 - ✅ 视图过渡动画（使用 ClientRouter）  
-- ✅ 支持文章全文搜索（Pagefind）  
+- ✅ 支持文章全文搜索（自定义算法）  
 - ✅ 移动端优先的响应式设计（优化卡片布局、网格导航）  
 - ✅ 高度可配置的 Banner（支持随机图、打字机效果、高度自定义）  
 - ✅ 使用 [Tailwind CSS](https://tailwindcss.com/) 与 [daisyUI](https://daisyui.com/) 构建自适应页面  

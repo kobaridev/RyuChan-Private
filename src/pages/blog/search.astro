@@ -3,6 +3,11 @@ import BaseLayout from "@layouts/BaseLayout.astro";
 import BaseCard from "@components/BaseCard.astro";
 import { t } from "@config";
 import { Icon } from "astro-icon/components";
+import CustomSearch from "@components/CustomSearch";
+import { generateSearchIndex } from "../../lib/search-indexer";
+
+// 生成搜索索引
+generateSearchIndex();
 ---
 
 <BaseLayout title={t("label.searchPage")}>
@@ -23,71 +28,7 @@ import { Icon } from "astro-icon/components";
 
   <BaseCard>
     <div id="search-container" class="w-full">
-      <div id="pagefind-search" transition:persist></div>
+      <CustomSearch client:load initialQuery={Astro.url.searchParams.get("q") || ""} />
     </div>
   </BaseCard>
 </BaseLayout>
-
-<script>
-  document.addEventListener("astro:page-load", initSearch);
-
-  function initSearch() {
-    const pageFindSearch = document.querySelector("#pagefind-search");
-    if (!pageFindSearch) return;
-
-    const params = new URLSearchParams(window.location.search);
-
-    // Polyfill for requestIdleCallback
-    const onIdle = window.requestIdleCallback || ((cb) => setTimeout(cb, 1));
-
-    onIdle(async () => {
-      try {
-        // @ts-ignore - Pagefind UI types
-        const { PagefindUI } = await import("@pagefind/default-ui");
-
-        // Initialize pagefind UI
-        const search = new PagefindUI({
-          element: "#pagefind-search",
-          showImages: false,
-          processTerm: function (term: string): string {
-            params.set("q", term);
-            history.replaceState(history.state, "", "?" + params.toString());
-            return term;
-          },
-        });
-
-        // If search param exists (e.g., search?q=astro), trigger search
-        const query = params.get("q");
-        if (query) {
-          search.triggerSearch(query);
-        }
-
-        // Reset search param if search input is cleared
-        const searchInput = document.querySelector(".pagefind-ui__search-input");
-        const clearButton = document.querySelector(".pagefind-ui__search-clear");
-
-        searchInput?.addEventListener("input", resetSearchParam);
-        clearButton?.addEventListener("click", resetSearchParam);
-
-        function resetSearchParam(e: Event): void {
-          if ((e.target as HTMLInputElement).value === "") {
-            history.replaceState(history.state, "", window.location.pathname);
-          }
-        }
-      } catch (error) {
-        console.error("Error initializing search:", error);
-        const searchContainer = document.querySelector("#search-container");
-        if (searchContainer) {
-          searchContainer.innerHTML = `
-            <div class="alert alert-error shadow-lg">
-              <div>
-                <Icon name="lucide:alert-triangle" class="w-6 h-6" />
-                <span>Error loading search functionality. Please try again later.</span>
-              </div>
-            </div>
-          `;
-        }
-      }
-    });
-  }
-</script>
