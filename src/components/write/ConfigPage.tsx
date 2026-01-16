@@ -359,7 +359,11 @@ export function ConfigPage() {
 
             <div className="rounded-3xl bg-base-100 shadow-2xl flex flex-col overflow-hidden border border-base-200 min-h-[600px]">
                 {/* Header */}
+<<<<<<< HEAD
                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between px-8 py-5 border-b border-base-200 bg-base-100/50 backdrop-blur-sm sticky top-0 z-10 gap-3 sm:gap-0">
+=======
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between px-8 py-5 border-b border-base-200 bg-base-100/50 backdrop-blur-sm sticky top-0 z-10 space-y-3 sm:space-y-0">
+>>>>>>> f0d6f75 (硬回退谨慎使用，差点没保住一天的修改)
                     <div className="flex items-center gap-3">
                         <div className="w-1 h-6 bg-primary rounded-full"></div>
                         <h2 className="text-xl font-bold text-primary">站点配置</h2>

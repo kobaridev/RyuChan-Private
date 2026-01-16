@@ -165,14 +165,14 @@ export function WriteEditor() {
 				<input
 					type='text'
 					placeholder='标题'
-					className='input input-bordered flex-1 bg-base-100 focus:input-primary transition-all'
+					className='input input-bordered w-full md:flex-1 bg-base-100 focus:input-primary transition-all h-12 p-4 rounded-lg text-base font-medium'
 					value={form.title}
 					onChange={e => updateForm({ title: e.target.value })}
 				/>
 				<input
 					type='text'
 					placeholder='slug（xx-xx）'
-					className='input input-bordered flex-1 md:w-[200px] bg-base-100 focus:input-primary transition-all'
+					className='input input-bordered w-full md:w-[200px] bg-base-100 focus:input-primary transition-all h-12 p-4 rounded-lg text-base font-medium'
 					value={form.slug}
 					onChange={e => updateForm({ slug: e.target.value.toLowerCase() })}
 				/>
