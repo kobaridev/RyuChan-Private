@@ -161,7 +161,7 @@ export function WriteEditor() {
 			animate={{ opacity: 1, scale: 1 }}
 			transition={{ delay: INIT_DELAY }}
 			className='bg-base-100 flex min-h-[800px] w-full max-w-[800px] flex-col rounded-[40px] border border-base-200 p-8 shadow-xl'>
-			<div className='mb-4 flex gap-4'>
+			<div className='mb-4 flex flex-col md:flex-row gap-4'>
 				<input
 					type='text'
 					placeholder='标题'
@@ -172,7 +172,7 @@ export function WriteEditor() {
 				<input
 					type='text'
 					placeholder='slug（xx-xx）'
-					className='input input-bordered w-[200px] bg-base-100 focus:input-primary transition-all'
+					className='input input-bordered flex-1 md:w-[200px] bg-base-100 focus:input-primary transition-all'
 					value={form.slug}
 					onChange={e => updateForm({ slug: e.target.value.toLowerCase() })}
 				/>

@@ -1,0 +1,94 @@
+[
+  {
+    "id": "adding-comment-systems",
+    "title": "Adding Comment Systems to RyuChan",
+    "description": "A comprehensive guide on how to integrate the Waline comment system into your RyuChan blog",
+    "content": "RyuChan 博客现已支持通过配置文件集中管理评论系统 无需在页面手动引入组件或硬编码参数 只需在 中配置即可 在 中找到 配置块 你无需在页面或模板中手动引入 或 组件 Ryuchan 已自动根据配置渲染对应评论系统 只需专注于内容创作和配置维护 如需自定义 Waline 组件样式或参数 可参考如下代码 已内置于 RyuChan",
+    "url": "/blog/adding-comment-systems",
+    "pubDate": "2025-04-14T16:00:00.000Z",
+    "categories": [
+      "Documentation"
+    ],
+    "tags": [
+      "RyuChan",
+      "Comments",
+      "Waline",
+      "Astro"
+    ]
+  },
+  {
+    "id": "ryuchan-mdx",
+    "title": "Using mdx in RyuChan",
+    "description": "Using MDX in RyuChan to enrich article content with more components",
+    "content": "import Collapse from components mdx Collapse astro import Diff from components mdx Diff astro import Error from components mdx Error astro import Info from components mdx Info astro import Kbd from components mdx Kbd astro import Success from components mdx Success astro import Warning from components mdx Warning astro import TimeLine from components mdx TimeLine astro import LinkCard from components mdx LinkCard astro This article describes how to use the components provided by RyuChan in to realize the functions that can t be realized by normal First you need to create an file which is as simple as changing the extension to The components provided by Ryuchan are placed in the folders Write something under the document properties frontmatter This is the hidden content Maybe something went wrong Hey Watch out for potholes It s just a message Congratulations on your successful deployment Ctrl C to copy the text",
+    "url": "/blog/ryuchan-mdx",
+    "pubDate": "2024-07-11T16:00:00.000Z",
+    "categories": [
+      "Documentation",
+      "Examples"
+    ],
+    "tags": [
+      "RyuChan",
+      "Blog",
+      "Project"
+    ]
+  },
+  {
+    "id": "using-mdx",
+    "title": "Using MDX",
+    "description": "Lorem ipsum dolor sit amet",
+    "content": "This theme comes with the astrojs mdx integration installed and configured in your config file If you prefer not to use MDX you can disable support by removing the integration from your config file MDX is a special flavor of Markdown that supports embedded JavaScript JSX syntax This unlocks the ability to mix JavaScript and UI Components into your Markdown content for things like interactive charts or alerts If you have existing content authored in MDX this integration will hopefully make migrating to Astro a breeze Here is how you import and use a UI component inside of MDX When you open this page in the browser you should see the clickable button below",
+    "url": "/blog/using-mdx",
+    "pubDate": "2022-07-01T16:00:00.000Z",
+    "categories": [
+      "Documentation"
+    ],
+    "tags": []
+  },
+  {
+    "id": "mathematics-examples",
+    "title": "Mathematical Formulas in Markdown",
+    "description": "A demonstration of various mathematical formulas rendered using LaTeX within Markdown.",
+    "content": "This document serves as a test for rendering mathematical formulas in Markdown using delimiters Let s start with some fundamental algebraic expressions The quadratic formula is given by x frac b pm sqrt b 2 4ac 2a A simple linear equation y mx c Expansion of a binomial square a b 2 a 2 2ab b 2 Here are some common expressions from calculus The limit definition of a derivative f x lim_ h to 0 frac f x h f x h A definite integral int_ a b f x dx The Taylor series expansion of e x around x 0 e x sum_ n 0 infty frac x n n 1 x frac x 2 2 frac x 3 3 cdots Some basic trigonometric identities Pythagorean identity sin 2 theta cos 2 theta 1 Angle addition formula for sine sin alpha beta sin alpha cos beta cos alpha sin beta Euler s formula e i theta cos theta i sin theta Formulas commonly used in statistics and probability The formula for the mean mu of a set of n numbers x_1 x_2 ldots x_n mu frac 1 n sum_ i 1 n x_i The probability density function of a normal distribution f x mu sigma 2 frac 1 sqrt 2 pi sigma 2 e frac x mu 2 2 sigma 2 Bayes theorem P A B frac P B A P A P B Examples from linear algebra A 2x2 matrix A begin pmatrix a b c d end pmatrix The determinant of a 2x2 matrix det A ad bc Matrix multiplication of two matrices A and B C AB A couple of well known physics equations Einstein s mass energy equivalence E mc 2 Newton s second law of motion F ma This should provide a good test of how various mathematical formulas are rendered",
+    "url": "/blog/mathematics-examples",
+    "pubDate": "2025-05-30T16:00:00.000Z",
+    "categories": [
+      "Documentation",
+      "Examples"
+    ],
+    "tags": [
+      "Markdown",
+      "LaTeX",
+      "Mathematics"
+    ]
+  },
+  {
+    "id": "markdown-style-guide",
+    "title": "Markdown Style Guide",
+    "description": "Here is a sample of some basic Markdown syntax that can be used when writing Markdown content in Astro.",
+    "content": "Here is a sample of some basic Markdown syntax that can be used when writing Markdown content in Astro The following HTML elements represent six levels of section headings is the highest section level while is the lowest Xerum quo qui aut unt expliquam qui dolut labo Aque venitatiusda cum voluptionse latur sitiae dolessi aut parist aut dollo enim qui voluptate ma dolestendit peritin re plis aut quas inctum laceat est volestemque commosa as cus endigna tectur offic to cor sequas etum rerum idem sintibus eiur Quianimin porecus evelectur cum que nis nust voloribus ratem aut omnimi sitatur Quiatem Nam omnis sum am facea corem alique molestrunt et eos evelece arcillit ut aut eos eos nus sin conecerem erum fuga Ri oditatquam ad quibus unda veliamenimin cusam et facea ipsamus es exerum sitate dolores editium rerore eost temped molorro ratiae volorro te reribus dolorer sperchicium faceata tiustia prat Itatur Quiatae cullecum rem ent aut odis in re eossequodi nonsequ idebis ne sapicia is sinveli squiatum core et que aut hariosam ex eat blog placeholder The blockquote element represents content that is quoted from another source optionally with a citation which must be within a or element and optionally with in line changes such as annotations and abbreviations 1 The above quote is excerpted from Rob Pike s talk during Gopherfest November 18 2015 Italics Bold Code _italics_ bold we can use 3 backticks GIF is a bitmap image format H2O Xn Yn Zn Press CTRL ALT Delete to end the session Most salamanders are nocturnal and hunt for insects worms and other small creatures",
+    "url": "/blog/markdown-style-guide",
+    "pubDate": "2024-06-30T16:00:00.000Z",
+    "categories": [
+      "Documentation",
+      "Examples"
+    ],
+    "tags": [
+      "Markdown"
+    ]
+  },
+  {
+    "id": "infinite_castle",
+    "title": "To The Infinite Castle",
+    "description": "柱集结，决战无限城！",
+    "content": "",
+    "url": "/blog/infinite_castle",
+    "pubDate": "2026-01-05T10:53:00.000Z",
+    "categories": [
+      "动漫"
+    ],
+    "tags": [
+      "鬼灭之刃"
+    ]
+  }
+]
