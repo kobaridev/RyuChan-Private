@@ -18,7 +18,7 @@ const totalPages = Math.ceil(page.total / page.size);
 const pageLinks = generatePageLinks(totalPages);
 ---
 
-<BaseLayout title="Blog">
+<BaseLayout title="Blog" isIndexed={false}>
   <!-- Blog Navigation Cards -->
   <CardGroup cols="2" class="grid-cols-2">
     <!-- Archives Card -->

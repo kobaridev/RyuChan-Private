@@ -10,7 +10,7 @@ import { generateSearchIndex } from "../../lib/search-indexer";
 generateSearchIndex();
 ---
 
-<BaseLayout title={t("label.searchPage")}>
+<BaseLayout title={t("label.searchPage")} isIndexed={false}>
   <BaseCard title={t("label.searchPage")}>
     <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
       <div class="flex items-center gap-2">

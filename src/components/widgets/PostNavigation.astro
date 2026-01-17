@@ -13,7 +13,7 @@ const { prevPost, nextPost } = Astro.props;
 <div class="post-navigation">    
   <!-- 上一篇 -->    
   {prevPost ? (    
-    <a href={`/blog/${prevPost.slug}`} class="nav-card prev group">    
+    <a href={`/blog/${prevPost.slug}`} class="nav-card prev group" data-pagefind-ignore>    
       <div class="nav-arrow">  
         <Icon name="tabler:chevron-left" class="text-2xl transition-transform group-hover:-translate-x-1" />
       </div>  
@@ -29,7 +29,7 @@ const { prevPost, nextPost } = Astro.props;
     
   <!-- 下一篇 -->    
   {nextPost ? (    
-    <a href={`/blog/${nextPost.slug}`} class="nav-card next group">    
+    <a href={`/blog/${nextPost.slug}`} class="nav-card next group" data-pagefind-ignore>    
       <div class="nav-content text-right">    
         <div class="nav-label text-xs opacity-60 mb-1">Next Post</div>
         <div class="nav-title font-medium line-clamp-2 group-hover:text-primary transition-colors">{nextPost.data.title}</div>    

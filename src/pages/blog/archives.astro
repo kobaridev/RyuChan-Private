@@ -23,6 +23,6 @@ const labels = {
 };
 ---
 
-<BaseLayout title={t("label.archivePage")}>
+<BaseLayout title={t("label.archivePage")} isIndexed={false}>
   <ArchiveList client:load posts={sortedPosts} labels={labels} dateFormat={DATE_FORMAT} />
 </BaseLayout>
