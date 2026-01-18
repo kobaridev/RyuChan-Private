@@ -7,12 +7,12 @@ import { batchDeleteBlogs } from '@/components/write/services/batch-delete';
 import { readFileAsText } from '@/lib/file-utils';
 
 interface Post {
-  slug: string;
-  data: {
-    title: string;
-    pubDate: Date | string;
-    description?: string;
-  };
+    slug: string;
+    data: {
+        title: string;
+        pubDate: Date | string;
+        description?: string;
+    };
 }
 
 interface ArchiveListProps {
@@ -125,7 +125,31 @@ export default function ArchiveList({ posts, labels, dateFormat }: ArchiveListPr
 
     return (
         <>
-            <Toaster richColors position="top-center" />
+            <Toaster
+                richColors
+                position="top-center"
+                toastOptions={{
+                    className: 'shadow-xl rounded-2xl border-2 border-primary/20 backdrop-blur-sm',
+                    style: {
+                        fontSize: '1rem',
+                        padding: '14px 20px',
+                        zIndex: '999999',
+                        borderRadius: '12px',
+                        boxShadow: '0 10px 40px rgba(0, 0, 0, 0.15)',
+                        transition: 'all 0.3s ease-in-out',
+                    },
+                    classNames: {
+                        title: 'text-lg font-semibold tracking-tight',
+                        description: 'text-sm font-medium opacity-90',
+                        error: 'bg-error/95 text-error-content border-error/30',
+                        success: 'bg-success/95 text-success-content border-success/30',
+                        warning: 'bg-warning/95 text-warning-content border-warning/30',
+                        info: 'bg-info/95 text-info-content border-info/30',
+                    },
+                    duration: 5000,
+                    closeButton: false,
+                }}
+            />
             <input
                 ref={keyInputRef}
                 type='file'
