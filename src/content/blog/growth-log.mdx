@@ -1,0 +1,289 @@
+---
+title: "🛠️ 少年游未尽，我在折腾中成长"  
+description: "从零开始捣鼓博客与建站：搭博客、部署评论、配置 Cloudflare 和图床、用 Git 管理项目……这是我从小白到站长的完整技术成长记录。"  
+pubDate: 2025-07-27 
+image: https://img.xiaozhangya.xin/file/横屏/1753608039754_mmexport1753607982321.jpg  
+categories:  
+  - 成长记录  
+tags:    
+  - 博客
+  - 网盘
+  - 评论组件
+  - SMB
+  - Astro
+  - Cloudflare  
+  - Git  
+  - WordPress  
+  - Umami  
+badge: "Pin"  
+draft: false  
+---
+  
+import Collapse from "../../components/mdx/Collapse.astro";  
+import Info from "../../components/mdx/Info.astro";  
+import Success from "../../components/mdx/Success.astro";  
+import Warning from "../../components/mdx/Warning.astro";  
+import TimeLine from "../../components/mdx/TimeLine.astro";  
+import LinkCard from "../../components/mdx/LinkCard.astro";  
+  
+# 🚀 从 0 到 1：我的折腾记录  
+  
+<Info>  
+这一段时间，**从完全不会建站，到现在能搭博客、部署评论、玩 Cloudflare 和图床、用 Git 管理项目、自己写页面**…  
+  
+虽然大多数东西都是现学现用、边查边做，但也正是这种折腾，带来了最大的成就感。  
+  
+**也许我的站点看起来不够"高级"，但它的每一个页面、每一个功能，都是我亲手一点点折腾出来的。**  
+</Info>  
+  
+---  
+  
+## ⏳ 技术成长时间线  
+  
+<TimeLine  
+  items={[  
+    { year: "阶段1", event: "🧊 SMB + Infuse 实现局域网影视播放" },  
+    { year: "阶段2", event: "🧰 Alist + Cloudflare Tunnel 远程访问本地文件" },  
+    { year: "阶段3", event: "🌐 GitHub Page + Vue 静态博客初体验" },  
+    { year: "阶段4", event: "🧱 本地部署 WordPress（XAMPP）" },  
+    { year: "阶段5", event: "🖼️ PicGo → Telegram 图床 + Web UI + Cloudflare R2" },  
+    { year: "阶段6", event: "💠 更换二次元风格主题（Boxmoe / Lolimeow）" },  
+    { year: "阶段7", event: "🧍 个人主页打包展示所有项目" },  
+    { year: "阶段8", event: "📁 静态博客 fork + 自定义配置" },  
+    { year: "阶段9", event: "💬 评论系统的思考：Giscus vs Waline" },  
+    { year: "阶段10", event: "📊 加入 Umami 网站统计 + 自定义文章浏览量模块" },  
+    { year: "阶段11", event: "🔍 接入微软 Clarity 用户行为分析" },  
+    { year: "阶段12", event: "🧭 添加导航页收集常用站点" }  
+  ]}  
+/>  
+  
+---  
+  
+## 🧊 1. 从 SMB 共享开启的观影时代  
+  
+最早的一次技术折腾，就是想在 iPad 上看电脑里的影视剧。  
+以前都是先下载、再传输、再播放，贼麻烦。  
+后来发现了 **Infuse** 这个 App，居然支持 SMB 共享挂载，直接串流播放电脑里的视频，太牛了！  
+  
+<Success>  
+配置 SMB 的过程也让我第一次接触到了局域网共享，设置路径、权限、文件夹访问…手把手学会，体验一下子上了好几个台阶。  
+</Success>  
+  
+---  
+  
+## 🧰 2. Alist + Cloudflare Tunnel：让本地文件飞起来  
+  
+Infuse 后，我开始思考——**能不能在外面也访问我本地的文件？**  
+  
+<LinkCard  
+  title="Alist"  
+  desc="一个支持多种存储的文件列表程序，使用 Gin 和 Solidjs。"  
+  url="https://github.com/alist-org/alist"  
+  img="https://cdn.jsdelivr.net/gh/alist-org/logo@main/logo.svg"  
+/>  
+  
+查资料的时候遇到一个神器项目：**Alist**，能把本地文件挂载成一个网页浏览器，简直绝了！  
+<Collapse title="解决方案详解">  
+但问题来了：我没有服务器、也没有公网 IP，怎么让别人访问我本地的服务？  
+  
+查着查着，发现了 **Cloudflare Tunnel**，直接内网穿透！完美解决。  
+  
+我还顺便买了人生中第一个阿里云域名，算是真正迈出了"站长第一步"。  
+</Collapse>  
+---
+<Warning>  
+⚠️ **重要更新**：原来的 Alist 项目已经转手，出于安全考虑，我后面改用了 Alist 的 Fork 项目 **OpenList**。  
+</Warning>  
+---  
+<Info>  
+感兴趣的可以查看我的博客部署教程：[OpenList 本地部署指南](https://hub.xiaozhangya.xin/blog/openlist/)  
+  
+也可以查看 [OpenList 官方文档](https://docs.oplist.org/zh/)。我目前使用的就是 OpenList。  
+</Info> 
+  
+---  
+  
+## 🌐 3. 初识 GitHub 博客：惊为天人  
+  
+偶然在 B 站刷到 Vue 搭建的博客项目，被界面惊艳到。  
+  
+于是跟着部署教程，第一次认真使用 GitHub：  
+- clone 仓库  
+- 配置 token  
+- 提交 push  
+- 配置 Actions 自动部署  
+  
+<Success>边学边感叹：**GitHub 这东西也太香了吧！**</Success>  
+  
+---  
+  
+## 🧱 4. WordPress 本地部署：玩转 XAMPP  
+  
+又被一个叫 Argon 的 WordPress 主题种草，UI 那叫一个顺眼。  
+  
+但没有服务器怎么办？查了一圈，找到了 XAMPP！  
+  
+<Info>  
+Windows 本地环境 + WordPress + 本地数据库，一通操作下来终于跑起来了。  
+  
+还写了几篇文章当博客玩：  
+- Git 使用教程  
+- Hive 离线数仓  
+- 数据挖掘学习笔记  
+</Info>  
+  
+---  
+  
+## 🖼️ 5. 折腾图床系统：PicGo 到 Telegram + R2  
+  
+发博客时最头疼的是图片——不能总传本地图吧？  
+  
+<Collapse title="图床系统演进历程">  
+  
+### ✅ 第一阶段：PicGo + GitHub 仓库图床  
+体验很好，但问题是 GitHub 仓库一堆图片又丑又乱，还经常加载慢。  
+  
+### 📷 第二阶段：Telegram 图床 + 网页 UI 管理界面  
+TG 频道 + Bot + WebUI，拖拽上传即生成直链链接，还能预览、分类，堪比小型图床相册系统，视觉体验拉满！  
+  
+> 上传逻辑是 Bot 转发图片 → Web UI 生成链接 → 自动绑定图床地址，真的像做了个小产品！  
+  
+### ☁️ 第三阶段：Cloudflare R2 加入图床系统  
+为了更快访问速度，还接入了 Cloudflare R2 存储，图像资源全部走 CDN 加速。  
+  
+</Collapse>  
+  
+---  
+  
+## 💠 6. 二次元风格主题：Boxmoe 模板真香！  
+  
+刷到一个 up 主博客样式爆炸好看，一查发现是 Boxmoe 的 [`lolimeow`](https://www.boxmoe.com/468.html) 主题。  
+  
+<Success>二次元 UI 完美戳中我审美，立马动手换主题 + 调样式，直接美化！</Success>  
+  
+---  
+  
+## 🧍 7. 个人主页整合  
+  
+既然有博客了，也顺便做了个导航页，整合我做过的项目、图床、博客、API 端口等等。  
+像一张属于自己的 ID 卡。  
+  
+---  
+  
+## 📁 8. 静态博客 + 自定义改造  
+  
+被某个静态博客模板种草后 fork 下来，开始一步步魔改： 
+<LinkCard
+  title="Frosti"
+  desc="A clean, elegant, and fast static blog template! 🚀 Developed with Astro"
+  url="https://frosti.saroprock.com"
+  img="https://frosti.saroprock.com/profile.png"
+/>
+> 接下来就是**嘎嘎一顿造**哈，改成我现在这个博客的样子  
+<Collapse title="魔改过程详解">  
+- 理解项目结构  
+- 修改首页 / 页面布局  
+- 添加新菜单  
+- 迁移 WordPress 上的文章  
+- 自定义样式、主题配色  
+  
+学到的远比想象的多！  
+</Collapse>  
+  
+---  
+  
+## 💬 9. 评论系统的思考：Giscus vs Waline  
+  
+想要博客有互动，那就得有评论。  
+  
+经过对比，我倾向于选择 Giscus 方案：  
+- 基于 GitHub Discussions，无需额外服务器  
+- 读者可以直接用 GitHub 账号参与讨论  
+- 对技术博客来说更加合适  
+  
+<Info>  
+虽然还没有实际部署，但这个想法很符合我"折腾"的精神 —— 总是在寻找更好的解决方案！  
+</Info>  
+  
+---  
+  
+## 📊 10. Umami 网站统计 + 自定义模块  
+  
+用 Umami 加入访问数据统计后，博客体验更完整了：  
+  
+- 每日访问量  
+- 热门文章  
+- 访问来源等  
+![Umami展示](https://picbed.xiaozhangya.xin/picbed/20250727165253723.png) 
+<Warning>  
+还尝试接入 token 获取实时浏览量，用异步方式加载失败，服务端渲染也不理想，暂时搁置（以后再研究）。  
+</Warning>  
+  
+---  
+  
+## 🔍 11. 微软 Clarity：深入了解用户行为  
+  
+在有了 Umami 的基础统计后，我开始想要更深入地了解用户在网站上的具体行为。  
+  
+<Success>  
+发现了微软的 Clarity 工具，提供热力图、用户录屏、点击分析等功能，完全免费！配合 Umami 使用，数据分析更全面。  
+</Success>  
+---  
+<Collapse title="Clarity vs Umami 对比">  
+- **Umami**：注重隐私保护，提供基础的访问统计  
+- **Clarity**：提供详细的用户行为分析，包括热力图和会话录制  
+- **组合使用**：两者互补，既保护隐私又获得深度洞察  
+</Collapse>  
+![Clarity展示](https://picbed.xiaozhangya.xin/picbed/20250727165721627.png)
+---  
+  
+## 🧭 12. 搭建导航页  
+  
+把常用网站整理成卡片组件样式，每次开博客就能快速进入常用页面，整洁又实用！ 
+![导航页示例](https://picbed.xiaozhangya.xin/picbed/20250727164646504.png) 
+  
+---  
+  
+## 🎉 最后的话
+
+也许在别人眼里，这些折腾显得 **“麻烦”“没必要”**，  
+但我始终相信：
+
+> **成长、眼界的拓宽，正是从一次次主动探索中，一点点积累起来的。**
+
+---
+
+💡 **生活嘛，总得做些自己真正感兴趣的事吧？**  
+只要你热爱，它就值得你投入。  
+**拥有一个属于自己的小世界，也挺酷的。**    
+
+从一开始的**一窍不通**,到如今能：
+- 搭博客  
+- 配评论系统  
+- 折腾 Cloudflare 和图床  
+- 用 Git 管理项目  
+- 甚至亲手改写前端页面
+
+哪怕是 **现学现用、边查边做、解决不了就问 AI**，  
+这个 **“从零到一”** 的过程，  
+就是最让人上头、也最有成就感的地方。
+
+很多个夜晚，我都一搞就到天亮，  
+**完全沉浸在专注与创造的喜悦中。**  
+那种满足感，是其他事情难以带来的。
+
+### 🌼🍶 欲买桂花同载酒，终不似，少年游。
+年少的轻狂与热爱，终究会被时间温柔收起，  
+但只要我们还在为热爱的事投入时间，  
+那份“少年气”，就从未真正离开过。
+
+---
+
+### ❤️ 最后，
+
+感谢那个愿意折腾、肯深夜啃文档的自己，  
+也希望看到这篇文章的你，  
+也能勇敢开启，属于你的探索之旅。✨
+
+  
+<Success>想折腾？那就现在开始吧。你会发现，这条路其实很有趣。</Success>

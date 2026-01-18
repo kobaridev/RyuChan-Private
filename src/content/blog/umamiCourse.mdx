@@ -1,0 +1,180 @@
+---
+title: "🚀 Umami + Neon + Vercel：免费搭建隐私友好的自己的Umami后端网站分析系统"  
+description: "详细教程：使用 Neon PostgreSQL 数据库和 Vercel 部署 Umami 网站分析工具，实现隐私优先的访问统计"  
+pubDate: "Aug 08 2025"  
+image: "https://img.xiaozhangya.xin/file/post/VaE37pbT.jpg" 
+categories:  
+  - Course  
+tags: 
+  - Umami  
+  - Vercel
+  - Neon
+  - PostgreSQL
+  - 网站分析 
+badge: Umami后端
+---
+
+import Info from "../../components/mdx/Info.astro"; 
+import Warning from "../../components/mdx/Warning.astro"; 
+import Success from "../../components/mdx/Success.astro"; 
+import Collapse from "../../components/mdx/Collapse.astro"; 
+import LinkCard from "../../components/mdx/LinkCard.astro"; 
+import Kbd from "../../components/mdx/Kbd.astro"; 
+
+## 📝 一、前提条件 
+
+**前提准备：** 
+- ✅ 一个 [**_GitHub_**](https://github.com/) 账号（用于 fork & 部署） 
+- ✅ 一个 [**_Vercel_**](https://vercel.com/) 账号（免费可用） 
+- ✅ 一个 [**_Neon_**](https://neon.tech/) 账号（免费 PostgreSQL 数据库） 
+- ✅ 基础 **Node.js / Git** 操作知识（非强制） 
+
+## 🗄️ 二、什么是 Neon？ 
+
+<LinkCard 
+ title="Neon" 
+ desc="现代化的无服务器 PostgreSQL 数据库平台" 
+ url="https://neon.tech/" 
+ img="https://neon.tech/favicon.ico" 
+/> 
+
+<Info> 
+Neon 是一个现代化的 PostgreSQL 数据库服务，提供无服务器架构、自动扩缩容和分支功能，非常适合现代 Web 应用。 
+</Info> 
+
+## 🧩 三、什么是 Umami？ 
+
+<LinkCard 
+ title="Umami" 
+ desc="轻量级、隐私优先的网站分析工具" 
+ url="https://github.com/umami-software/umami" 
+ img="https://img.xiaozhangya.xin/file/Logo/1753850918996_umami.png" 
+/> 
+
+**Umami是一个轻量级、隐私优先的网站分析工具：**
+
+- 🔍 实时访问分析 
+- 🌐 支持多个网站 
+- 📊 自定义事件追踪 
+- 💰 免费部署 
+- 🍪 不依赖 cookie 
+
+---
+
+## 🛠️ 四、在 Neon 上部署 PostgreSQL 数据库 
+
+<Collapse title="详细步骤展开"> 
+
+
+1. 打开 [https://neon.tech/](https://neon.tech/) 并注册登录 
+
+ 
+
+2. 创建新项目，选择合适的区域 
+
+ 
+
+3. 获取数据库连接信息 
+
+
+![umami1.png](https://img.xiaozhangya.xin/file/umami/O916LFpF.png) 
+
+![umami2.png](https://img.xiaozhangya.xin/file/umami/tn4ZR3KH.png) 
+
+</Collapse> 
+
+<Success> 
+Neon 提供免费的 PostgreSQL 数据库，非常适合小型项目使用！ 
+</Success> 
+
+---
+
+## 🚀 五、在 Vercel 上部署 Umami 
+
+### 1. Fork 仓库 
+
+前往 [**_umami 仓库_**](https://github.com/umami-software/umami)，点击 **Fork**。 
+
+### 2. 在 Vercel 导入仓库 
+
+
+1. 登录 Vercel，点击 **New Project** → **Import Git Repository** 
+
+ 
+
+2. 选择你 Fork 的 `umami` 仓库 
+
+ 
+
+3. 设置环境变量（Environment Variables）： 
+
+
+```bash 
+HASH_SALT=任意字符串（用于密码加盐，建议随机生成） 
+DATABASE_TYPE=postgresql 
+DATABASE_URL=postgresql://<user>:<password>@<host>:<port>/umami
+```
+
+> ⚠ 将 `<user>` `<password>` `<host>` `<port>` 替换为 Neon 提供的连接信息
+
+4. 点击 **Deploy** 部署。
+
+------
+
+## ✅ 六、访问 Umami 后台
+
+- 打开部署成功后的地址，例如：
+
+  ```
+  https://umami-yourproject.vercel.app
+  ```
+
+- 默认管理员账号：
+
+  ```
+  用户名：admin
+  密码：umami
+  ```
+
+  > 登录后务必修改默认密码。
+  
+  ![umami3.png](https://img.xiaozhangya.xin/file/umami/3rNFz35P.png)
+  
+  ![umami4.png](https://img.xiaozhangya.xin/file/umami/Q5HQ620E.png)
+
+------
+
+## 📦 七、在网站中嵌入统计代码
+
+在你的网站 `<head>` 或 `</body>` 前插入以下代码：
+
+```html
+<script defer
+  src="https://umami-yourproject.vercel.app/script.js"
+  data-website-id="你的网站ID"
+></script>
+```
+
+- `data-website-id`：在 Umami 后台“添加网站”时会生成一个 UUID
+- 支持多个站点，每个站点生成独立的 ID
+
+------
+
+## 📊 八、功能预览
+
+![umami5.png](https://img.xiaozhangya.xin/file/umami/d0scu1Tz.png)
+
+**Umami 提供丰富的分析功能：**
+
+- 📈 实时访问统计
+- 📄 页面访问量、跳出率、平均停留时间
+- 🌍 访客来源、设备、浏览器、操作系统
+- 🎯 自定义事件追踪（如点击按钮、提交表单）
+---
+
+## 📚 九、参考资料
+
+- Umami 文档：https://umami.is/docs
+- GitHub 仓库：https://github.com/umami-software/umami
+- Neon 官网：https://neon.tech/
+- Vercel 官网：https://vercel.com/

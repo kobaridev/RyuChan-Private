@@ -1,0 +1,213 @@
+---
+title: "WordPress动态网站托管在InfinityFree平台"  
+description: "详细介绍如何在InfinityFree免费主机平台部署WordPress网站，并使用EdgeOne CDN进行加速优化的完整教程"  
+pubDate: "2025-08-04"  
+image: https://img.xiaozhangya.xin/file/InfinityCourse/DHFNATEt.jpg  
+categories:  
+  - Course   
+tags:  
+  - WordPress  
+  - InfinityFree  
+  - EdgeOne  
+  - CDN  
+  - 免费主机
+badge: InfinityFree  
+---
+  
+import Info from "../../components/mdx/Info.astro";  
+import Warning from "../../components/mdx/Warning.astro";  
+import Success from "../../components/mdx/Success.astro";  
+import Collapse from "../../components/mdx/Collapse.astro";  
+import LinkCard from "../../components/mdx/LinkCard.astro";  
+  
+## 1、前期准备  
+  
+在开始部署之前，您需要准备以下资源：  
+  
+- **EdgeOne CDN账号**（可选，用于网站加速。如使用InfinityFree提供的免费域名，国内访问速度较慢）  
+- **InfinityFree账号**（免费主机服务商）  
+- **域名**（可选，也可使用InfinityFree平台提供的免费域名）  
+  
+<Warning>  
+使用免费域名虽然成本为零，但在国内访问速度和稳定性方面可能存在限制。建议有条件的用户购买独立域名以获得更好的用户体验。  
+</Warning>  
+  
+## 2、平台介绍  
+  
+### InfinityFree平台介绍  
+  
+<LinkCard  
+  title="InfinityFree"  
+  desc="提供免费PHP主机服务，支持MySQL数据库，适合WordPress等动态网站部署"  
+  url="https://www.infinityfree.com/"  
+  img="https://img.xiaozhangya.xin/file/Logo/1754280946361_InfinityFree.png"  
+/>  
+  
+InfinityFree 是一个知名的免费虚拟主机服务商，提供以下特性：
+- 约 5 GB 磁盘空间 和 大额度流量（受每日访问次数和资源使用限制）
+- 支持 PHP 8.x 和 MySQL 数据库
+- 免费 SSL 证书（支持 Let's Encrypt）
+- 自带 VistaPanel 控制面板（类似 cPanel）
+- 支持绑定 自定义域名 和创建子域名
+
+### EdgeOne介绍  
+  
+<LinkCard  
+  title="EdgeOne"  
+  desc="腾讯云提供的边缘计算和CDN加速服务"  
+  url="https://edgeone.ai"  
+  img="/image/icons/edgeone.png"  
+/>  
+  
+EdgeOne是腾讯云的边缘计算平台，主要优势：  
+  
+- 针对中国大陆网络环境优化  
+- 智能路由和加速  
+- DDoS防护和安全防护  
+- 支持动态和静态内容加速  
+  
+## 3、EdgeOne账号注册  
+  
+<Collapse title="EdgeOne注册详细步骤">  
+  
+1. 访问 [EdgeOne官网](https://edgeone.ai/)  
+2. 点击"立即注册"按钮  
+3. 填写手机号码并获取验证码  
+4. 设置登录密码  
+5. 完成实名认证（企业或个人）  
+6. 激活账号并登录控制台  
+  
+</Collapse>  
+  
+![EdgeOne注册界面](https://img.xiaozhangya.xin/file/InfinityCourse/b2q9Z77p.png)  
+  
+<Info>  
+EdgeOne目前不提供免费额度，但最近有活动可以获取免费套餐。访问 [**_活动网址_**](https://edgeone.ai/get-free-plan?from=marketing_banner) 进行测速分享可以获得两个免费套餐。  
+</Info>  
+  
+## 4、InfinityFree账号注册  
+  
+<Collapse title="InfinityFree注册详细步骤">  
+  
+1. 访问 [InfinityFree官网](https://infinityfree.net)  
+2. 点击"Create Account"  
+3. 填写邮箱地址和密码  
+4. 验证邮箱（检查垃圾邮件文件夹）  
+5. 登录客户端面板  
+6. 创建新的主机账户  
+  
+</Collapse>  
+  
+![InfinityFree注册界面](https://img.xiaozhangya.xin/file/InfinityCourse/QnvMuom3.png)  
+  
+<Success>  
+注册成功后，您将获得一个免费的子域名，格式通常为：yourusername.infinityfreeapp.com  
+</Success>  
+  
+## 5、InfinityFree详细安装WordPress教程  
+  
+<Collapse title="WordPress安装步骤图解">  
+  
+### 步骤1：创建主机账户  
+![创建主机账户](https://img.xiaozhangya.xin/file/InfinityCourse/vT5Snazk.png)  
+  
+### 步骤2：选择计划  
+![选择计划](https://img.xiaozhangya.xin/file/InfinityCourse/XsUPX34t.png)  
+  
+### 步骤3：选择域名  
+![选择域名](https://img.xiaozhangya.xin/file/InfinityCourse/gWkIC4td.png)  
+  
+### 步骤4：打开管理界面  
+![打开管理界面](https://img.xiaozhangya.xin/file/InfinityCourse/TrSQeUGj.png)  
+  
+### 步骤5：访问控制面板  
+![访问控制面板](https://img.xiaozhangya.xin/file/InfinityCourse/qFI4aaLK.png)  
+  
+### 步骤6：安装WordPress  
+![安装WordPress](https://img.xiaozhangya.xin/file/InfinityCourse/5UttNXlO.png)  
+  
+### 步骤7：配置WordPress  
+![配置WordPress](https://img.xiaozhangya.xin/file/InfinityCourse/uVRMXHNZ.png)  
+![完成安装](https://img.xiaozhangya.xin/file/InfinityCourse/dYhYYAgn.png)  
+  
+</Collapse>  
+  
+### 验证安装结果  
+  
+安装完成后，使用平台提供的域名访问您的网站：  
+  
+![WordPress前台界面](https://img.xiaozhangya.xin/file/InfinityCourse/5ErnBN4N.png)  
+  
+要访问后台管理界面，在域名后添加 `/wp-admin`，使用管理员账户登录：  
+  
+![WordPress后台界面](https://img.xiaozhangya.xin/file/InfinityCourse/qT1cF4jZ.png)  
+  
+<Warning>  
+如果您已经在其他地方部署过WordPress，可以将主题文件和数据库文件迁移过来。  
+</Warning>  
+  
+## 6、配置EdgeOne CDN加速  
+  
+<Warning>  
+EdgeOne不提供免费使用，但最近有活动可以获取免费套餐。访问 [**_活动网址_**](https://edgeone.ai/get-free-plan?from=marketing_banner) 进行测速分享可以获得两个免费套餐。  
+</Warning>  
+  
+### 6.1 添加站点  
+  
+<Info>  
+需要使用自己购买的一级域名，否则无法添加站点。目前免费域名无法添加，EdgeOne需要验证域名归属权。  
+</Info>  
+  
+1. 登录EdgeOne控制台  
+2. 点击"添加站点"  
+3. 输入您的域名  
+4. 选择获得的免费套餐  
+5. 完成站点添加  
+  
+### 6.2 域名配置流程  
+  
+<Collapse title="EdgeOne域名配置详细步骤">  
+  
+#### 步骤1：添加域名  
+![添加域名](https://img.xiaozhangya.xin/file/InfinityCourse/sUUArBRX.png)  
+  
+#### 步骤2：DNS配置  
+![DNS配置](https://img.xiaozhangya.xin/file/InfinityCourse/2xvvbStO.png)  
+  
+#### 步骤3：HTTPS配置  
+![HTTPS配置](https://img.xiaozhangya.xin/file/InfinityCourse/WKv1wMt6.png)  
+  
+</Collapse>  
+  
+### 6.3 WordPress站点地址配置  
+  
+在WordPress后台管理界面，将站点地址和WordPress地址改为您的自定义域名：  
+  
+![WordPress地址配置](https://img.xiaozhangya.xin/file/InfinityCourse/dnYWuL12.png)  
+  
+### 6.4 加速效果对比  
+  
+配置EdgeOne CDN前后的访问速度对比：  
+  
+**配置前（直接访问）：**  
+![配置前速度](https://img.xiaozhangya.xin/file/InfinityCourse/dP4BnVHe.png)  
+  
+**配置后（CDN加速）：**  
+![配置后速度](https://img.xiaozhangya.xin/file/InfinityCourse/7FG1LSUl.png)  
+  
+<Success>  
+配置完成后，您的WordPress网站将通过EdgeOne CDN进行全球加速，显著提升访问速度和用户体验！  
+</Success>  
+  
+## 总结  
+  
+通过本教程，您已经成功完成：  
+  
+1. ✅ 注册EdgeOne和InfinityFree账号  
+2. ✅ 在免费主机上部署WordPress  
+3. ✅ 配置CDN加速服务  
+4. ✅ 优化网站性能和安全性  
+  
+<Info>  
+建议定期备份网站数据，监控网站性能，并根据实际需求调整CDN配置以获得最佳效果。  
+</Info>

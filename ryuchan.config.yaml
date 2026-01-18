@@ -18,8 +18,8 @@ site:
     height: 60vh
     images:
       - https://tc.alcy.cc/q/20250908/b2d656670551cb9ea6eda7b46b6c8ec0.webp
-  icp: 萌ICP备20261117号
-  icp_link: https://icp.gov.moe/?keyword=20261117
+  icp: '萌ICP备20265525号'
+  icp_link: 'https://icp.gov.moe/?keyword=20265525'
   pages:
     home:
       title: RyuChan's Blog
@@ -102,16 +102,16 @@ anime:
     listId: '8556173'
 github:
   owner: kobaridev
-  repo: RyuChan
+  repo: RyuChan-Private
   branch: main
   appId: '在部署端配置环境变量'
   encryptKey: wudishiduomejimo
 umami:
   enable: true
-  baseUrl: https://umami.131714.xyz
-  shareId: jToXL5Z3hnA1gKUw
-  websiteId: 3f9afc6c-f0bd-4734-be15-6d053960d34d
-  timezone: Asia/Shanghai
+  baseUrl: "https://umami.131714.xyz"
+  shareId: "d62IQPHZDlNtHfC6"
+  websiteId: "01923022-a812-4369-b896-862fa37d32b1"
+  timezone: "Asia/Shanghai"
 user:
   name: KoBariDev
   description: Ciallo～(∠・ω<)⌒★
