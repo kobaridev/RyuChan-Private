@@ -1,11 +1,13 @@
 ---
-title: "Using MDX"
-description: "Lorem ipsum dolor sit amet"
-pubDate: "Jul 02 2022"
+title: Using MDX
+description: Lorem ipsum dolor sit amet
+pubDate: 2022-07-02T00:00
 image: /image/image1.jpg
+draft: false
+tags: []
 categories:
   - Documentation
-badge: MDX
+badge: MDXTest
 ---
 
 This theme comes with the [@astrojs/mdx](https://docs.astro.build/en/guides/integrations-guide/mdx/) integration installed and configured in your `astro.config.mjs` config file. If you prefer not to use MDX, you can disable support by removing the integration from your config file.
