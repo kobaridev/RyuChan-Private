@@ -44,6 +44,17 @@ export function MetaSection({ delay = 0, categories = [] }: MetaSectionProps) {
 					onChange={e => updateForm({ badge: e.target.value })}
 				/>
 
+				<div className="text-xs font-medium text-base-content/70">文件格式</div>
+				<CustomSelect
+					value={form.fileFormat}
+					onChange={value => updateForm({ fileFormat: value as 'md' | 'mdx' })}
+					options={[
+						{ value: 'md', label: 'Markdown (.md)' },
+						{ value: 'mdx', label: 'MDX (.mdx)' }
+					]}
+					placeholder="选择文件格式"
+				/>
+
 				<div className="text-xs font-medium text-base-content/70">标签</div>
 				<TagInput tags={form.tags} onChange={tags => updateForm({ tags })} />
 

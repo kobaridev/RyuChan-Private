@@ -108,7 +108,7 @@ export async function pushBlog(params: PushBlogParams): Promise<void> {
         toast.loading('📝 正在生成文章内容...', { id: toastId })
         const mdBlob = await createBlob(token, GITHUB_CONFIG.OWNER, GITHUB_CONFIG.REPO, toBase64Utf8(finalContent), 'base64')
         treeItems.push({
-            path: `src/content/blog/${form.slug}.md`,
+            path: `src/content/blog/${form.slug}.${form.fileFormat}`,
             mode: '100644',
             type: 'blob',
             sha: mdBlob.sha
@@ -123,14 +123,14 @@ export async function pushBlog(params: PushBlogParams): Promise<void> {
         toast.loading('🔄 正在同步远程分支...', { id: toastId })
         await updateRef(token, GITHUB_CONFIG.OWNER, GITHUB_CONFIG.REPO, `heads/${GITHUB_CONFIG.BRANCH}`, commitData.sha)
 
-        toast.success(`🎉 ${mode === 'edit' ? '更新' : '发布'}成功！更改已推送到仓库`, { 
+        toast.success(`🎉 ${mode === 'edit' ? '更新' : '发布'}成功！更改已推送到仓库`, {
             id: toastId,
             duration: 5000,
             description: 'GitHub Actions 将会自动部署您的站点，请稍候。'
         })
     } catch (error: any) {
         console.error(error)
-        toast.error('❌ 操作失败', { 
+        toast.error('❌ 操作失败', {
             id: toastId,
             description: error.message || '发生了未知错误，请重试'
         })

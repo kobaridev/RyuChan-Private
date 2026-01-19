@@ -45,7 +45,8 @@ const initialForm: PublishForm = {
 	date: formatDateTimeLocal(),
 	summary: '',
 	hidden: false,
-	categories: []
+	categories: [],
+	fileFormat: 'md' // 默认使用md格式
 }
 
 export const useWriteStore = create<WriteStore>((set, get) => ({
