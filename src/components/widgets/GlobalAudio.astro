@@ -697,27 +697,52 @@ const initialSong = musicList[0] || {};
         
         async loadLyrics() {
              try {
-                // 检查是否为纯音乐（没有歌词）
                 const currentSong = this.playlist[this.currentIndex];
-                if (!currentSong.lrc) {
+                
+                if(!this.lrcUrl) {
+                    // 如果没有生成lrcUrl，则认为是纯音乐
                     if(this.lyricsContainer) {
                         this.lyricsContainer.innerHTML = '<p class="text-neu-text-muted text-sm mt-20">纯音乐，请您欣赏</p>';
                     }
                     return;
                 }
                 
-                if(!this.lrcUrl) return;
+                // 尝试加载歌词
                 const response = await fetch(this.lrcUrl);
                 if (response.ok) {
                     const text = await response.text();
                     this.lyrics = this.parseLyrics(text);
+                    // 如果解析后歌词为空，且没有显式设置lrc属性，则认为是纯音乐
+                    if (this.lyrics.length === 0 && !currentSong.lrc) {
+                        if(this.lyricsContainer) {
+                            this.lyricsContainer.innerHTML = '<p class="text-neu-text-muted text-sm mt-20">纯音乐，请您欣赏</p>';
+                        }
+                        return;
+                    }
                     this.renderLyrics();
                 } else {
-                     if(this.lyricsContainer) this.lyricsContainer.innerHTML = '<p class="text-neu-text-muted text-sm mt-20">Lyrics fetch failed</p>';
+                    // 如果加载失败，且没有显式设置lrc属性，则认为是纯音乐
+                    if (!currentSong.lrc) {
+                        if(this.lyricsContainer) {
+                            this.lyricsContainer.innerHTML = '<p class="text-neu-text-muted text-sm mt-20">纯音乐，请您欣赏</p>';
+                        }
+                    } else {
+                        // 如果有显式设置lrc属性但加载失败，显示加载失败提示
+                        if(this.lyricsContainer) this.lyricsContainer.innerHTML = '<p class="text-neu-text-muted text-sm mt-20">Lyrics fetch failed</p>';
+                    }
                 }
             } catch (e) {
                 // console.error("Lyrics load failed", e);
-                 if(this.lyricsContainer) this.lyricsContainer.innerHTML = '<p class="text-neu-text-muted text-sm mt-20">No lyrics available</p>';
+                const currentSong = this.playlist[this.currentIndex];
+                // 如果加载出错，且没有显式设置lrc属性，则认为是纯音乐
+                if (!currentSong.lrc) {
+                    if(this.lyricsContainer) {
+                        this.lyricsContainer.innerHTML = '<p class="text-neu-text-muted text-sm mt-20">纯音乐，请您欣赏</p>';
+                    }
+                } else {
+                    // 如果有显式设置lrc属性但加载出错，显示没有歌词提示
+                    if(this.lyricsContainer) this.lyricsContainer.innerHTML = '<p class="text-neu-text-muted text-sm mt-20">No lyrics available</p>';
+                }
             }
         }
         
