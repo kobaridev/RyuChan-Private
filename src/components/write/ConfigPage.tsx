@@ -197,9 +197,21 @@ export function ConfigPage() {
                 for (const [target, { file }] of Object.entries(pendingImages)) {
                     toast.loading(`📸 正在处理图片 (${idx}/${totalImages}): ${file.name}...`, { id: toastId })
                     const base64 = await fileToBase64NoPrefix(file)
-                    const ext = file.name.split('.').pop() || 'png'
-                    const filename = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`
-                    const path = `public/images/uploads/${filename}`
+                    let path, filename, publicPath
+
+                    // 处理favicon和profile.png，直接覆盖原文件
+                    if (target === 'site.favicon') {
+                        path = 'public/favicon.ico'
+                        filename = 'favicon.ico'
+                        publicPath = '/favicon.ico'
+                    } else if (target === 'user.avatar') {
+                        path = 'public/profile.png'
+                        filename = 'profile.png'
+                        publicPath = '/profile.png'
+                    } else {
+                        // 不处理其他图片类型
+                        continue
+                    }
 
                     // Create Blob
                     const { sha } = await createBlob(token, GITHUB_CONFIG.OWNER, GITHUB_CONFIG.REPO, base64, 'base64')
@@ -209,8 +221,6 @@ export function ConfigPage() {
                         type: 'blob',
                         sha: sha
                     })
-
-                    const publicPath = `/images/uploads/${filename}`
 
                     // Update config with new path
                     if (configToUpdate) {
@@ -431,8 +441,8 @@ export function ConfigPage() {
                         {mode === 'code' ? (
                             <textarea
                                 className="h-[600px] w-full rounded-xl border border-base-300 bg-base-100 p-6 font-mono text-sm focus:border-primary focus:outline-none resize-none shadow-inner"
-                                    value={configContent}
-                                    onChange={(e) => { setConfigContent(e.target.value); setIsDirty(true) }}
+                                value={configContent}
+                                onChange={(e) => { setConfigContent(e.target.value); setIsDirty(true) }}
                                 spellCheck={false}
                             />
                         ) : (

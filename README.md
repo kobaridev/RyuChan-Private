@@ -272,6 +272,7 @@ menu:
 - **Frosti**: 项目的核心基础，由 [EveSunMaple](https://github.com/EveSunMaple/Frosti) 开发
 - **Yukina**: 部分设计巧思参考自 [WhitePaper233](https://github.com/WhitePaper233/yukina) 开发的模板
 - **Mizuki**: 部分功能实现借鉴了 [matsuzaka-yuki](https://github.com/matsuzaka-yuki/Mizuki) 开发的模板
+- **2025-blog-public**: 在线编辑文章，配置站点等功能借鉴了 [yysuni](https://github.com/YYsuni/2025-blog-public) 开发的项目
 
 感谢所有开源社区的贡献者们！
 
