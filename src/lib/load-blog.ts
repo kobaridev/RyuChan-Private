@@ -50,6 +50,9 @@ export async function loadBlog(slug: string): Promise<{ form: PublishForm, cover
 
     const { data, content: md } = parseFrontmatter(content)
 
+    // 根据文件路径确定文件格式
+    const fileFormat = path.endsWith('.mdx') ? 'mdx' : 'md';
+
     const form: PublishForm = {
         slug,
         title: data.title || '',
@@ -59,7 +62,8 @@ export async function loadBlog(slug: string): Promise<{ form: PublishForm, cover
         summary: data.description || '',
         hidden: data.draft || false,
         categories: data.categories || [],
-        badge: data.badge || ''
+        badge: data.badge || '',
+        fileFormat
     }
 
     return { form, cover: data.image }

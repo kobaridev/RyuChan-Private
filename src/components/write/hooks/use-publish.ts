@@ -7,7 +7,7 @@ import { useWriteStore } from '../stores/write-store'
 import { useAuthStore } from './use-auth'
 
 export function usePublish() {
-	const { loading, setLoading, form, cover, images, mode, originalSlug } = useWriteStore()
+	const { loading, setLoading, form, cover, images, mode, originalSlug, originalFileFormat } = useWriteStore()
 	const { isAuth, setPrivateKey } = useAuthStore()
 
 	const onChoosePrivateKey = useCallback(
@@ -35,7 +35,8 @@ export function usePublish() {
 				cover,
 				images,
 				mode,
-				originalSlug
+				originalSlug,
+				originalFileFormat
 			})
 		} catch (err: any) {
 			console.error(err)

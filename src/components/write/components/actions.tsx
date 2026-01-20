@@ -17,10 +17,10 @@ export function WriteActions() {
 		if (!isAuth) {
 			keyInputRef.current?.click()
 		} else {
-			const confirmMsg = mode === 'edit' 
-				? `确定更新《${form.title}》吗？这将直接推送到 GitHub 仓库。` 
+			const confirmMsg = mode === 'edit'
+				? `确定更新《${form.title}》吗？这将直接推送到 GitHub 仓库。`
 				: `确定发布《${form.title}》吗？这将直接推送到 GitHub 仓库。`
-			
+
 			if (window.confirm(confirmMsg)) {
 				onPublish()
 			}
@@ -78,9 +78,11 @@ export function WriteActions() {
 	return (
 		<>
 			{loading && (
-				<div className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-white/80 backdrop-blur-sm dark:bg-black/80">
-					<div className="h-10 w-10 animate-spin rounded-full border-4 border-blue-500 border-t-transparent"></div>
-					<div className="mt-4 text-lg font-medium text-zinc-900 dark:text-zinc-100">处理中...</div>
+				<div className="fixed inset-0 z-50 flex items-center justify-center bg-white/80 backdrop-blur-sm dark:bg-black/80">
+					<div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg flex items-center gap-3">
+						<div className="h-8 w-8 animate-spin rounded-full border-4 border-blue-500 border-t-transparent"></div>
+						<div className="text-base font-medium text-zinc-900 dark:text-zinc-100">处理中...</div>
+					</div>
 				</div>
 			)}
 

@@ -6,7 +6,8 @@ import { getCollection } from "astro:content";
  * @returns 博客文章集合
  */
 export async function getAllPosts(): Promise<CollectionEntry<"blog">[]> {
-  const allBlogPosts = await getCollection("blog");
+  // 强制重新加载所有博客文章，确保获取最新的badge信息
+  const allBlogPosts = await getCollection("blog", () => true);
 
   // 在生产环境中过滤掉草稿文章
   return import.meta.env.PROD
@@ -152,6 +153,9 @@ export async function getPostsWithStats(posts: CollectionEntry<"blog">[]): Promi
       const { remarkPluginFrontmatter } = await blog.render();
       return {
         ...blog,
+        data: {
+          ...blog.data,
+        },
         remarkPluginFrontmatter: {
           readingTime: remarkPluginFrontmatter.readingTime,
           totalCharCount: remarkPluginFrontmatter.totalCharCount,

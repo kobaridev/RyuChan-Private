@@ -174,6 +174,21 @@ export default function ArchiveList({ posts, labels, dateFormat }: ArchiveListPr
                         {editMode ? (
                             <>
                                 <button
+                                    onClick={() => {
+                                        // 全选/取消全选逻辑
+                                        const allSlugs = new Set(posts.map(p => p.slug));
+                                        if (selectedSlugs.size === allSlugs.size) {
+                                            setSelectedSlugs(new Set());
+                                        } else {
+                                            setSelectedSlugs(allSlugs);
+                                        }
+                                    }}
+                                    disabled={deleting || posts.length === 0}
+                                    className="btn btn-outline btn-sm gap-2"
+                                >
+                                    <span>{selectedSlugs.size === posts.length ? '取消全选' : '全选'}</span>
+                                </button>
+                                <button
                                     onClick={handleBatchDelete}
                                     disabled={deleting || selectedSlugs.size === 0}
                                     className="btn btn-error btn-sm gap-2"
