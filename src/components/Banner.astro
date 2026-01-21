@@ -1,5 +1,6 @@
 ---
 import {
+  BANNER_CONFIG,
   BANNER_HEIGHT,
   SITE_PAGES,
   TYPEWRITER_TEXTS,
@@ -50,7 +51,7 @@ const hasSubtitle = displaySubtitle !== undefined && displaySubtitle !== "";
 const bannerHeight = BANNER_HEIGHT;
 
 // 随机图 API 配置
-const RANDOM_API_URL = "https://t.alcy.cc/lai";
+const RANDOM_API_URL = BANNER_CONFIG?.randomUrl;
 // 首屏图片：服务端生成一个随机种子，确保每次刷新（或构建）时有一张初始图
 const initialRandomImage = `${RANDOM_API_URL}?t=${Date.now()}`;
 ---

@@ -13,7 +13,7 @@ site:
     pageSize: 8
   banner:
     enableRandom: true
-    randomUrl: https://eopfapi.acofork.com/pic?img=ua
+    randomUrl: https://t.alcy.cc/ycy
     randomCount: 5
     height: 60vh
     images:
