@@ -30,7 +30,7 @@ const SOCIAL_PRESETS = [
     { label: 'WeChat', value: 'ri:wechat-fill' },
     { label: 'Douyin', value: 'ri:tiktok-line' },
     { label: 'RSS', value: 'ri:rss-fill' },
-    { label: 'Weibo', value: 'ri-weibo-fill' },
+    { label: 'Weibo', value: 'ri:weibo-fill' },
     { label: 'Zhihu', value: 'ri:zhihu-line' },
     { label: 'Other', value: 'ri:link' }
 ]
