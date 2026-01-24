@@ -132,10 +132,6 @@ user:
         ariaLabel: Douyin
         title: Douyin
         svg: ri:tiktok-line
-      - href: https://demo.131714.xyz/rss.xml
-        ariaLabel: RSS
-        title: RSS
-        svg: ri:rss-fill
       - href: https://weibo.com/u/7579913510
         title: Weibo
         ariaLabel: Weibo
