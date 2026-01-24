@@ -127,10 +127,11 @@ user:
         ariaLabel: BiliBili
         title: BiliBili
         svg: ri:bilibili-line
-      - href: https://x.com/xzz_ya
-        ariaLabel: Twitter (X)
-        title: Twitter (X)
-        svg: ri:twitter-line
+      - href: >-
+          https://www.douyin.com/user/MS4wLjABAAAAeO0sqJYUgh1a26GkVPtS2yv_IOODjeqvtl4KSjvsntg?from_tab_name=main
+        ariaLabel: Douyin
+        title: Douyin
+        svg: ri:tiktok-line
       - href: https://demo.131714.xyz/rss.xml
         ariaLabel: RSS
         title: RSS
