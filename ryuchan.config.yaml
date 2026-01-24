@@ -132,9 +132,9 @@ user:
         title: Twitter (X)
         svg: ri:twitter-line
       - href: https://demo.131714.xyz/rss.xml
-        ariaLabel: Subscribe via Folo
-        title: RSS
-        svg: ri:rss-fill
+        ariaLabel: Weibo
+        title: Weibo
+        svg: ri:weibo-line
   footer:
     social:
       - href: https://github.com/kobaridev
