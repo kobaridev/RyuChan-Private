@@ -9,15 +9,15 @@ tags:
 categories:
   - Documentation
 ---
-# 一、什么是 Git？
+## 一、什么是 Git？
 
 Git 是一个分布式版本控制工具，用于管理代码历史记录，并方便与他人协作开发。
 
 ------
 
-# 二、安装 Git
+## 二、安装 Git
 
-## 1. Windows 安装
+### 1. Windows 安装
 
 1. 打开官网：[Git](https://git-scm.com/)
 2. 下载 Windows 安装包
@@ -30,7 +30,7 @@ git --version
 
 ------
 
-# 三、创建并推送新仓库到 GitHub
+## 三、创建并推送新仓库到 GitHub
 
 ```cmd
 git init 
@@ -52,7 +52,7 @@ git push -u origin main
 
 ------
 
-# 四、推送已有本地仓库到 GitHub
+## 四、推送已有本地仓库到 GitHub
 
 如果你已经有本地项目，只需执行：
 
