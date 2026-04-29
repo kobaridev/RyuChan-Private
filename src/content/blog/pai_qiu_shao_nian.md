@@ -2,7 +2,7 @@
 title: "🏐 排球少年！！动画资源分享 🎬✨"
 description: "立志成为如“巨人之手”的高中排球选手，身材矮小的日向翔阳在中学时代成立排球队，却在首战中惨败给“球场之王”影山飞雄。高中时代二人意外成为队友，凭借“身高劣势+迅捷攻防”的奇想组合，带领烏野高中排球队逐步成长，挑战全国顶尖劲旅。"
 pubDate: "Jul 22 2025"
-image: https://img.xiaozhangya.xin/file/post/354nOPlq.webp
+image: https://img.131714.xyz/file/post/354nOPlq.webp
 categories:
   - Anime
 tags:
@@ -13,7 +13,7 @@ badge: 日漫
 
 # 🏐 **排球少年！！ _Haikyu!!_**
 
-![poster](https://img.xiaozhangya.xin/file/post/s9S70YU7.png)
+![poster](https://img.131714.xyz/file/post/s9S70YU7.png)
 
 ---
 

@@ -2,7 +2,7 @@
 title: "👻 怪奇物语剧集资源分享🎬✨"
 description: "位于 1980 年代的 Hawkins 小镇，一名少年 Will 突然失踪，引发了一连串超自然事件。神秘的实验、特殊能力的少女 Eleven 以及“颠倒世界”暗流涌动。孩子们与大人并肩作战，试图揭开阴谋、阻止灾难，同时面对青春成长的阵痛。"
 pubDate: "Jul 17 2025"
-image: https://picbed.xiaozhangya.xin/picbed/20250725113508612.png
+image: https://picbed.131714.xyz/picbed/20250725113508612.png
 categories:
   - TV
 tags:
@@ -14,8 +14,8 @@ badge: 美剧
 ---
 
 <div style="display:flex; gap:10px; flex-wrap:wrap; justify-content:center;">
-  <img src="https://picbed.xiaozhangya.xin/picbed/20250717231936846.png" alt="Steins;Gate Poster 1" style="width:49%; border-radius:8px;" />
-  <img src="https://picbed.xiaozhangya.xin/picbed/20250717232030810.png" alt="Steins;Gate Poster 2" style="width:49%; border-radius:8px;" />
+  <img src="https://picbed.131714.xyz/picbed/20250717231936846.png" alt="Steins;Gate Poster 1" style="width:49%; border-radius:8px;" />
+  <img src="https://picbed.131714.xyz/picbed/20250717232030810.png" alt="Steins;Gate Poster 2" style="width:49%; border-radius:8px;" />
 </div>
 
 

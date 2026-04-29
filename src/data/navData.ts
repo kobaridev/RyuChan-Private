@@ -32,7 +32,7 @@ export const NAV_DATA: NavCategory[] = [
              */
             {
                 name: "Umami",
-                avatar: "https://img.xiaozhangya.xin/file/Logo/1753850918996_umami.png",
+                avatar: "https://img.131714.xyz/file/Logo/1753850918996_umami.png",
                 description: "网站访问统计分析平台",
                 url: "https://us.umami.is/dashboard",
                 category: "统计分析",
@@ -40,7 +40,7 @@ export const NAV_DATA: NavCategory[] = [
             },
             {
                 name: "Vercel",
-                avatar: "https://img.xiaozhangya.xin/file/Logo/1753851435981_Vercel.png",
+                avatar: "https://img.131714.xyz/file/Logo/1753851435981_Vercel.png",
                 description: "现代化的前端部署平台",
                 url: "https://vercel.com/login?next=%2Fkobaridevs-projects",
                 category: "部署托管",
@@ -56,7 +56,7 @@ export const NAV_DATA: NavCategory[] = [
             },
             {
                 name: "Iconfont",
-                avatar: "https://img.xiaozhangya.xin/file/Logo/DEPF9Ovv.png",
+                avatar: "https://img.131714.xyz/file/Logo/DEPF9Ovv.png",
                 description: "阿里巴巴图标库",
                 url: "https://www.iconfont.cn/",
                 category: "图标设计",
@@ -72,7 +72,7 @@ export const NAV_DATA: NavCategory[] = [
             },
             {
                 name: "Clarity",
-                avatar: "https://picbed.xiaozhangya.xin/picbed/20250726225237829.png",
+                avatar: "https://picbed.131714.xyz/picbed/20250726225237829.png",
                 description: "微软的用户行为分析工具",
                 url: "https://clarity.microsoft.com/",
                 category: "用户分析",
@@ -86,7 +86,7 @@ export const NAV_DATA: NavCategory[] = [
         items: [
             {
                 name: "DigitalPlat",
-                avatar: "https://picbed.xiaozhangya.xin/picbed/20250726172053106.png",
+                avatar: "https://picbed.131714.xyz/picbed/20250726172053106.png",
                 description: "免费域名注册",
                 url: "https://dash.domain.digitalplat.org/panel/main",
                 category: "域名管理",
@@ -102,7 +102,7 @@ export const NAV_DATA: NavCategory[] = [
             },
             {
                 name: "EdgeOne",
-                avatar: "https://img.xiaozhangya.xin/file/Logo/cRfyZZ2A.png",
+                avatar: "https://img.131714.xyz/file/Logo/cRfyZZ2A.png",
                 description: "国内CDN和边缘计算服务",
                 url: "https://console.edgeone.cn/login",
                 category: "CDN服务",
@@ -110,7 +110,7 @@ export const NAV_DATA: NavCategory[] = [
             },
             {
                 name: "Spaceship",
-                avatar: "https://img.xiaozhangya.xin/file/Logo/1753850924810_Spaceship.png",
+                avatar: "https://img.131714.xyz/file/Logo/1753850924810_Spaceship.png",
                 description: "A domain odyssey",
                 url: "https://www.spaceship.com/",
                 category: "域名售卖",
@@ -134,7 +134,7 @@ export const NAV_DATA: NavCategory[] = [
             },
             {
                 name: "Akismet",
-                avatar: "https://img.xiaozhangya.xin/file/Logo/opkjgCvb.svg",
+                avatar: "https://img.131714.xyz/file/Logo/opkjgCvb.svg",
                 description: "保持评论区干净整洁的小助手",
                 url: "https://akismet.com/",
                 category: "评论服务",
@@ -150,7 +150,7 @@ export const NAV_DATA: NavCategory[] = [
             },
             {
                 name: "InfinityFree",
-                avatar: "https://img.xiaozhangya.xin/file/Logo/1754280946361_InfinityFree.png",
+                avatar: "https://img.131714.xyz/file/Logo/1754280946361_InfinityFree.png",
                 description: "免费托管WordPress和其他网站",
                 url: "https://www.infinityfree.com",
                 category: "免费主机",
@@ -164,7 +164,7 @@ export const NAV_DATA: NavCategory[] = [
         items: [
             {
                 name: "Wallhaven",
-                avatar: "https://picbed.xiaozhangya.xin/picbed/20250726182418838.png",
+                avatar: "https://picbed.131714.xyz/picbed/20250726182418838.png",
                 description: "高质量壁纸分享社区",
                 url: "https://wallhaven.cc/",
                 category: "壁纸资源",
@@ -172,7 +172,7 @@ export const NAV_DATA: NavCategory[] = [
             },
             {
                 name: "网盘资源社",
-                avatar: "https://img.xiaozhangya.xin/file/Logo/RwkDhIdV.png",
+                avatar: "https://img.131714.xyz/file/Logo/RwkDhIdV.png",
                 description: "网盘资源分享平台",
                 url: "https://www.wpzysq.com/",
                 category: "网盘资源",
@@ -197,7 +197,7 @@ export const NAV_DATA: NavCategory[] = [
         items: [
             {
                 name: "Astro",
-                avatar: "https://img.xiaozhangya.xin/file/Logo/HXADhsBn.png",
+                avatar: "https://img.131714.xyz/file/Logo/HXADhsBn.png",
                 description: "Astro是一个现代化的静态网站生成器",
                 url: "https://docs.astro.build",
                 category: "文档",
@@ -205,7 +205,7 @@ export const NAV_DATA: NavCategory[] = [
             },
             {
                 name: "Tailwind",
-                avatar: "https://img.xiaozhangya.xin/file/Logo/mrp0EiyB.png",
+                avatar: "https://img.131714.xyz/file/Logo/mrp0EiyB.png",
                 description: "Tailwind CSS是一个功能类优先的CSS框架",
                 url: "https://tailwindcss.com/docs",
                 category: "文档",
@@ -213,7 +213,7 @@ export const NAV_DATA: NavCategory[] = [
             },
             {
                 name: "DaisyUI",
-                avatar: "https://img.xiaozhangya.xin/file/Logo/WEl6nL3H.svg",
+                avatar: "https://img.131714.xyz/file/Logo/WEl6nL3H.svg",
                 description: "DaisyUI是一个基于Tailwind CSS的组件库",
                 url: "https://daisyui.com/components/",
                 category: "UI 框架",
@@ -221,7 +221,7 @@ export const NAV_DATA: NavCategory[] = [
             },
             {
                 name: "TypeScript",
-                avatar: "https://img.xiaozhangya.xin/file/Logo/FL3XpMDh.png",
+                avatar: "https://img.131714.xyz/file/Logo/FL3XpMDh.png",
                 description: "TypeScript是JavaScript的超集",
                 url: "https://www.typescriptlang.org/docs/handbook/intro.html",
                 category: "文档",

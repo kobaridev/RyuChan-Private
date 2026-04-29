@@ -2,7 +2,7 @@
 title: "Git使用教程"
 description: "git是一个分布式版本控制系统，广泛用于软件开发和其他版本控制任务。本文将介绍git的基本使用方法，包括安装、配置、常用命令等。"
 pubDate: "Jun 17 2025"
-image: https://img.xiaozhangya.xin/file/post/sxrxvgwH.jpg
+image: https://img.131714.xyz/file/post/sxrxvgwH.jpg
 categories:
   - Documentation
 tags:

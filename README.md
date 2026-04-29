@@ -5,7 +5,7 @@
 
 
 <div align="center">  
-<img alt="Ryuchan Logo" src="https://picbed.xiaozhangya.xin/blog/logo.png" width="280px">  
+<img alt="Ryuchan Logo" src="https://picbed.131714.xyz/blog/logo.png" width="280px">  
 </div>  
 
 
@@ -15,7 +15,7 @@
 
 ## 📷 预览  
 
-![preview](https://picbed.xiaozhangya.xin/blog/ryuchan_preview.png)  
+![preview](https://picbed.131714.xyz/blog/ryuchan_preview.png)  
 
 ## ✨ 核心亮点  
 
@@ -26,8 +26,8 @@
 - ✅ **🔐 GitHub集成** - 基于GitHub App的安全认证，所有变更直接提交到仓库，保持版本控制
 
 
-![preview](https://picbed.xiaozhangya.xin/blog/ryuchan_online_demo1.png)
-![preview](https://picbed.xiaozhangya.xin/blog/ryuchan_online_demo2.png)
+![preview](https://picbed.131714.xyz/blog/ryuchan_online_demo1.png)
+![preview](https://picbed.131714.xyz/blog/ryuchan_online_demo2.png)
 
 ### 🎨 优雅的设计与功能  
 
