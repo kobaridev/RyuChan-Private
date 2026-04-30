@@ -47,6 +47,11 @@ site:
     music:
       title: Cloud Music
       subtitle: 沉浸式享受音乐时光
+  meting:
+    server: netease
+    id: '17933567326'
+    br: '400'
+    trans: true
   menu:
     - id: home
       text: 首页
