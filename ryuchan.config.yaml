@@ -13,7 +13,7 @@ site:
     pageSize: 8
   banner:
     enableRandom: true
-    randomUrl: https://t.alcy.cc/ycy
+    randomUrl: https://img.131714.xyz/random?dir=Random&type=img
     randomCount: 5
     height: 60vh
     images:
