@@ -1,6 +1,6 @@
 site:
-  tab: RyuChan
-  title: RyuChan
+  tab: KoBariDev
+  title: KoBariDev
   description: 🌸 轻盈、优雅、纯净 —— 用文字与图片记录生活与创意
   language: zh
   favicon: /favicon.png
@@ -18,8 +18,8 @@ site:
     height: 60vh
     images:
       - https://tc.alcy.cc/q/20250908/b2d656670551cb9ea6eda7b46b6c8ec0.webp
-  icp: '萌ICP备20265525号'
-  icp_link: 'https://icp.gov.moe/?keyword=20265525'
+  icp: 萌ICP备20265525号
+  icp_link: https://icp.gov.moe/?keyword=20265525
   pages:
     home:
       title: RyuChan's Blog
@@ -113,10 +113,10 @@ github:
   encryptKey: wudishiduomejimo
 umami:
   enable: true
-  baseUrl: "https://umami.131714.xyz"
-  shareId: "d62IQPHZDlNtHfC6"
-  websiteId: "01923022-a812-4369-b896-862fa37d32b1"
-  timezone: "Asia/Shanghai"
+  baseUrl: https://umami.131714.xyz
+  shareId: d62IQPHZDlNtHfC6
+  websiteId: 01923022-a812-4369-b896-862fa37d32b1
+  timezone: Asia/Shanghai
 user:
   name: KoBariDev
   description: Ciallo～(∠・ω<)⌒★
