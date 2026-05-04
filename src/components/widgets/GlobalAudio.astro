@@ -751,22 +751,74 @@ const initialSong = musicList[0] || {};
             const result = [];
             const timeReg = /\[(\d{2}):(\d{2})\.(\d{2,3})\]/;
             
+            // To handle translations, we use a map since they appear sequentially 
+            // after the original text or interleaved with identical timestamps.
+            // Since we observed format=lrc&trans=true returns lines with identical timestamps:
+            // [00:19.00]絶景と言うけれど
+            // [00:19.00]虽说是绝景
+            
+            const tempLines = [];
+
             for (const line of lines) {
                 const cleanLine = line.trim();
+                if (!cleanLine) continue;
+
                 const match = timeReg.exec(cleanLine);
                 if (match) {
                     const min = parseInt(match[1]);
                     const sec = parseInt(match[2]);
-                    const ms = parseInt(match[3].padEnd(3, '0')); // Handle 2 or 3 digits
-                    
+                    const ms = parseInt(match[3].padEnd(3, '0')); 
                     const time = min * 60 + sec + ms / 1000;
-                    const text = cleanLine.replace(timeReg, '').trim();
                     
-                    if (text) {
-                        result.push({ time, text });
+                    let textInfo = cleanLine.replace(timeReg, '').trim();
+
+                    // Attempt to parse word-level sync if present <mm:ss.xx>
+                    // Ex: <00:01.00>word
+                    const wordLevelReg = /<(\d{2}):(\d{2})\.(\d{2,3})>([^<]*)/g;
+                    const words = [];
+                    let wordMatch;
+                    let hasWordLevel = false;
+
+                    while ((wordMatch = wordLevelReg.exec(textInfo)) !== null) {
+                        hasWordLevel = true;
+                        const wMin = parseInt(wordMatch[1]);
+                        const wSec = parseInt(wordMatch[2]);
+                        const wMs = parseInt(wordMatch[3].padEnd(3, '0'));
+                        const wTime = wMin * 60 + wSec + wMs / 1000;
+                        const wText = wordMatch[4];
+                        if (wText) { // Ignore empty words
+                            words.push({ time: wTime, text: wText });
+                        }
                     }
+
+                    // Remove all <...> tags to get the pure text for standard rendering
+                    let cleanText = textInfo.replace(/<\d{2}:\d{2}\.\d{2,3}>/g, '');
+
+                    tempLines.push({
+                        time,
+                        text: cleanText,
+                        words: hasWordLevel ? words : null,
+                        original: cleanLine
+                    });
                 }
             }
+
+            // Consolidate duplicate timestamps (original + translation)
+            for (let i = 0; i < tempLines.length; i++) {
+                const current = tempLines[i];
+                // Check if this is exactly matching the previous timestamp
+                if (result.length > 0 && Math.abs(result[result.length - 1].time - current.time) < 0.01) {
+                    result[result.length - 1].translation = current.text;
+                } else {
+                    result.push({
+                        time: current.time,
+                        text: current.text,
+                        translation: '',
+                        words: current.words
+                    });
+                }
+            }
+
             return result;
         }
 
@@ -774,15 +826,32 @@ const initialSong = musicList[0] || {};
             if (!this.lyricsContainer) return;
             
             const html = this.lyrics.map((line, index) => {
-                return `<p class="lyric-line transition-all duration-500 py-1 text-neu-text-muted hover:text-neu-text cursor-pointer text-sm font-medium tracking-wide" data-time="${line.time}" data-index="${index}">${line.text}</p>`;
+                let lineHTML = '';
+                
+                if (line.words && line.words.length > 0) {
+                     // Support word-by-word
+                     let wordHtml = line.words.map((w, wIdx) => {
+                          return `<span class="lyric-word transition-colors duration-200 inline-block" data-time="${w.time}">${w.text}</span>`;
+                     }).join('');
+                     lineHTML += `<div>${wordHtml}</div>`;
+                } else {
+                     // Standard line
+                     lineHTML += `<div>${line.text}</div>`;
+                }
+
+                if (line.translation) {
+                     lineHTML += `<div class="text-xs opacity-70 mt-1">${line.translation}</div>`;
+                }
+
+                return `<div class="lyric-line transition-all duration-300 py-2 text-neu-text-muted hover:text-neu-text cursor-pointer text-sm font-medium tracking-wide text-center" data-time="${line.time}" data-index="${index}">${lineHTML}</div>`;
             }).join('');
             
-            this.lyricsContainer.innerHTML = `<div class="py-[50%] flex flex-col items-center w-full space-y-4">${html}</div>`; 
+            this.lyricsContainer.innerHTML = `<div class="py-[50%] flex flex-col items-center w-full space-y-2">${html}</div>`; 
             
             const lines = this.lyricsContainer.querySelectorAll('.lyric-line');
-            lines.forEach(line => {
-                line.addEventListener('click', () => {
-                   const time = parseFloat(line.getAttribute('data-time'));
+            lines.forEach((lineElement) => {
+                lineElement.addEventListener('click', () => {
+                   const time = parseFloat(lineElement.getAttribute('data-time'));
                    if(this.audio) {
                        this.audio.currentTime = time;
                        if (this.audio.paused) this.togglePlay();
@@ -794,7 +863,7 @@ const initialSong = musicList[0] || {};
         syncLyrics(currentTime) {
              if (!this.lyrics.length || !this.lyricsContainer) return;
             
-            // Find current line
+            // Find current active line
             let activeIndex = -1;
             for (let i = 0; i < this.lyrics.length; i++) {
                 if (currentTime >= this.lyrics[i].time) {
@@ -804,32 +873,53 @@ const initialSong = musicList[0] || {};
                 }
             }
             
+            const lines = this.lyricsContainer.querySelectorAll('.lyric-line');
+
             if (activeIndex !== -1 && activeIndex !== this.lastActiveIndex) {
                  this.lastActiveIndex = activeIndex;
 
-                const lines = this.lyricsContainer.querySelectorAll('.lyric-line');
-                
                 lines.forEach((line, idx) => {
                     if (idx !== activeIndex) {
-                         line.className = 'lyric-line transition-all duration-500 py-1 text-neu-text-muted hover:text-neu-text cursor-pointer text-sm font-medium tracking-wide';
+                         // Reset classes
+                         line.className = 'lyric-line transition-all duration-500 py-2 text-neu-text-muted hover:text-neu-text cursor-pointer text-sm font-medium tracking-wide text-center';
+                         // Reset words in inactive lines
+                         const words = line.querySelectorAll('.lyric-word');
+                         words.forEach(w => w.classList.remove('text-neu-accent', 'font-bold'));
                     }
                 });
                 
                 const activeLine = lines[activeIndex];
                 if (activeLine) {
-                    activeLine.className = 'lyric-line transition-all duration-500 py-1 cursor-pointer text-base font-bold tracking-wider lyric-active';
+                    activeLine.className = 'lyric-line transition-all duration-500 py-2 cursor-pointer text-base font-bold tracking-wider text-neu-text lyric-active text-center';
                     
-                    // Manual scroll calculation to prevent whole page scrolling
+                    // Manual scroll calculation
                     const containerHeight = this.lyricsContainer.clientHeight;
                     const lineTop = activeLine.offsetTop;
                     const lineHeight = activeLine.clientHeight;
                     
-                    // Calculate center position
                     const scrollTarget = lineTop - (containerHeight / 2) + (lineHeight / 2);
 
                     this.lyricsContainer.scrollTo({
                         top: scrollTarget,
                         behavior: 'smooth'
+                    });
+                }
+            }
+
+            // Sync words within the active line
+            if (activeIndex !== -1) {
+                const activeLine = lines[activeIndex];
+                if (activeLine) {
+                    const words = activeLine.querySelectorAll('.lyric-word');
+                    words.forEach(word => {
+                        const wordTime = parseFloat(word.getAttribute('data-time'));
+                        if (currentTime >= wordTime) {
+                            word.classList.add('text-neu-accent', 'font-bold');
+                            word.classList.remove('text-neu-text');
+                        } else {
+                            word.classList.remove('text-neu-accent', 'font-bold');
+                            word.classList.add('text-neu-text');
+                        }
                     });
                 }
             }

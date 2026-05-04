@@ -17,8 +17,6 @@ function formatDuration(seconds) {
 async function fetchMetingApi() {
   console.log('🎵 Fetching playlist from Meting API...');
   let playlistId = '8900628861';
-  let server = 'netease';
-  let br = '320';
   let trans = true;
 
   try {
@@ -26,15 +24,14 @@ async function fetchMetingApi() {
       const config = yaml.load(configStr);
       if (config?.site?.meting) {
           playlistId = config.site.meting.id || playlistId;
-          server = config.site.meting.server || server;
-          br = config.site.meting.br || br;
           trans = config.site.meting.trans !== false;
       }
   } catch (e) {
       console.log('Could not load meting config from yaml, using defaults');
   }
 
-  const apiUrl = `https://163.hyc.moe?server=${server}&type=playlist&id=${playlistId}`;
+  // Force Netease and format=lrc
+  const apiUrl = `https://163.hyc.moe?server=netease&type=playlist&id=${playlistId}`;
   try {
       const res = await fetch(apiUrl);
       if (!res.ok) throw new Error(`Meting API failed: ${res.statusText}`);
@@ -44,8 +41,8 @@ async function fetchMetingApi() {
           let songUrl = item.url?.replace(/http:\/\//g, 'https://');
           let lrcUrl = item.lrc?.replace(/http:\/\//g, 'https://');
 
-          if (br && songUrl) {
-              songUrl += `&br=${br}`;
+          if (songUrl) {
+              songUrl += `&br=320`;
           }
           if (trans && lrcUrl) {
               lrcUrl += `&trans=true`;

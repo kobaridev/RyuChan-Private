@@ -34,9 +34,12 @@ export const NAV_DATA: NavCategory[] = [
                 name: "Umami",
                 avatar: "https://img.131714.xyz/file/Logo/1753850918996_umami.png",
                 description: "网站访问统计分析平台",
-                url: "https://us.umami.is/dashboard",
+                url: "https://umami.is/dashboard",
                 category: "统计分析",
-                id: "DEV001"
+                id: "DEV001",
+                badge: "推荐使用",
+                badgeIcon: "lucide:thumbs-up",
+                badgeColor: "rose"
             },
             {
                 name: "Vercel",
@@ -44,7 +47,10 @@ export const NAV_DATA: NavCategory[] = [
                 description: "现代化的前端部署平台",
                 url: "https://vercel.com/login?next=%2Fkobaridevs-projects",
                 category: "部署托管",
-                id: "DEV002"
+                id: "DEV002",
+                badge: "Astro 官方推荐",
+                badgeIcon: "lucide:star",
+                badgeColor: "amber"
             },
             {
                 name: "Iconify",
@@ -52,7 +58,10 @@ export const NAV_DATA: NavCategory[] = [
                 description: "海量图标库和图标搜索工具",
                 url: "https://iconify.design/",
                 category: "图标设计",
-                id: "DEV003"
+                id: "DEV003",
+                badge: "图标资源",
+                badgeIcon: "lucide:image",
+                badgeColor: "sky"
             },
             {
                 name: "Iconfont",
@@ -60,7 +69,10 @@ export const NAV_DATA: NavCategory[] = [
                 description: "阿里巴巴图标库",
                 url: "https://www.iconfont.cn/",
                 category: "图标设计",
-                id: "DEV004"
+                id: "DEV004",
+                badge: "国内访问更快",
+                badgeIcon: "lucide:globe",
+                badgeColor: "rose"
             },
             {
                 name: "Shields",
@@ -68,7 +80,10 @@ export const NAV_DATA: NavCategory[] = [
                 description: "为项目生成各种徽章",
                 url: "https://shields.io/",
                 category: "徽章工具",
-                id: "DEV005"
+                id: "DEV005",
+                badge: "GitHub 项目必备",
+                badgeIcon: "lucide:shield-check",
+                badgeColor: "amber"
             },
             {
                 name: "Clarity",
@@ -76,7 +91,10 @@ export const NAV_DATA: NavCategory[] = [
                 description: "微软的用户行为分析工具",
                 url: "https://clarity.microsoft.com/",
                 category: "用户分析",
-                id: "DEV006"
+                id: "DEV006",
+                badge: "企业级分析",
+                badgeIcon: "lucide:bar-chart-3",
+                badgeColor: "sky"
             }
         ]
     },
@@ -90,7 +108,10 @@ export const NAV_DATA: NavCategory[] = [
                 description: "免费域名注册",
                 url: "https://dash.domain.digitalplat.org/panel/main",
                 category: "域名管理",
-                id: "SRV001"
+                id: "SRV001",
+                badge: "免费好用",
+                badgeIcon: "lucide:gift",
+                badgeColor: "amber"
             },
             {
                 name: "Cloudflare",
@@ -98,7 +119,10 @@ export const NAV_DATA: NavCategory[] = [
                 description: "全球领先的CDN和安全服务",
                 url: "https://dash.cloudflare.com/login",
                 category: "域名托管服务",
-                id: "SRV002"
+                id: "SRV002",
+                badge: "性能和安全兼备",
+                badgeIcon: "lucide:shield",
+                badgeColor: "sky"
             },
             {
                 name: "EdgeOne",
@@ -106,7 +130,10 @@ export const NAV_DATA: NavCategory[] = [
                 description: "国内CDN和边缘计算服务",
                 url: "https://console.edgeone.cn/login",
                 category: "CDN服务",
-                id: "SRV003"
+                id: "SRV003",
+                badge: "国内访问优化",
+                badgeIcon: "lucide:zap",
+                badgeColor: "amber"
             },
             {
                 name: "Spaceship",
@@ -114,7 +141,10 @@ export const NAV_DATA: NavCategory[] = [
                 description: "A domain odyssey",
                 url: "https://www.spaceship.com/",
                 category: "域名售卖",
-                id: "SRV004"
+                id: "SRV004",
+                badge: "新兴域名注册商",
+                badgeIcon: "lucide:rocket",
+                badgeColor: "rose"
             },
             {
                 name: "Waline",
@@ -122,7 +152,10 @@ export const NAV_DATA: NavCategory[] = [
                 description: "简洁、安全的评论系统",
                 url: "https://waline.js.org/",
                 category: "评论服务",
-                id: "SRV005"
+                id: "SRV005",
+                badge: "轻量级评论",
+                badgeIcon: "lucide:message-square",
+                badgeColor: "amber"
             },
             {
                 name: "Giscus",
@@ -130,7 +163,10 @@ export const NAV_DATA: NavCategory[] = [
                 description: "GitHub Discussions 评论系统",
                 url: "https://giscus.app/zh-CN",
                 category: "评论服务",
-                id: "SRV006"
+                id: "SRV006",
+                badge: "基于 GitHub",
+                badgeIcon: "lucide:github",
+                badgeColor: "rose"
             },
             {
                 name: "Akismet",
@@ -138,7 +174,10 @@ export const NAV_DATA: NavCategory[] = [
                 description: "保持评论区干净整洁的小助手",
                 url: "https://akismet.com/",
                 category: "评论服务",
-                id: "SRV007"
+                id: "SRV007",
+                badge: "反垃圾评论",
+                badgeIcon: "lucide:trash",
+                badgeColor: "sky"
             },
             {
                 name: "GitHub",
@@ -146,7 +185,10 @@ export const NAV_DATA: NavCategory[] = [
                 description: "全球最大的开源社区",
                 url: "https://github.com",
                 category: "代码托管",
-                id: "SRV008"
+                id: "SRV008",
+                badge: "开源项目首选",
+                badgeIcon: "lucide:code",
+                badgeColor: "sky"
             },
             {
                 name: "InfinityFree",
@@ -154,7 +196,10 @@ export const NAV_DATA: NavCategory[] = [
                 description: "免费托管WordPress和其他网站",
                 url: "https://www.infinityfree.com",
                 category: "免费主机",
-                id: "SRV009"
+                id: "SRV009",
+                badge: "免费托管服务",
+                badgeIcon: "lucide:server",
+                badgeColor: "amber"
             }
         ]
     },
@@ -168,21 +213,27 @@ export const NAV_DATA: NavCategory[] = [
                 description: "高质量壁纸分享社区",
                 url: "https://wallhaven.cc/",
                 category: "壁纸资源",
-                id: "ENT001"
+                id: "ENT001",
+                badge: "海量高清壁纸",
+                badgeIcon: "lucide:image",
+                badgeColor: "amber"
             },
             {
-                name: "网盘资源社",
+                name: "夸克圈",
                 avatar: "https://img.131714.xyz/file/Logo/RwkDhIdV.png",
-                description: "网盘资源分享平台",
-                url: "https://www.wpzysq.com/",
+                description: "影视资源分享平台",
+                url: "https://www.kuakeq.com",
                 category: "网盘资源",
-                id: "ENT002"
+                id: "ENT002",
+                badge: "丰富的影视资源",
+                badgeIcon: "lucide:film",
+                badgeColor: "rose"
             },
             {
                 name: "宝可梦节点",
-                avatar: "https://52pokemon.huxx.top/favicon.ico",
+                avatar: "https://love.52pokemon66.cc/favicon.ico",
                 description: "网络代理服务",
-                url: "https://52pokemon.huxx.top/login",
+                url: "https://love.p6m6.com/",
                 category: "代理服务",
                 id: "ENT003",
                 badge: "好用的加速器",
@@ -201,7 +252,10 @@ export const NAV_DATA: NavCategory[] = [
                 description: "Astro是一个现代化的静态网站生成器",
                 url: "https://docs.astro.build",
                 category: "文档",
-                id: "RES001"
+                id: "RES001",
+                badge: "前端框架",
+                badgeIcon: "lucide:layout",
+                badgeColor: "sky"
             },
             {
                 name: "Tailwind",
@@ -209,7 +263,10 @@ export const NAV_DATA: NavCategory[] = [
                 description: "Tailwind CSS是一个功能类优先的CSS框架",
                 url: "https://tailwindcss.com/docs",
                 category: "文档",
-                id: "RES002"
+                id: "RES002",
+                badge: "CSS 框架",
+                badgeIcon: "lucide:file-code-2",
+                badgeColor: "sky"
             },
             {
                 name: "DaisyUI",
@@ -217,7 +274,10 @@ export const NAV_DATA: NavCategory[] = [
                 description: "DaisyUI是一个基于Tailwind CSS的组件库",
                 url: "https://daisyui.com/components/",
                 category: "UI 框架",
-                id: "RES003"
+                id: "RES003",
+                badge: "Tailwind 组件库",
+                badgeIcon: "lucide:box",
+                badgeColor: "rose"
             },
             {
                 name: "TypeScript",
@@ -225,7 +285,10 @@ export const NAV_DATA: NavCategory[] = [
                 description: "TypeScript是JavaScript的超集",
                 url: "https://www.typescriptlang.org/docs/handbook/intro.html",
                 category: "文档",
-                id: "RES004"
+                id: "RES004",
+                badge: "JavaScript 超集",
+                badgeIcon: "lucide:file-code-2",
+                badgeColor: "sky"
             }
         ]
     }

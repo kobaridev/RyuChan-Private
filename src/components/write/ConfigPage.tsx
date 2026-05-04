@@ -670,36 +670,11 @@ export function ConfigPage() {
                                             </div>
                                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                                                 <div className="form-control w-full">
-                                                    <label className="label"><span className="label-text text-xs text-base-content/60">数据源(Server)</span></label>
-                                                    <CustomSelect
-                                                        value={parsedConfig?.site?.meting?.server || 'netease'}
-                                                        onChange={val => updateConfigValue('site.meting.server', val)}
-                                                        options={[
-                                                            { value: 'netease', label: '网易云音乐' },
-                                                            { value: 'tencent', label: 'QQ音乐' },
-                                                            { value: 'kugou', label: '酷狗音乐' }
-                                                        ]}
-                                                    />
-                                                </div>
-                                                <div className="form-control w-full">
-                                                    <label className="label"><span className="label-text text-xs text-base-content/60">歌单ID</span></label>
+                                                    <label className="label"><span className="label-text text-xs text-base-content/60">网易云歌单ID</span></label>
                                                     <input type="text" className="input input-bordered w-full bg-base-100 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
                                                         placeholder="例如: 8900628861"
                                                         value={parsedConfig?.site?.meting?.id || ''}
                                                         onChange={e => updateConfigValue('site.meting.id', e.target.value)} />
-                                                </div>
-                                                <div className="form-control w-full">
-                                                    <label className="label"><span className="label-text text-xs text-base-content/60">音质(Bitrate)</span></label>
-                                                    <CustomSelect
-                                                        value={parsedConfig?.site?.meting?.br || '320'}
-                                                        onChange={val => updateConfigValue('site.meting.br', val)}
-                                                        options={[
-                                                            { value: '128', label: '128k (标准)' },
-                                                            { value: '320', label: '320k (极高)' },
-                                                            { value: '380', label: 'Flac (无损)' },
-                                                            { value: '400', label: 'Flac (Hi-Res)' }
-                                                        ]}
-                                                    />
                                                 </div>
                                                 <div className="form-control w-full flex-row items-center pt-8">
                                                     <label className="cursor-pointer label p-0 gap-2">
