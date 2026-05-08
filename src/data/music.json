@@ -1,6 +1,7 @@
 [
     {
 <<<<<<< HEAD
+<<<<<<< HEAD
         "title": "Mr. \"Broken Heart\"",
         "artist": "松下優也",
         "cover": "https://163.hyc.moe?server=netease&type=pic&id=109951166201250148",
@@ -368,13 +369,18 @@
         "lrc": "https://163.hyc.moe?server=netease&type=lrc&id=29572502&format=lrc&trans=true",
         "duration": ""
 =======
+=======
+>>>>>>> upstream/main
         "title": "3 Strikes",
         "artist": "Terror Jr",
         "cover": "https://163.hyc.moe?server=netease&type=pic&id=109951164000556824",
         "url": "https://163.hyc.moe?server=netease&type=url&id=409647388&br=320",
         "lrc": "https://163.hyc.moe?server=netease&type=lrc&id=409647388&format=lrc&trans=true",
         "duration": "02:55"
+<<<<<<< HEAD
 >>>>>>> 24bb835 (update:Music duration script)
+=======
+>>>>>>> upstream/main
     },
     {
         "title": "Beautiful World (Da Capo Version)",
