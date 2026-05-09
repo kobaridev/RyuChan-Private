@@ -4,13 +4,14 @@ description: >-
   GitHub 443报错源于Git代理设置与实际网络不一致。解决办法：使用代理时，需通过git
   config同步端口号；不使用代理时，需执行--unset命令清除代理配置。
 pubDate: 2026-05-09T13:32
-image: /images/github_connect/9b4077849c7951b8.webp
+image: blob:https://hub.131714.xyz/a6c63f66-a823-447b-b7fc-9731bcc64f29
 draft: false
 tags:
   - GitHub
   - Proxy
 categories:
   - 教程
+badge: ''
 ---
 # GitHub 连接失败：Failed to connect to github.com port 443 解决方案
 
