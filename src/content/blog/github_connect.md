@@ -4,7 +4,7 @@ description: >-
   GitHub 443报错源于Git代理设置与实际网络不一致。解决办法：使用代理时，需通过git
   config同步端口号；不使用代理时，需执行--unset命令清除代理配置。
 pubDate: 2026-05-09T13:32
-image: https://img.131714.xyz/file/blog/GitHub/XBu35QXY.webp
+image: blob:https://hub.131714.xyz/eb980d13-8adc-40e1-b7c9-015a34fe0785
 draft: false
 tags:
   - GitHub
