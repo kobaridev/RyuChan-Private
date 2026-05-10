@@ -21,10 +21,6 @@ export async function pushBlog(params: PushBlogParams): Promise<void> {
 
     if (!form?.slug) throw new Error('需要 slug')
 
-    // if (mode === 'edit' && originalSlug && originalSlug !== form.slug) {
-    // 	throw new Error('编辑模式下不支持修改 slug，请保持原 slug 不变')
-    // }
-
     const token = await getAuthToken()
     const toastId = toast.loading('🚀 正在初始化发布...')
 
@@ -88,6 +84,11 @@ export async function pushBlog(params: PushBlogParams): Promise<void> {
         }
 
         if (cover?.type === 'url') {
+            // Prevent blob: URLs from being saved — they break Astro's Image component at build time
+            if (cover.url.startsWith('blob:')) {
+                toast.error('封面图片为本地临时链接，请先上传图片再设置封面', { id: toastId })
+                throw new Error('Cover image is a blob URL — upload the image first')
+            }
             coverPath = cover.url
         }
 

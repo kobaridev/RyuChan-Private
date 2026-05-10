@@ -12,20 +12,26 @@ type CoverSectionProps = {
 export function CoverSection({ delay = 0 }: CoverSectionProps) {
 	const { images, setCover, cover, addFiles } = useWriteStore()
 	const fileInputRef = useRef<HTMLInputElement>(null)
-    const [urlInput, setUrlInput] = useState('')
+	const [urlInput, setUrlInput] = useState('')
 
 	const coverPreviewUrl = cover ? (cover.type === 'url' ? cover.url : cover.previewUrl) : null
 
-    const handleUrlSubmit = () => {
-        if (!urlInput.trim()) return
-        setCover({
-            id: Date.now().toString(),
-            type: 'url',
-            url: urlInput.trim()
-        })
-        setUrlInput('')
-        toast.success('已设置封面')
-    }
+	const handleUrlSubmit = () => {
+		if (!urlInput.trim()) return
+		const trimmed = urlInput.trim()
+		// Prevent blob: URLs from being set as cover — they won't work in production
+		if (trimmed.startsWith('blob:')) {
+			toast.error('blob: 链接仅限本地预览，请上传图片或使用远程 URL')
+			return
+		}
+		setCover({
+			id: Date.now().toString(),
+			type: 'url',
+			url: trimmed
+		})
+		setUrlInput('')
+		toast.success('已设置封面')
+	}
 
 	const handleCoverDrop = async (e: React.DragEvent<HTMLDivElement>) => {
 		e.preventDefault()
@@ -90,11 +96,21 @@ export function CoverSection({ delay = 0 }: CoverSectionProps) {
 		e.target.value = ''
 	}
 
+	const handleClearCover = () => {
+		setCover(null)
+		toast.success('已清除封面')
+	}
+
 	return (
 		<motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay }} className='card bg-base-100 border border-base-200 shadow-sm p-4 relative'>
 			<div className="flex items-center justify-between mb-3">
-                <h2 className='text-sm font-bold text-primary'>封面</h2>
-            </div>
+				<h2 className='text-sm font-bold text-primary'>封面</h2>
+				{cover && (
+					<button onClick={handleClearCover} className="btn btn-xs btn-ghost text-base-content/40 hover:text-error">
+						清除封面
+					</button>
+				)}
+			</div>
 
 			<input ref={fileInputRef} type='file' accept='image/*' className='hidden' onChange={handleFileChange} />
 			<div
@@ -104,27 +120,32 @@ export function CoverSection({ delay = 0 }: CoverSectionProps) {
 				}}
 				onDrop={handleCoverDrop}>
 				{!!coverPreviewUrl ? (
-					<img src={coverPreviewUrl} alt='cover preview' className='h-full w-full rounded-xl object-cover' />
+					<div className="group relative h-full w-full cursor-pointer" onClick={handleClickUpload}>
+						<img src={coverPreviewUrl} alt='cover preview' className='h-full w-full rounded-xl object-cover' />
+						<div className="absolute inset-0 flex items-center justify-center rounded-xl bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity">
+							<span className="text-sm text-white font-semibold">点击更换封面</span>
+						</div>
+					</div>
 				) : (
 					<div className='grid h-full w-full cursor-pointer place-items-center transition-colors hover:bg-base-200/50' onClick={handleClickUpload}>
 						<span className='text-3xl leading-none text-base-content/20'>+</span>
 					</div>
 				)}
 			</div>
-            
-            <div className="flex gap-2 mt-3">
-                <input 
-                    type="text" 
-                    className="input input-sm input-bordered w-full text-xs" 
-                    placeholder="输入图片 URL"
-                    value={urlInput}
-                    onChange={e => setUrlInput(e.target.value)}
-                    onKeyDown={e => e.key === 'Enter' && handleUrlSubmit()}
-                />
-                <button className="btn btn-sm btn-primary btn-square" onClick={handleUrlSubmit}>
-                    <span className="text-xs">OK</span>
-                </button>
-            </div>
+
+			<div className="flex gap-2 mt-3">
+				<input
+					type="text"
+					className="input input-sm input-bordered w-full text-xs"
+					placeholder="输入图片 URL"
+					value={urlInput}
+					onChange={e => setUrlInput(e.target.value)}
+					onKeyDown={e => e.key === 'Enter' && handleUrlSubmit()}
+				/>
+				<button className="btn btn-sm btn-primary btn-square" onClick={handleUrlSubmit}>
+					<span className="text-xs">OK</span>
+				</button>
+			</div>
 		</motion.div>
 	)
 }
