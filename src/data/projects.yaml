@@ -1,11 +1,12 @@
-- name: HomePage
-  avatar: https://img.131714.xyz/file/Avatar/1753366550828_avatar1.jpg
-  description: 🏠 小张的个人主页！
-  url: https://131714.xyz
-  year: 2025
-  tags:
-    - Web
-  badge: Profile
+- name: RyuChan
+  avatar: https://demo.131714.xyz/favicon.png
+  description: 基于Astro框架的静态博客主题模板☆
+  url: https://demo.131714.xyz
+  year: 2026
+  tags: []
+  github: https://github.com/kobaridev/RyuChan
+  npm: ''
+  badge: 主题
 - name: Blog
   avatar: https://blog.131714.xyz/images/avatar.png
   description: 个人Blog，发布文章~ (ﾉ>ω<)ﾉ
@@ -14,6 +15,14 @@
   tags:
     - 自用
   badge: Blog
+- name: HomePage
+  avatar: https://img.131714.xyz/file/Avatar/1753366550828_avatar1.jpg
+  description: 🏠 小张的个人主页！
+  url: https://131714.xyz
+  year: 2025
+  tags:
+    - Web
+  badge: Profile
 - name: ImgBed
   avatar: https://img.131714.xyz/file/Avatar/1753366548855_avatar3.jpg
   description: 🌄 Cloudflare-ImgBed + Telegram实现的无限存储图床~
