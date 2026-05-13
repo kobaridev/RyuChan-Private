@@ -176,7 +176,7 @@ user:
         svg: ri:telegram-line
 comments:
   enable: true
-  type: giscus
+  type: waline
   giscus:
     repo: kobaridev/gsc
     repoId: R_kgDOPTM-mA
@@ -189,7 +189,7 @@ comments:
     emitMetadata: '0'
     loading: lazy
   waline:
-    serverURL: https://your-waline-server
+    serverURL: https://waline.131714.xyz
     lang: zh-CN
     emoji:
       - https://unpkg.com/@waline/emojis@1.1.0/weibo
