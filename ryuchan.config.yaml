@@ -6,8 +6,8 @@ site:
   language: zh
   favicon: /favicon.png
   theme:
-    light: garden
-    dark: dracula
+    light: valentine
+    dark: night
     code: snazzy-light
   date_format: ddd MMM DD YYYY
   blog:
