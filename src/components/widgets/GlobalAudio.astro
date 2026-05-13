@@ -78,7 +78,7 @@ const initialSong = musicList[0] || {};
             this.isDraggingVolume = false;
             this.playlistCounts = {};
             this.playlistSongs = {};
-            this.activePlaylistId = null;
+            this.activePlaylistId = 'all';
 
             // Initial binding
             this.handlePageLoad();
@@ -426,7 +426,7 @@ const initialSong = musicList[0] || {};
                 const isTarget = e.dataset.playlistId === playlistId;
                 if (isTarget) {
                     e.classList.add('playlist-active', 'border-0');
-                    e.classList.remove('border', 'border-transparent');
+                    e.classList.remove('border', 'border-transparent', 'hover:bg-black/5', 'dark:hover:bg-white/5', 'hover:border-neu-border/50');
                     e.style.backgroundColor = `oklch(${activeColor} / 0.15)`;
                     e.style.color = '';
                     const svg = e.querySelector('svg');
@@ -443,7 +443,7 @@ const initialSong = musicList[0] || {};
                     }
                 } else {
                     e.classList.remove('playlist-active', 'border-0');
-                    e.classList.add('border', 'border-transparent');
+                    e.classList.add('border', 'border-transparent', 'hover:bg-black/5', 'dark:hover:bg-white/5', 'hover:border-neu-border/50');
                     e.style.backgroundColor = '';
                     e.style.color = '';
                     const svg = e.querySelector('svg');
@@ -961,7 +961,7 @@ const initialSong = musicList[0] || {};
                 if (line.words && line.words.length > 0) {
                      // Support word-by-word
                      let wordHtml = line.words.map((w, wIdx) => {
-                          return `<span class="lyric-word transition-colors duration-200 inline-block" data-time="${w.time}">${w.text}</span>`;
+                          return `<span class="lyric-word transition-colors duration-150 inline-block" data-time="${w.time}">${w.text}</span>`;
                      }).join('');
                      lineHTML += `<div>${wordHtml}</div>`;
                 } else {
@@ -973,7 +973,7 @@ const initialSong = musicList[0] || {};
                      lineHTML += `<div class="text-xs opacity-70 mt-1">${line.translation}</div>`;
                 }
 
-                return `<div class="lyric-line transition-all duration-300 py-2 text-neu-text-muted hover:text-neu-text cursor-pointer text-sm font-medium tracking-wide text-center" data-time="${line.time}" data-index="${index}">${lineHTML}</div>`;
+                return `<div class="lyric-line transition-all duration-300 py-2 leading-6 text-neu-text-muted hover:text-neu-text cursor-pointer text-sm font-medium tracking-wide text-center" data-time="${line.time}" data-index="${index}"><div class="lyric-line-inner">${lineHTML}</div></div>`;
             }).join('');
             
             this.lyricsContainer.innerHTML = `<div class="py-[50%] flex flex-col items-center w-full space-y-2">${html}</div>`; 
@@ -1011,16 +1011,16 @@ const initialSong = musicList[0] || {};
                 lines.forEach((line, idx) => {
                     if (idx !== activeIndex) {
                          // Reset classes
-                         line.className = 'lyric-line transition-all duration-500 py-2 text-neu-text-muted hover:text-neu-text cursor-pointer text-sm font-medium tracking-wide text-center';
+                        line.className = 'lyric-line transition-all duration-150 py-2 leading-6 text-neu-text-muted hover:text-neu-text cursor-pointer text-sm font-medium tracking-wide text-center';
                          // Reset words in inactive lines
                          const words = line.querySelectorAll('.lyric-word');
-                         words.forEach(w => w.classList.remove('text-neu-accent', 'font-bold'));
+                        words.forEach(w => w.classList.remove('text-neu-accent', 'lyric-word-active'));
                     }
                 });
                 
                 const activeLine = lines[activeIndex];
                 if (activeLine) {
-                    activeLine.className = 'lyric-line transition-all duration-500 py-2 cursor-pointer text-base font-bold tracking-wider text-neu-text lyric-active text-center';
+                    activeLine.className = 'lyric-line transition-all duration-150 py-2 leading-6 cursor-pointer text-sm font-medium tracking-wide text-neu-text lyric-active text-center';
                     
                     // Manual scroll calculation
                     const containerHeight = this.lyricsContainer.clientHeight;
@@ -1044,10 +1044,10 @@ const initialSong = musicList[0] || {};
                     words.forEach(word => {
                         const wordTime = parseFloat(word.getAttribute('data-time'));
                         if (currentTime >= wordTime) {
-                            word.classList.add('text-neu-accent', 'font-bold');
+                            word.classList.add('text-neu-accent', 'lyric-word-active');
                             word.classList.remove('text-neu-text');
                         } else {
-                            word.classList.remove('text-neu-accent', 'font-bold');
+                            word.classList.remove('text-neu-accent', 'lyric-word-active');
                             word.classList.add('text-neu-text');
                         }
                     });

@@ -5,7 +5,7 @@
 
 
 <div align="center">  
-<img alt="Ryuchan Logo" src="https://picbed.131714.xyz/blog/logo.png" width="280px">  
+<img alt="Ryuchan Logo" src="public/logo.png" width="280px">  
 </div>  
 
 

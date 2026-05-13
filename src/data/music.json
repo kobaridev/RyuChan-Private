@@ -1,6 +1,38 @@
 {
     "songs": [
         {
+            "title": "STYX HELIX",
+            "artist": "MYTH & ROID",
+            "cover": "https://163.hyc.moe?server=netease&type=pic&id=109951171350916152",
+            "url": "https://163.hyc.moe?server=netease&type=url&id=413961906&br=320",
+            "lrc": "https://163.hyc.moe?server=netease&type=lrc&id=413961906&format=lrc&trans=true",
+            "duration": "04:51"
+        },
+        {
+            "title": "Brave Shine",
+            "artist": "Aimer",
+            "cover": "https://163.hyc.moe?server=netease&type=pic&id=109951168080741423",
+            "url": "https://163.hyc.moe?server=netease&type=url&id=32358691&br=320",
+            "lrc": "https://163.hyc.moe?server=netease&type=lrc&id=32358691&format=lrc&trans=true",
+            "duration": "03:53"
+        },
+        {
+            "title": "最佳损友",
+            "artist": "陈奕迅",
+            "cover": "https://163.hyc.moe?server=netease&type=pic&id=109951171836582062",
+            "url": "https://163.hyc.moe?server=netease&type=url&id=65800&br=320",
+            "lrc": "https://163.hyc.moe?server=netease&type=lrc&id=65800&format=lrc&trans=true",
+            "duration": "03:53"
+        },
+        {
+            "title": "We Are The World",
+            "artist": "Lionel Richie/Stevie Wonder/Paul Simon/Kenny Rogers/James Ingram/Tina Turner/Billy Joel/Michael Jackson/Diana Ross/Dionne Warwick/Willie Nelson/Al Jarreau/Bruce Springsteen/Kenny Loggins/Steve Perry/Daryl Hall/Huey Lewis/Cyndi Lauper/Kim Carnes/Bob Dylan/Ray Charles",
+            "cover": "https://163.hyc.moe?server=netease&type=pic&id=109951163122957256",
+            "url": "https://163.hyc.moe?server=netease&type=url&id=28493451&br=320",
+            "lrc": "https://163.hyc.moe?server=netease&type=lrc&id=28493451&format=lrc&trans=true",
+            "duration": "07:07"
+        },
+        {
             "title": "女孩",
             "artist": "韦礼安",
             "cover": "https://163.hyc.moe?server=netease&type=pic&id=109951168079643579",
@@ -1518,7 +1550,7 @@
             "cover": "https://163.hyc.moe?server=netease&type=pic&id=109951165549820772",
             "url": "https://163.hyc.moe?server=netease&type=url&id=287719&br=320",
             "lrc": "https://163.hyc.moe?server=netease&type=lrc&id=287719&format=lrc&trans=true",
-            "duration": ""
+            "duration": "04:31"
         },
         {
             "title": "我不难过",
@@ -1566,7 +1598,7 @@
             "cover": "https://163.hyc.moe?server=netease&type=pic&id=109951169717932170",
             "url": "https://163.hyc.moe?server=netease&type=url&id=287575&br=320",
             "lrc": "https://163.hyc.moe?server=netease&type=lrc&id=287575&format=lrc&trans=true",
-            "duration": ""
+            "duration": "03:43"
         },
         {
             "title": "第一天",
@@ -1606,7 +1638,7 @@
             "cover": "https://163.hyc.moe?server=netease&type=pic&id=109951165992337446",
             "url": "https://163.hyc.moe?server=netease&type=url&id=286970&br=320",
             "lrc": "https://163.hyc.moe?server=netease&type=lrc&id=286970&format=lrc&trans=true",
-            "duration": ""
+            "duration": "04:08"
         },
         {
             "title": "克卜勒",
@@ -1614,7 +1646,7 @@
             "cover": "https://163.hyc.moe?server=netease&type=pic&id=109951163115291601",
             "url": "https://163.hyc.moe?server=netease&type=url&id=28196001&br=320",
             "lrc": "https://163.hyc.moe?server=netease&type=lrc&id=28196001&format=lrc&trans=true",
-            "duration": ""
+            "duration": "04:09"
         },
         {
             "title": "漩涡",
@@ -1654,7 +1686,7 @@
             "cover": "https://163.hyc.moe?server=netease&type=pic&id=109951169829283327",
             "url": "https://163.hyc.moe?server=netease&type=url&id=287073&br=320",
             "lrc": "https://163.hyc.moe?server=netease&type=lrc&id=287073&format=lrc&trans=true",
-            "duration": ""
+            "duration": "04:08"
         },
         {
             "title": "同类",
@@ -1678,7 +1710,7 @@
             "cover": "https://163.hyc.moe?server=netease&type=pic&id=109951166890613011",
             "url": "https://163.hyc.moe?server=netease&type=url&id=287280&br=320",
             "lrc": "https://163.hyc.moe?server=netease&type=lrc&id=287280&format=lrc&trans=true",
-            "duration": ""
+            "duration": "04:17"
         },
         {
             "title": "The Moment",
@@ -1702,7 +1734,7 @@
             "cover": "https://163.hyc.moe?server=netease&type=pic&id=109951163115291601",
             "url": "https://163.hyc.moe?server=netease&type=url&id=28283346&br=320",
             "lrc": "https://163.hyc.moe?server=netease&type=lrc&id=28283346&format=lrc&trans=true",
-            "duration": ""
+            "duration": "04:24"
         },
         {
             "title": "飞瀑而下",
@@ -1710,7 +1742,7 @@
             "cover": "https://163.hyc.moe?server=netease&type=pic&id=109951172792823028",
             "url": "https://163.hyc.moe?server=netease&type=url&id=3352859087&br=320",
             "lrc": "https://163.hyc.moe?server=netease&type=lrc&id=3352859087&format=lrc&trans=true",
-            "duration": ""
+            "duration": "04:51"
         },
         {
             "title": "温柔 #MaydayBlue20th",
@@ -1742,7 +1774,7 @@
             "cover": "https://163.hyc.moe?server=netease&type=pic&id=109951163115291601",
             "url": "https://163.hyc.moe?server=netease&type=url&id=28283344&br=320",
             "lrc": "https://163.hyc.moe?server=netease&type=lrc&id=28283344&format=lrc&trans=true",
-            "duration": ""
+            "duration": "04:42"
         },
         {
             "title": "手牵手",
@@ -1758,7 +1790,7 @@
             "cover": "https://163.hyc.moe?server=netease&type=pic&id=109951165549820772",
             "url": "https://163.hyc.moe?server=netease&type=url&id=287716&br=320",
             "lrc": "https://163.hyc.moe?server=netease&type=lrc&id=287716&format=lrc&trans=true",
-            "duration": ""
+            "duration": "03:35"
         },
         {
             "title": "我的爱",
@@ -1766,7 +1798,7 @@
             "cover": "https://163.hyc.moe?server=netease&type=pic&id=109951166890613011",
             "url": "https://163.hyc.moe?server=netease&type=url&id=287274&br=320",
             "lrc": "https://163.hyc.moe?server=netease&type=lrc&id=287274&format=lrc&trans=true",
-            "duration": ""
+            "duration": "04:24"
         },
         {
             "title": "极美",
@@ -1774,7 +1806,7 @@
             "cover": "https://163.hyc.moe?server=netease&type=pic&id=18357446138140955",
             "url": "https://163.hyc.moe?server=netease&type=url&id=516657215&br=320",
             "lrc": "https://163.hyc.moe?server=netease&type=lrc&id=516657215&format=lrc&trans=true",
-            "duration": ""
+            "duration": "03:31"
         },
         {
             "title": "直来直往",
@@ -1790,7 +1822,7 @@
             "cover": "https://163.hyc.moe?server=netease&type=pic&id=109951169717938522",
             "url": "https://163.hyc.moe?server=netease&type=url&id=287620&br=320",
             "lrc": "https://163.hyc.moe?server=netease&type=lrc&id=287620&format=lrc&trans=true",
-            "duration": ""
+            "duration": "04:01"
         },
         {
             "title": "飘着",
@@ -1798,7 +1830,7 @@
             "cover": "https://163.hyc.moe?server=netease&type=pic&id=109951169829283327",
             "url": "https://163.hyc.moe?server=netease&type=url&id=287067&br=320",
             "lrc": "https://163.hyc.moe?server=netease&type=lrc&id=287067&format=lrc&trans=true",
-            "duration": ""
+            "duration": "04:09"
         },
         {
             "title": "咕叽咕叽",
@@ -1806,7 +1838,7 @@
             "cover": "https://163.hyc.moe?server=netease&type=pic&id=109951169829283327",
             "url": "https://163.hyc.moe?server=netease&type=url&id=287061&br=320",
             "lrc": "https://163.hyc.moe?server=netease&type=lrc&id=287061&format=lrc&trans=true",
-            "duration": ""
+            "duration": "04:32"
         },
         {
             "title": "爱情字典",
@@ -1838,7 +1870,7 @@
             "cover": "https://163.hyc.moe?server=netease&type=pic&id=109951172661523753",
             "url": "https://163.hyc.moe?server=netease&type=url&id=2117877676&br=320",
             "lrc": "https://163.hyc.moe?server=netease&type=lrc&id=2117877676&format=lrc&trans=true",
-            "duration": ""
+            "duration": "04:06"
         },
         {
             "title": "雨还是不停地落下",
@@ -1846,7 +1878,7 @@
             "cover": "https://163.hyc.moe?server=netease&type=pic&id=109951163115291601",
             "url": "https://163.hyc.moe?server=netease&type=url&id=28283351&br=320",
             "lrc": "https://163.hyc.moe?server=netease&type=lrc&id=28283351&format=lrc&trans=true",
-            "duration": ""
+            "duration": "04:51"
         },
         {
             "title": "Tonight, I feel close to you",
@@ -1878,7 +1910,7 @@
             "cover": "https://163.hyc.moe?server=netease&type=pic&id=109951169717940503",
             "url": "https://163.hyc.moe?server=netease&type=url&id=287363&br=320",
             "lrc": "https://163.hyc.moe?server=netease&type=lrc&id=287363&format=lrc&trans=true",
-            "duration": ""
+            "duration": "03:30"
         },
         {
             "title": "原点",
@@ -1886,7 +1918,7 @@
             "cover": "https://163.hyc.moe?server=netease&type=pic&id=109951166191908812",
             "url": "https://163.hyc.moe?server=netease&type=url&id=287025&br=320",
             "lrc": "https://163.hyc.moe?server=netease&type=lrc&id=287025&format=lrc&trans=true",
-            "duration": ""
+            "duration": "04:07"
         },
         {
             "title": "crossing field",
@@ -2250,7 +2282,7 @@
         }
     ],
     "playlistCounts": {
-        "17933567326": 46,
+        "17933567326": 50,
         "17956985703": 50,
         "17957187425": 50,
         "17957136689": 48,
@@ -2259,6 +2291,38 @@
     },
     "playlistSongs": {
         "17933567326": [
+            {
+                "title": "STYX HELIX",
+                "artist": "MYTH & ROID",
+                "cover": "https://163.hyc.moe?server=netease&type=pic&id=109951171350916152",
+                "url": "https://163.hyc.moe?server=netease&type=url&id=413961906&br=320",
+                "lrc": "https://163.hyc.moe?server=netease&type=lrc&id=413961906&format=lrc&trans=true",
+                "duration": "04:51"
+            },
+            {
+                "title": "Brave Shine",
+                "artist": "Aimer",
+                "cover": "https://163.hyc.moe?server=netease&type=pic&id=109951168080741423",
+                "url": "https://163.hyc.moe?server=netease&type=url&id=32358691&br=320",
+                "lrc": "https://163.hyc.moe?server=netease&type=lrc&id=32358691&format=lrc&trans=true",
+                "duration": "03:53"
+            },
+            {
+                "title": "最佳损友",
+                "artist": "陈奕迅",
+                "cover": "https://163.hyc.moe?server=netease&type=pic&id=109951171836582062",
+                "url": "https://163.hyc.moe?server=netease&type=url&id=65800&br=320",
+                "lrc": "https://163.hyc.moe?server=netease&type=lrc&id=65800&format=lrc&trans=true",
+                "duration": "03:53"
+            },
+            {
+                "title": "We Are The World",
+                "artist": "Lionel Richie/Stevie Wonder/Paul Simon/Kenny Rogers/James Ingram/Tina Turner/Billy Joel/Michael Jackson/Diana Ross/Dionne Warwick/Willie Nelson/Al Jarreau/Bruce Springsteen/Kenny Loggins/Steve Perry/Daryl Hall/Huey Lewis/Cyndi Lauper/Kim Carnes/Bob Dylan/Ray Charles",
+                "cover": "https://163.hyc.moe?server=netease&type=pic&id=109951163122957256",
+                "url": "https://163.hyc.moe?server=netease&type=url&id=28493451&br=320",
+                "lrc": "https://163.hyc.moe?server=netease&type=lrc&id=28493451&format=lrc&trans=true",
+                "duration": "07:07"
+            },
             {
                 "title": "女孩",
                 "artist": "韦礼安",
@@ -3833,7 +3897,7 @@
                 "cover": "https://163.hyc.moe?server=netease&type=pic&id=109951165549820772",
                 "url": "https://163.hyc.moe?server=netease&type=url&id=287719&br=320",
                 "lrc": "https://163.hyc.moe?server=netease&type=lrc&id=287719&format=lrc&trans=true",
-                "duration": ""
+                "duration": "04:31"
             },
             {
                 "title": "我不难过",
@@ -3897,7 +3961,7 @@
                 "cover": "https://163.hyc.moe?server=netease&type=pic&id=109951169717932170",
                 "url": "https://163.hyc.moe?server=netease&type=url&id=287575&br=320",
                 "lrc": "https://163.hyc.moe?server=netease&type=lrc&id=287575&format=lrc&trans=true",
-                "duration": ""
+                "duration": "03:43"
             },
             {
                 "title": "第一天",
@@ -3937,7 +4001,7 @@
                 "cover": "https://163.hyc.moe?server=netease&type=pic&id=109951165992337446",
                 "url": "https://163.hyc.moe?server=netease&type=url&id=286970&br=320",
                 "lrc": "https://163.hyc.moe?server=netease&type=lrc&id=286970&format=lrc&trans=true",
-                "duration": ""
+                "duration": "04:08"
             },
             {
                 "title": "克卜勒",
@@ -3945,7 +4009,7 @@
                 "cover": "https://163.hyc.moe?server=netease&type=pic&id=109951163115291601",
                 "url": "https://163.hyc.moe?server=netease&type=url&id=28196001&br=320",
                 "lrc": "https://163.hyc.moe?server=netease&type=lrc&id=28196001&format=lrc&trans=true",
-                "duration": ""
+                "duration": "04:09"
             },
             {
                 "title": "漩涡",
@@ -3985,7 +4049,7 @@
                 "cover": "https://163.hyc.moe?server=netease&type=pic&id=109951169829283327",
                 "url": "https://163.hyc.moe?server=netease&type=url&id=287073&br=320",
                 "lrc": "https://163.hyc.moe?server=netease&type=lrc&id=287073&format=lrc&trans=true",
-                "duration": ""
+                "duration": "04:08"
             },
             {
                 "title": "同类",
@@ -4009,7 +4073,7 @@
                 "cover": "https://163.hyc.moe?server=netease&type=pic&id=109951166890613011",
                 "url": "https://163.hyc.moe?server=netease&type=url&id=287280&br=320",
                 "lrc": "https://163.hyc.moe?server=netease&type=lrc&id=287280&format=lrc&trans=true",
-                "duration": ""
+                "duration": "04:17"
             },
             {
                 "title": "The Moment",
@@ -4033,7 +4097,7 @@
                 "cover": "https://163.hyc.moe?server=netease&type=pic&id=109951163115291601",
                 "url": "https://163.hyc.moe?server=netease&type=url&id=28283346&br=320",
                 "lrc": "https://163.hyc.moe?server=netease&type=lrc&id=28283346&format=lrc&trans=true",
-                "duration": ""
+                "duration": "04:24"
             },
             {
                 "title": "飞瀑而下",
@@ -4041,7 +4105,7 @@
                 "cover": "https://163.hyc.moe?server=netease&type=pic&id=109951172792823028",
                 "url": "https://163.hyc.moe?server=netease&type=url&id=3352859087&br=320",
                 "lrc": "https://163.hyc.moe?server=netease&type=lrc&id=3352859087&format=lrc&trans=true",
-                "duration": ""
+                "duration": "04:51"
             },
             {
                 "title": "温柔 #MaydayBlue20th",
@@ -4073,7 +4137,7 @@
                 "cover": "https://163.hyc.moe?server=netease&type=pic&id=109951163115291601",
                 "url": "https://163.hyc.moe?server=netease&type=url&id=28283344&br=320",
                 "lrc": "https://163.hyc.moe?server=netease&type=lrc&id=28283344&format=lrc&trans=true",
-                "duration": ""
+                "duration": "04:42"
             },
             {
                 "title": "手牵手",
@@ -4089,7 +4153,7 @@
                 "cover": "https://163.hyc.moe?server=netease&type=pic&id=109951165549820772",
                 "url": "https://163.hyc.moe?server=netease&type=url&id=287716&br=320",
                 "lrc": "https://163.hyc.moe?server=netease&type=lrc&id=287716&format=lrc&trans=true",
-                "duration": ""
+                "duration": "03:35"
             },
             {
                 "title": "我的爱",
@@ -4097,7 +4161,7 @@
                 "cover": "https://163.hyc.moe?server=netease&type=pic&id=109951166890613011",
                 "url": "https://163.hyc.moe?server=netease&type=url&id=287274&br=320",
                 "lrc": "https://163.hyc.moe?server=netease&type=lrc&id=287274&format=lrc&trans=true",
-                "duration": ""
+                "duration": "04:24"
             },
             {
                 "title": "极美",
@@ -4105,7 +4169,7 @@
                 "cover": "https://163.hyc.moe?server=netease&type=pic&id=18357446138140955",
                 "url": "https://163.hyc.moe?server=netease&type=url&id=516657215&br=320",
                 "lrc": "https://163.hyc.moe?server=netease&type=lrc&id=516657215&format=lrc&trans=true",
-                "duration": ""
+                "duration": "03:31"
             },
             {
                 "title": "直来直往",
@@ -4121,7 +4185,7 @@
                 "cover": "https://163.hyc.moe?server=netease&type=pic&id=109951169717938522",
                 "url": "https://163.hyc.moe?server=netease&type=url&id=287620&br=320",
                 "lrc": "https://163.hyc.moe?server=netease&type=lrc&id=287620&format=lrc&trans=true",
-                "duration": ""
+                "duration": "04:01"
             },
             {
                 "title": "飘着",
@@ -4129,7 +4193,7 @@
                 "cover": "https://163.hyc.moe?server=netease&type=pic&id=109951169829283327",
                 "url": "https://163.hyc.moe?server=netease&type=url&id=287067&br=320",
                 "lrc": "https://163.hyc.moe?server=netease&type=lrc&id=287067&format=lrc&trans=true",
-                "duration": ""
+                "duration": "04:09"
             },
             {
                 "title": "咕叽咕叽",
@@ -4137,7 +4201,7 @@
                 "cover": "https://163.hyc.moe?server=netease&type=pic&id=109951169829283327",
                 "url": "https://163.hyc.moe?server=netease&type=url&id=287061&br=320",
                 "lrc": "https://163.hyc.moe?server=netease&type=lrc&id=287061&format=lrc&trans=true",
-                "duration": ""
+                "duration": "04:32"
             },
             {
                 "title": "爱情字典",
@@ -4169,7 +4233,7 @@
                 "cover": "https://163.hyc.moe?server=netease&type=pic&id=109951172661523753",
                 "url": "https://163.hyc.moe?server=netease&type=url&id=2117877676&br=320",
                 "lrc": "https://163.hyc.moe?server=netease&type=lrc&id=2117877676&format=lrc&trans=true",
-                "duration": ""
+                "duration": "04:06"
             },
             {
                 "title": "雨还是不停地落下",
@@ -4177,7 +4241,7 @@
                 "cover": "https://163.hyc.moe?server=netease&type=pic&id=109951163115291601",
                 "url": "https://163.hyc.moe?server=netease&type=url&id=28283351&br=320",
                 "lrc": "https://163.hyc.moe?server=netease&type=lrc&id=28283351&format=lrc&trans=true",
-                "duration": ""
+                "duration": "04:51"
             },
             {
                 "title": "Tonight, I feel close to you",
@@ -4209,7 +4273,7 @@
                 "cover": "https://163.hyc.moe?server=netease&type=pic&id=109951169717940503",
                 "url": "https://163.hyc.moe?server=netease&type=url&id=287363&br=320",
                 "lrc": "https://163.hyc.moe?server=netease&type=lrc&id=287363&format=lrc&trans=true",
-                "duration": ""
+                "duration": "03:30"
             },
             {
                 "title": "原点",
@@ -4217,7 +4281,7 @@
                 "cover": "https://163.hyc.moe?server=netease&type=pic&id=109951166191908812",
                 "url": "https://163.hyc.moe?server=netease&type=url&id=287025&br=320",
                 "lrc": "https://163.hyc.moe?server=netease&type=lrc&id=287025&format=lrc&trans=true",
-                "duration": ""
+                "duration": "04:07"
             }
         ],
         "17957179525": [
