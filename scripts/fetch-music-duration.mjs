@@ -6,11 +6,18 @@ import yaml from 'js-yaml';
 
 const MUSIC_DATA_PATH = path.resolve('src/data/music.json');
 const CONFIG_PATH = path.resolve('ryuchan.config.yaml');
+const CONCURRENCY = 8;
+const RETRIES = 3;
+const SAVE_INTERVAL = 20; // incremental save every N resolved
 
 function formatDuration(seconds) {
   const minutes = Math.floor(seconds / 60);
   const remainingSeconds = Math.floor(seconds % 60);
   return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+}
+
+function sleep(ms) {
+  return new Promise(r => setTimeout(r, ms));
 }
 
 async function fetchPlaylistSongs(playlistId, trans) {
@@ -40,6 +47,70 @@ async function fetchPlaylistSongs(playlistId, trans) {
   }
 }
 
+/**
+ * Fetch duration for a single song with retries.
+ * 1) Try Netease song detail API (fast, no bandwidth) for hyc.moe URLs.
+ * 2) Fall back to buffer-parsing the actual audio stream.
+ * Returns true on success, false after all retries exhausted.
+ */
+async function fetchDurationForSong(item) {
+  for (let attempt = 0; attempt < RETRIES; attempt++) {
+    try {
+      // --- Path A: Netease API (hyc.moe URLs only) ---
+      if (item.url && item.url.includes('163.hyc.moe')) {
+        try {
+          const parsedUrl = new URL(item.url);
+          const id = parsedUrl.searchParams.get('id');
+          if (id) {
+            const res = await fetch(`https://music.163.com/api/song/detail/?id=${id}&ids=[${id}]`, {
+              headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36' }
+            });
+            if (res.ok) {
+              const data = await res.json();
+              if (data?.songs?.[0]?.duration) {
+                item.duration = formatDuration(data.songs[0].duration / 1000);
+                return true;
+              }
+            }
+          }
+        } catch(e) {
+          // Netease API failed → fall through to buffer method below
+        }
+      }
+
+      // --- Path B: buffer parsing ---
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 15000);
+      const response = await fetch(item.url, {
+        headers: { 'Range': 'bytes=0-500000' },
+        signal: controller.signal
+      });
+      clearTimeout(timeoutId);
+
+      if (response.ok || response.status === 206) {
+        const buffer = Buffer.from(await response.arrayBuffer());
+        if (buffer.length < 1024) continue; // too small, retry
+        const metadata = await parseBuffer(buffer, {
+          mimeType: response.headers.get('content-type') || undefined
+        });
+        if (metadata?.format?.duration) {
+          item.duration = formatDuration(metadata.format.duration);
+          return true;
+        }
+      }
+    } catch(e) {
+      // retry on error (network timeout, etc.)
+    }
+
+    // backoff before retry
+    if (attempt < RETRIES - 1) {
+      await sleep(1000 * Math.pow(2, attempt)); // 1s, 2s, 4s
+    }
+  }
+
+  return false;
+}
+
 async function fetchMusicDuration() {
   try {
     let config = {};
@@ -54,7 +125,6 @@ async function fetchMusicDuration() {
     const playlists = config?.music?.playlists || [];
 
     if (playlists.length === 0) {
-      // fallback to single meting id
       const singleId = config?.site?.meting?.id || '8900628861';
       playlists.push({ id: singleId, name: '默认歌单', server: 'netease' });
     }
@@ -82,7 +152,7 @@ async function fetchMusicDuration() {
     const playlistSongs = {};
     const allSongs = [];
     const seenUrls = new Set();
-    const urlToSong = new Map(); // url → song object reference in allSongs
+    const urlToSong = new Map();
 
     for (const pl of playlists) {
       const songs = await fetchPlaylistSongs(pl.id, trans);
@@ -100,7 +170,6 @@ async function fetchMusicDuration() {
           urlToSong.set(song.url, song);
           playlistSongs[pl.id].push(song);
         } else {
-          // reuse existing song object so durations propagate
           playlistSongs[pl.id].push(urlToSong.get(song.url));
         }
       }
@@ -108,54 +177,69 @@ async function fetchMusicDuration() {
 
     console.log(`📊 Total unique songs: ${allSongs.length}`);
 
-    // Fetch durations for new songs
-    let hasChanges = allSongs.some(s => s.url && !s.duration);
-    if (hasChanges) {
-      console.log('🎵 Fetching durations...');
-      for (const item of allSongs) {
-        if (!item.url || item.duration) continue;
+    // Collect songs that need duration fetching
+    const pending = allSongs.filter(s => s.url && !s.duration);
+    const alreadyCached = allSongs.length - pending.length;
 
-        if (item.url.includes('163.hyc.moe')) {
-          try {
-            const parsedUrl = new URL(item.url);
-            const id = parsedUrl.searchParams.get('id');
-            if (id) {
-              const res = await fetch(`https://music.163.com/api/song/detail/?id=${id}&ids=[${id}]`, {
-                headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36' }
-              });
-              const data = await res.json();
-              if (data.songs?.[0]?.duration) {
-                item.duration = formatDuration(data.songs[0].duration / 1000);
-                console.log(`  -> ${item.duration} (${item.title})`);
-              }
-            }
-          } catch(e) { console.warn(`  -> Duration failed: ${item.title}`); }
-          continue;
+    console.log(`📊 Cached durations: ${alreadyCached}`);
+    console.log(`📊 Need durations: ${pending.length}`);
+
+    if (pending.length === 0) {
+      console.log('✅ All durations already cached.');
+      return;
+    }
+
+    // --- Concurrent duration fetching ---
+    console.log(`🎵 Fetching ${pending.length} durations (${CONCURRENCY} concurrent, ${RETRIES} retries)...`);
+
+    let index = 0;
+    let success = 0;
+    let failed = 0;
+    let lastSave = 0;
+
+    const output = { songs: allSongs, playlistCounts, playlistSongs };
+
+    async function worker(workerId) {
+      while (true) {
+        const i = index;
+        index++;
+        if (i >= pending.length) break;
+
+        const item = pending[i];
+        const ok = await fetchDurationForSong(item);
+
+        if (ok) {
+          success++;
+          const label = item.duration ? ` -> ${item.duration}` : ` -> ok`;
+          console.log(`  [${workerId}]${label} (${success + failed}/${pending.length}) ${item.title}`);
+        } else {
+          failed++;
+          console.warn(`  [${workerId}] -> FAILED (${success + failed}/${pending.length}) ${item.title}`);
         }
 
-        // fallback: parse buffer
-        try {
-          const controller = new AbortController();
-          const timeoutId = setTimeout(() => controller.abort(), 10000);
-          const response = await fetch(item.url, {
-            headers: { 'Range': 'bytes=0-500000' },
-            signal: controller.signal
-          });
-          clearTimeout(timeoutId);
-          if (!response.ok && response.status !== 206) continue;
-          const buffer = Buffer.from(await response.arrayBuffer());
-          const metadata = await parseBuffer(buffer, { mimeType: response.headers.get('content-type') });
-          if (metadata?.format?.duration) {
-            item.duration = formatDuration(metadata.format.duration);
-            console.log(`  -> ${item.duration} (${item.title})`);
+        // Incremental save
+        if (success - lastSave >= SAVE_INTERVAL) {
+          lastSave = success;
+          try {
+            await fs.writeFile(MUSIC_DATA_PATH, JSON.stringify(output, null, 4), 'utf-8');
+            console.log(`  💾 Saved (${success} resolved so far)`);
+          } catch(e) {
+            console.error('  ⚠️  Save failed:', e.message);
           }
-        } catch(e) { console.warn(`  -> Duration failed: ${item.title}`); }
+        }
       }
     }
 
-    const output = { songs: allSongs, playlistCounts, playlistSongs };
+    const workers = Array.from({ length: CONCURRENCY }, (_, i) => worker(i + 1));
+    await Promise.all(workers);
+
+    // Final save
     await fs.writeFile(MUSIC_DATA_PATH, JSON.stringify(output, null, 4), 'utf-8');
-    console.log('✅ Music data updated.');
+
+    console.log(`\n✅ Done. Resolved: ${success}, Failed: ${failed}, Total: ${allSongs.length}`);
+    if (failed > 0) {
+      console.log(`⚠️  ${failed} songs could not get durations. Re-run to retry.`);
+    }
   } catch (error) {
     console.error('Fatal error:', error);
     process.exit(1);
