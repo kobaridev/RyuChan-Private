@@ -55,6 +55,38 @@
       badge: 企业级分析
       badgeIcon: lucide:bar-chart-3
       badgeColor: sky
+    - name: 青桔API
+      avatar: https://api.iconify.design/mdi/api.svg
+      url: https://api.nsuuu.com/
+      category: 开发工具
+      description: 免费稳定的API服务
+      badge: 敲级棒的API服务
+      badgeIcon: healthicons:happy-outline-24px
+      badgeColor: '#80ded0'
+    - name: Pomo
+      avatar: https://pomo.mom/favicon.ico
+      url: https://pomo.mom/
+      category: 影视资源
+      description: 提供高质量4K原盘影视资源
+      badge: 海量原盘资源
+      badgeIcon: lucide:film
+      badgeColor: '#63adf1'
+    - name: Twikoo
+      avatar: https://twikoo.js.org/twikoo-logo-home.png
+      url: https://twikoo.js.org/
+      category: 评论服务
+      description: 简洁、安全的评论系统
+      badge: 轻量级评论
+      badgeIcon: mingcute:comment-line
+      badgeColor: '#faa7ff'
+    - name: DNSHE
+      avatar: https://my.dnshe.com/favicon.ico
+      url: https://my.dnshe.com
+      category: 域名管理
+      description: 免费域名注册
+      badge: 免费域名
+      badgeIcon: stash:domain
+      badgeColor: '#ff6250'
 - title: 服务平台
   icon: lucide:server
   items:
@@ -155,7 +187,7 @@
       avatar: https://img.131714.xyz/file/Logo/RwkDhIdV.png
       description: 影视资源分享平台
       url: https://www.kuakeq.com
-      category: 网盘资源
+      category: 影视资源
       id: ENT002
       badge: 丰富的影视资源
       badgeIcon: lucide:film
