@@ -37,7 +37,8 @@ const SOCIAL_PRESETS = [
 
 const COMMENT_PROVIDERS = [
     { value: 'giscus', label: 'Giscus' },
-    { value: 'waline', label: 'Waline' }
+    { value: 'waline', label: 'Waline' },
+    { value: 'twikoo', label: 'Twikoo' }
 ]
 
 export function ConfigPage() {
@@ -92,7 +93,7 @@ export function ConfigPage() {
         }
     }, [configContent, mode])
 
-    
+
 
     const loadConfig = async () => {
         try {
@@ -191,7 +192,7 @@ export function ConfigPage() {
 
     useEffect(() => {
         // Debug helper: allow calling from page context to directly set title_type
-        ;(window as any).__updateSiteTitleType = (v: 'image' | 'text') => {
+        ; (window as any).__updateSiteTitleType = (v: 'image' | 'text') => {
             const baseConfig = parsedConfig || {}
             const newConfig = JSON.parse(JSON.stringify(baseConfig))
             if (!newConfig.site) newConfig.site = {}
@@ -201,7 +202,7 @@ export function ConfigPage() {
             setConfigContent(yaml.dump(newConfig))
             setIsDirty(true)
         }
-        return () => { try { delete (window as any).__updateSiteTitleType } catch (e) {} }
+        return () => { try { delete (window as any).__updateSiteTitleType } catch (e) { } }
     }, [parsedConfig])
 
 
@@ -568,57 +569,57 @@ export function ConfigPage() {
                             <div className="max-w-3xl mx-auto space-y-10">
                                 {/* Icons */}
                                 <div className="grid grid-cols-2 gap-4 md:gap-12">
-                                                    <div className="space-y-3">
-                                                        <div className="text-xs font-medium text-base-content/70 ml-1">网站图标</div>
-                                                        <div className="group relative flex justify-center p-4 md:p-8 bg-base-100 rounded-2xl md:rounded-3xl border border-base-200 shadow-sm hover:shadow-md transition-all duration-300">
-                                                            <div className="w-16 h-16 md:w-24 md:h-24 rounded-xl md:rounded-2xl overflow-hidden bg-base-200 ring-4 ring-base-100 shadow-xl group-hover:scale-105 transition-transform duration-300">
-                                                                <img src={parsedConfig?.site?.favicon || '/favicon.ico'} alt="Favicon" className="w-full h-full object-cover" />
-                                                            </div>
-                                                            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-base-100/50 backdrop-blur-sm rounded-2xl md:rounded-3xl cursor-pointer" onClick={() => triggerImageUpload('site.favicon')}>
-                                                                <button className="btn btn-circle btn-primary shadow-lg scale-90 group-hover:scale-100 transition-transform">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="17 8 12 3 7 8" /><line x1="12" x2="12" y1="3" y2="15" /></svg>
-                                                                </button>
-                                                            </div>
-                                                            {uploadingImage && uploadTarget === 'site.favicon' && (
-                                                                <div className="absolute inset-0 flex items-center justify-center bg-base-100/80 rounded-2xl md:rounded-3xl z-10">
-                                                                    <span className="loading loading-spinner loading-md text-primary"></span>
-                                                                </div>
-                                                            )}
-                                                        </div>
-                                                        <input
-                                                            type="text"
-                                                            className="input input-sm input-bordered w-full text-center text-xs rounded-full bg-base-100 shadow-sm focus:border-primary focus:ring-2 focus:ring-primary/20"
-                                                            value={parsedConfig?.site?.favicon || ''}
-                                                            onChange={e => updateConfigValue('site.favicon', e.target.value)}
-                                                            placeholder="图标 URL"
-                                                        />
-                                                    </div>
-                                                    <div className="space-y-3">
-                                                        <div className="text-xs font-medium text-base-content/70 ml-1">用户头像</div>
-                                                        <div className="group relative flex justify-center p-4 md:p-8 bg-base-100 rounded-2xl md:rounded-3xl border border-base-200 shadow-sm hover:shadow-md transition-all duration-300">
-                                                            <div className="w-16 h-16 md:w-24 md:h-24 rounded-xl md:rounded-2xl overflow-hidden bg-base-200 ring-4 ring-base-100 shadow-xl group-hover:scale-105 transition-transform duration-300">
-                                                                <img src={parsedConfig?.user?.avatar || '/avatar.png'} alt="Avatar" className="w-full h-full object-cover" />
-                                                            </div>
-                                                            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-base-100/50 backdrop-blur-sm rounded-2xl md:rounded-3xl cursor-pointer" onClick={() => triggerImageUpload('user.avatar')}>
-                                                                <button className="btn btn-circle btn-primary shadow-lg scale-90 group-hover:scale-100 transition-transform">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="17 8 12 3 7 8" /><line x1="12" x2="12" y1="3" y2="15" /></svg>
-                                                                </button>
-                                                            </div>
-                                                            {uploadingImage && uploadTarget === 'user.avatar' && (
-                                                                <div className="absolute inset-0 flex items-center justify-center bg-base-100/80 rounded-2xl md:rounded-3xl z-10">
-                                                                    <span className="loading loading-spinner loading-md text-primary"></span>
-                                                                </div>
-                                                            )}
-                                                        </div>
-                                                        <input
-                                                            type="text"
-                                                            className="input input-sm input-bordered w-full text-center text-xs rounded-full bg-base-100 shadow-sm focus:border-primary focus:ring-2 focus:ring-primary/20"
-                                                            value={parsedConfig?.user?.avatar || ''}
-                                                            onChange={e => updateConfigValue('user.avatar', e.target.value)}
-                                                            placeholder="头像 URL"
-                                                        />
-                                                    </div>
-                                                    
+                                    <div className="space-y-3">
+                                        <div className="text-xs font-medium text-base-content/70 ml-1">网站图标</div>
+                                        <div className="group relative flex justify-center p-4 md:p-8 bg-base-100 rounded-2xl md:rounded-3xl border border-base-200 shadow-sm hover:shadow-md transition-all duration-300">
+                                            <div className="w-16 h-16 md:w-24 md:h-24 rounded-xl md:rounded-2xl overflow-hidden bg-base-200 ring-4 ring-base-100 shadow-xl group-hover:scale-105 transition-transform duration-300">
+                                                <img src={parsedConfig?.site?.favicon || '/favicon.ico'} alt="Favicon" className="w-full h-full object-cover" />
+                                            </div>
+                                            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-base-100/50 backdrop-blur-sm rounded-2xl md:rounded-3xl cursor-pointer" onClick={() => triggerImageUpload('site.favicon')}>
+                                                <button className="btn btn-circle btn-primary shadow-lg scale-90 group-hover:scale-100 transition-transform">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="17 8 12 3 7 8" /><line x1="12" x2="12" y1="3" y2="15" /></svg>
+                                                </button>
+                                            </div>
+                                            {uploadingImage && uploadTarget === 'site.favicon' && (
+                                                <div className="absolute inset-0 flex items-center justify-center bg-base-100/80 rounded-2xl md:rounded-3xl z-10">
+                                                    <span className="loading loading-spinner loading-md text-primary"></span>
+                                                </div>
+                                            )}
+                                        </div>
+                                        <input
+                                            type="text"
+                                            className="input input-sm input-bordered w-full text-center text-xs rounded-full bg-base-100 shadow-sm focus:border-primary focus:ring-2 focus:ring-primary/20"
+                                            value={parsedConfig?.site?.favicon || ''}
+                                            onChange={e => updateConfigValue('site.favicon', e.target.value)}
+                                            placeholder="图标 URL"
+                                        />
+                                    </div>
+                                    <div className="space-y-3">
+                                        <div className="text-xs font-medium text-base-content/70 ml-1">用户头像</div>
+                                        <div className="group relative flex justify-center p-4 md:p-8 bg-base-100 rounded-2xl md:rounded-3xl border border-base-200 shadow-sm hover:shadow-md transition-all duration-300">
+                                            <div className="w-16 h-16 md:w-24 md:h-24 rounded-xl md:rounded-2xl overflow-hidden bg-base-200 ring-4 ring-base-100 shadow-xl group-hover:scale-105 transition-transform duration-300">
+                                                <img src={parsedConfig?.user?.avatar || '/avatar.png'} alt="Avatar" className="w-full h-full object-cover" />
+                                            </div>
+                                            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-base-100/50 backdrop-blur-sm rounded-2xl md:rounded-3xl cursor-pointer" onClick={() => triggerImageUpload('user.avatar')}>
+                                                <button className="btn btn-circle btn-primary shadow-lg scale-90 group-hover:scale-100 transition-transform">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="17 8 12 3 7 8" /><line x1="12" x2="12" y1="3" y2="15" /></svg>
+                                                </button>
+                                            </div>
+                                            {uploadingImage && uploadTarget === 'user.avatar' && (
+                                                <div className="absolute inset-0 flex items-center justify-center bg-base-100/80 rounded-2xl md:rounded-3xl z-10">
+                                                    <span className="loading loading-spinner loading-md text-primary"></span>
+                                                </div>
+                                            )}
+                                        </div>
+                                        <input
+                                            type="text"
+                                            className="input input-sm input-bordered w-full text-center text-xs rounded-full bg-base-100 shadow-sm focus:border-primary focus:ring-2 focus:ring-primary/20"
+                                            value={parsedConfig?.user?.avatar || ''}
+                                            onChange={e => updateConfigValue('user.avatar', e.target.value)}
+                                            placeholder="头像 URL"
+                                        />
+                                    </div>
+
                                 </div>
 
                                 {/* User Info */}
@@ -782,7 +783,7 @@ export function ConfigPage() {
                                         </div>
                                     </div>
                                 </div>
-                            
+
 
                                 {/* Features: Bangumi & TMDB */}
                                 <div className="space-y-6">
@@ -972,6 +973,16 @@ export function ConfigPage() {
                                                         placeholder="https://your-waline-server.vercel.app"
                                                         value={parsedConfig?.comments?.waline?.serverURL || ''}
                                                         onChange={e => updateConfigValue('comments.waline.serverURL', e.target.value)} />
+                                                </div>
+                                            )}
+
+                                            {parsedConfig?.comments?.type === 'twikoo' && (
+                                                <div className="form-control w-full">
+                                                    <label className="label"><span className="label-text text-xs text-base-content/60">Env ID</span></label>
+                                                    <input type="text" className="input input-sm input-bordered w-full bg-base-100 focus:border-primary focus:ring-2 focus:ring-primary/20"
+                                                        placeholder="Twikoo environment ID"
+                                                        value={parsedConfig?.comments?.twikoo?.envId || ''}
+                                                        onChange={e => updateConfigValue('comments.twikoo.envId', e.target.value)} />
                                                 </div>
                                             )}
                                         </div>

@@ -1,0 +1,56 @@
+---
+interface Props {
+  envId: string;
+  lang?: string;
+}
+
+const {
+  envId,
+  lang = "zh-CN",
+} = Astro.props;
+---
+
+<div id="tcomment" data-env-id={envId} data-lang={lang}></div>
+
+<script is:inline>
+  let twikooLoaded = false;
+
+  function loadTwikoo() {
+    const commentsContainer = document.getElementById('tcomment');
+    if (!commentsContainer || twikooLoaded) return;
+
+    const envId = commentsContainer.dataset.envId;
+    const lang = commentsContainer.dataset.lang;
+
+    const script = document.createElement('script');
+    script.src = 'https://unpkg.com/twikoo@1.6.32/dist/twikoo.all.min.js';
+    script.async = true;
+    script.onload = () => {
+      twikoo.init({
+        envId: envId,
+        el: '#tcomment',
+        lang: lang,
+      });
+      twikooLoaded = true;
+    };
+    document.body.appendChild(script);
+  }
+
+  document.addEventListener('astro:after-swap', () => {
+    twikooLoaded = false;
+    setTimeout(() => {
+      loadTwikoo();
+    }, 100);
+  });
+
+  document.addEventListener('DOMContentLoaded', () => {
+    loadTwikoo();
+  });
+</script>
+
+<style>
+  #tcomment {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+  }
+</style>
