@@ -88,20 +88,20 @@ const playlistSongsData = JSON.stringify(playlistSongs);
         </div>
 
         <!-- 歌单列表 -->
-        <div class="flex-1 min-h-0">
+        <div>
 
           <!-- 歌单列表 Box -->
-          <div class="flex-1 bg-neu-base shadow-neu-in rounded-2xl border border-neu-border flex flex-col overflow-hidden">
+          <div class="bg-neu-base shadow-neu-in rounded-2xl border border-neu-border flex flex-col overflow-hidden">
             <div class="flex items-center gap-2 px-3 py-2.5 border-b border-neu-border/50 bg-black/5 dark:bg-white/5">
               <div class="w-1 h-4 rounded-full shrink-0" style="background-color: oklch(var(--p));"></div>
               <span class="text-sm font-extrabold tracking-wide" style="color: oklch(var(--p));">歌单列表</span>
             </div>
-            <div class="flex-1 overflow-y-auto custom-scrollbar" id="playlist-list-scroll">
+            <div class="overflow-y-auto hide-scrollbar h-[8.25rem] [overscroll-behavior-y:contain]" id="playlist-list-scroll">
               {
                 playlists && playlists.length > 0 ? (
                   <ul class="p-2 grid grid-cols-2 gap-1.5" id="playlist-list-entries">
                     {playlists.map((pl, index) => (
-                      <li class={`playlist-entry-item group flex items-center gap-1.5 p-2 rounded-xl transition-all cursor-pointer ${index >= 4 ? 'hidden playlist-overflow' : ''} ${index === 0 ? 'playlist-active border-0' : 'border border-transparent hover:bg-black/5 dark:hover:bg-white/5 hover:border-neu-border/50'}`} data-playlist-index={index} data-playlist-id={pl.id} style={index === 0 ? `background-color: oklch(var(--p) / 0.15);` : ''}>
+                      <li class={`playlist-entry-item group flex items-center gap-1.5 p-2 rounded-xl transition-all cursor-pointer ${index === 0 ? 'playlist-active border-0' : 'border border-transparent hover:bg-black/5 dark:hover:bg-white/5 hover:border-neu-border/50'}`} data-playlist-index={index} data-playlist-id={pl.id} style={index === 0 ? `background-color: oklch(var(--p) / 0.15);` : ''}>
                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class={`shrink-0 ${index === 0 ? '' : 'text-neu-text-muted'}`} style={index === 0 ? `color: oklch(var(--p));` : ''}>
                           <path d="M9 18V5l12-2v13"></path>
                           <circle cx="6" cy="18" r="3"></circle>
@@ -121,15 +121,10 @@ const playlistSongsData = JSON.stringify(playlistSongs);
                 )
               }
             </div>
-            <!-- 查看更多按钮 -->
-            {playlists && playlists.length > 4 && (
-              <button id="btn-toggle-playlists" class="w-full px-3 py-2 text-xs font-semibold text-neu-text-muted hover:text-neu-accent hover:bg-black/5 dark:hover:bg-white/5 transition-all flex items-center justify-center gap-1 border-t border-neu-border/30 bg-black/[0.02] dark:bg-white/[0.02]">
-                <span id="btn-toggle-text">查看全部 ({playlists.length})</span>
-                <svg id="btn-toggle-arrow" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="transition-transform">
-                  <path d="m6 9 6 6 6-6"></path>
-                </svg>
-              </button>
-            )}
+            <!-- 溢出提示 -->
+            <div class="flex items-center justify-center py-1 border-t border-neu-border/30 bg-gradient-to-b from-transparent to-black/5 dark:to-white/5">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="text-neu-text-muted/30"><path d="m6 9 6 6 6-6"/></svg>
+            </div>
           </div>
         </div>
       </div>
@@ -176,10 +171,31 @@ const playlistSongsData = JSON.stringify(playlistSongs);
               <p class="text-neu-text-muted text-sm mt-20">Loading lyrics...</p>
             </div>
             <!-- Playlist Container -->
-            <div id="playlist-container" class="absolute inset-0 overflow-y-auto custom-scrollbar p-4 hidden">
-              <ul class="space-y-3" id="playlist-list">
+            <div id="playlist-container" class="absolute inset-0 flex flex-col hidden">
+              <!-- Fixed search box -->
+              <div class="shrink-0 px-4 pt-4 pb-2">
+                <div class="flex items-center gap-2 rounded-2xl border border-neu-border bg-black/5 px-3 py-2.5 shadow-inner dark:bg-white/5">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-neu-text-muted shrink-0">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="m21 21-4.3-4.3"></path>
+                  </svg>
+                  <input
+                    id="playlist-search-input"
+                    type="search"
+                    placeholder="搜索歌曲、歌手或时长"
+                    autocomplete="off"
+                    class="w-full bg-transparent text-sm text-neu-text placeholder:text-neu-text-muted outline-none"
+                  />
+                </div>
+              </div>
+              <!-- Scrollable list -->
+              <div class="flex-1 overflow-y-auto custom-scrollbar px-4 pb-4">
+                <div id="playlist-empty-state" class="hidden rounded-2xl border border-dashed border-neu-border/70 px-4 py-8 text-center text-sm text-neu-text-muted bg-black/[0.02] dark:bg-white/[0.02]">
+                  没有找到匹配的歌曲
+                </div>
+                <ul class="space-y-3" id="playlist-list">
                 {list && list.map((item, index) => (
-                  <li class="playlist-item group flex items-center gap-3 p-3 rounded-2xl hover:bg-black/5 dark:hover:bg-white/5 border border-transparent transition-all cursor-pointer" data-index={index}>
+                  <li class={`playlist-item group flex items-center gap-3 p-3 rounded-2xl hover:bg-black/5 dark:hover:bg-white/5 border border-transparent transition-all cursor-pointer ${index === 0 ? 'active border-neu-accent bg-black/5 dark:bg-white/5' : ''}`} data-index={index} data-search={`${item.title || ''} ${item.artist || ''} ${item.duration || ''}`}>
                     <span class="font-mono text-neu-text-muted text-sm font-bold w-6 text-center group-hover:text-neu-accent transition-colors">{(index + 1).toString().padStart(2, '0')}</span>
                     <div class="relative w-12 h-12 rounded-lg overflow-hidden shrink-0 border border-neu-border/50">
                       <img src={item.cover || "https://music.apple.com/assets/product/1000/images/default-cover-icon-d36802.svg"} class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="cover"/>
@@ -199,6 +215,7 @@ const playlistSongsData = JSON.stringify(playlistSongs);
                   </li>
                 ))}
               </ul>
+              </div>
             </div>
           </div>
         </div>
@@ -252,7 +269,7 @@ const playlistSongsData = JSON.stringify(playlistSongs);
               <path d="M19.364 18.364a9 9 0 0 0 0-12.728"></path>
             </svg>
             <div class="w-28 h-1.5 bg-gray-300 dark:bg-gray-700 rounded-full relative overflow-hidden cursor-pointer" id="volume-control">
-              <div id="volume-bar" class="absolute top-0 left-0 h-full" style="width: 70%; background-color: oklch(var(--p));"></div>
+              <div id="volume-bar" class="absolute top-0 left-0 h-full" style="width: 100%; background-color: oklch(var(--p));"></div>
             </div>
           </div>
         </div>
