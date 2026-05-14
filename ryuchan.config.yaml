@@ -122,6 +122,24 @@ music:
     - id: '17957179525'
       name: LiSA
       server: netease
+    - id: '17965996101'
+      name: 陈奕迅
+      server: netease
+    - id: '17965997027'
+      name: 薛之谦
+      server: netease
+    - id: '17966068374'
+      name: 李荣浩
+      server: netease
+    - id: '17966003938'
+      name: 毛不易
+      server: netease
+    - id: '17965962224'
+      name: 五月天
+      server: netease
+    - id: '17966019560'
+      name: 告五人
+      server: netease
 github:
   owner: kobaridev
   repo: RyuChan-Private
