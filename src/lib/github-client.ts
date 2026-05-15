@@ -271,6 +271,33 @@ export async function listRepoDir(token: string | null | undefined, owner: strin
 	return Array.isArray(data) ? data : [data]
 }
 
+export type RecursiveTreeItem = {
+  path: string
+  mode: string
+  type: string
+  sha: string
+  size?: number
+  url?: string
+}
+
+export async function getTreeRecursive(token: string, owner: string, repo: string, treeSha: string): Promise<RecursiveTreeItem[]> {
+  const res = await fetch(`${GH_API}/repos/${owner}/${repo}/git/trees/${treeSha}?recursive=1`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/vnd.github+json',
+      'X-GitHub-Api-Version': '2022-11-28'
+    }
+  })
+  if (res.status === 401) handle401Error()
+  if (res.status === 422) handle422Error()
+  if (!res.ok) throw new Error(`get tree failed: ${res.status}`)
+  const data = await res.json()
+  if (data.truncated) {
+    console.warn('Tree response was truncated — large repo may need pagination')
+  }
+  return data.tree || []
+}
+
 export async function createBlob(
 	token: string,
 	owner: string,
