@@ -341,58 +341,127 @@ const averageRating = tmdbItems.length > 0
     <p class="text-lg">没有找到匹配的番剧</p>
   </div>
 
+  <!-- 分页控件 -->
+  <div id="pagination" class="flex items-center justify-center gap-2 mt-8 flex-wrap">
+    <button id="btn-prev" class="btn btn-sm btn-outline" disabled>← 上一页</button>
+    <div id="page-numbers" class="flex items-center gap-1"></div>
+    <button id="btn-next" class="btn btn-sm btn-outline">下一页 →</button>
+    <input id="page-jump" type="number" min="1" class="input input-sm input-bordered w-16 text-center font-mono text-xs" placeholder="回车跳转" />
+  </div>
+
   <div class="divider my-6 animate-fade-in-up" style="animation-delay: 0.1s;">
     <Icon name="lucide:heart" class="w-12 h-12 text-primary/50" />
   </div>
 
   <script>
-    // 客户端筛选逻辑
+    function getCols() {
+      const w = window.innerWidth;
+      if (w >= 1280) return 5;
+      if (w >= 1024) return 4;
+      if (w >= 768) return 3;
+      return 2;
+    }
+
+    function getItemsPerPage() { return getCols() * 4; }
+
     document.addEventListener('astro:page-load', () => {
       const searchInput = document.getElementById('search-input') as HTMLInputElement;
-      
+
       let currentTypeValue = 'all';
       let currentSortValue = 'rating-desc';
+      let currentPage = 1;
 
       const typeFilterBtn = document.getElementById('type-filter-btn');
       const typeFilterMenu = document.getElementById('type-filter-menu');
       const sortFilterBtn = document.getElementById('sort-filter-btn');
       const sortFilterMenu = document.getElementById('sort-filter-menu');
-
       const grid = document.getElementById('anime-grid');
       const noResults = document.getElementById('no-results');
-      
+      const pagination = document.getElementById('pagination');
+      const pageNumbers = document.getElementById('page-numbers');
+      const pageJump = document.getElementById('page-jump') as HTMLInputElement;
+      const btnPrev = document.getElementById('btn-prev') as HTMLButtonElement;
+      const btnNext = document.getElementById('btn-next') as HTMLButtonElement;
+
       if (!grid || !searchInput || !typeFilterBtn || !sortFilterBtn) return;
 
       const cards = Array.from(grid.getElementsByClassName('anime-card')) as HTMLElement[];
+      let filteredCards: HTMLElement[] = [...cards];
+
+      function goToPage(page: number) {
+        currentPage = page;
+        renderPage();
+      }
+
+      function renderPage() {
+        const perPage = getItemsPerPage();
+        const totalPages = Math.max(1, Math.ceil(filteredCards.length / perPage));
+        if (currentPage > totalPages) currentPage = totalPages;
+
+        // Show/hide items
+        const start = (currentPage - 1) * perPage;
+        const end = start + perPage;
+        filteredCards.forEach((card, i) => {
+          card.style.display = (i >= start && i < end) ? '' : 'none';
+        });
+
+        // Update pagination controls
+        if (btnPrev) btnPrev.disabled = currentPage <= 1;
+        if (btnNext) btnNext.disabled = currentPage >= totalPages;
+
+        // Render page numbers
+        if (pageNumbers) {
+          const pages: number[] = [];
+          const maxBtns = 7;
+          if (totalPages <= maxBtns) {
+            for (let i = 1; i <= totalPages; i++) pages.push(i);
+          } else {
+            pages.push(1);
+            if (currentPage > 3) pages.push(-1); // ellipsis
+            const s = Math.max(2, currentPage - 1);
+            const e = Math.min(totalPages - 1, currentPage + 1);
+            for (let i = s; i <= e; i++) pages.push(i);
+            if (currentPage < totalPages - 2) pages.push(-1);
+            pages.push(totalPages);
+          }
+
+          pageNumbers.innerHTML = pages.map(p => {
+            if (p === -1) return '<span class="px-1 text-base-content/30">…</span>';
+            return `<button class="btn btn-sm ${p === currentPage ? 'btn-primary' : 'btn-outline'} w-10" data-page="${p}">${p}</button>`;
+          }).join('');
+
+          // Bind page button clicks (use data-page to avoid index mismatches)
+          pageNumbers.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('click', () => {
+              const num = parseInt(btn.dataset.page || '0');
+              if (num > 0) goToPage(num);
+            });
+          });
+        }
+
+        // Show/hide pagination
+        if (pagination) pagination.style.display = totalPages <= 1 ? 'none' : '';
+        if (noResults) noResults.style.display = filteredCards.length === 0 ? 'flex' : 'none';
+      }
 
       function filterAndSort() {
         const searchTerm = searchInput.value.toLowerCase();
         const typeValue = currentTypeValue;
         const sortValue = currentSortValue;
-        
-        let visibleCount = 0;
 
-        // 筛选
-        const filteredCards = cards.filter(card => {
+        // Filter
+        filteredCards = cards.filter(card => {
           const title = card.dataset.title || '';
           const type = card.dataset.type || '';
-          
-          const matchesSearch = title.includes(searchTerm);
-          const matchesType = typeValue === 'all' || type === typeValue;
-          
-          const isVisible = matchesSearch && matchesType;
-          card.style.display = isVisible ? '' : 'none';
-          if (isVisible) visibleCount++;
-          return isVisible;
+          return title.includes(searchTerm) && (typeValue === 'all' || type === typeValue);
         });
 
-        // 排序
+        // Sort
         filteredCards.sort((a, b) => {
           const ratingA = parseFloat(a.dataset.rating || '0');
           const ratingB = parseFloat(b.dataset.rating || '0');
           const dateA = a.dataset.date || '';
           const dateB = b.dataset.date || '';
-
           switch (sortValue) {
             case 'rating-desc': return ratingB - ratingA;
             case 'rating-asc': return ratingA - ratingB;
@@ -402,69 +471,77 @@ const averageRating = tmdbItems.length > 0
           }
         });
 
-        // 重新排序 DOM
+        // Reorder DOM
         filteredCards.forEach(card => grid?.appendChild(card));
 
-        // 显示/隐藏无结果提示
-        if (noResults) {
-          noResults.style.display = visibleCount === 0 ? 'flex' : 'none';
-        }
+        // Reset to page 1 and render
+        currentPage = 1;
+        renderPage();
       }
 
-      // 绑定事件
+      // Bind events
       searchInput.addEventListener('input', filterAndSort);
-      
-      // 类型筛选点击事件
+
+      if (btnPrev) btnPrev.addEventListener('click', () => { if (currentPage > 1) goToPage(currentPage - 1); });
+      if (btnNext) btnNext.addEventListener('click', () => {
+        const total = Math.ceil(filteredCards.length / getItemsPerPage());
+        if (currentPage < total) goToPage(currentPage + 1);
+      });
+      if (pageJump) {
+        pageJump.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') {
+            const num = parseInt(pageJump.value);
+            const total = Math.ceil(filteredCards.length / getItemsPerPage());
+            if (num >= 1 && num <= total) goToPage(num);
+            pageJump.value = '';
+          }
+        });
+      }
+
+      // Window resize → recalculate items per page
+      let resizeTimer: ReturnType<typeof setTimeout>;
+      window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(renderPage, 150);
+      });
+
+      // Type filter
       typeFilterMenu?.querySelectorAll('a').forEach(item => {
         item.addEventListener('click', (e) => {
-            const target = e.currentTarget as HTMLElement;
-            const value = target.dataset.value;
-            const text = target.innerText;
-            
-            if (value) {
-                currentTypeValue = value;
-                // 更新按钮文本
-                const span = typeFilterBtn.querySelector('span');
-                if (span) span.innerText = text;
-                
-                // 更新选中状态样式
-                typeFilterMenu.querySelectorAll('a').forEach(a => a.classList.remove('active', 'bg-primary', 'text-primary-content'));
-                target.classList.add('active', 'bg-primary', 'text-primary-content');
-                
-                // 关闭下拉菜单
-                (document.activeElement as HTMLElement)?.blur();
-
-                filterAndSort();
-            }
+          const target = e.currentTarget as HTMLElement;
+          const value = target.dataset.value;
+          const text = target.innerText;
+          if (value) {
+            currentTypeValue = value;
+            const span = typeFilterBtn.querySelector('span');
+            if (span) span.innerText = text;
+            typeFilterMenu.querySelectorAll('a').forEach(a => a.classList.remove('active', 'bg-primary', 'text-primary-content'));
+            target.classList.add('active', 'bg-primary', 'text-primary-content');
+            (document.activeElement as HTMLElement)?.blur();
+            filterAndSort();
+          }
         });
       });
 
-      // 排序筛选点击事件
+      // Sort filter
       sortFilterMenu?.querySelectorAll('a').forEach(item => {
         item.addEventListener('click', (e) => {
-            const target = e.currentTarget as HTMLElement;
-            const value = target.dataset.value;
-            const text = target.innerText;
-            
-            if (value) {
-                currentSortValue = value;
-                // 更新按钮文本
-                const span = sortFilterBtn.querySelector('span');
-                if (span) span.innerText = text;
-
-                // 更新选中状态样式
-                sortFilterMenu.querySelectorAll('a').forEach(a => a.classList.remove('active', 'bg-primary', 'text-primary-content'));
-                target.classList.add('active', 'bg-primary', 'text-primary-content');
-
-                // 关闭下拉菜单
-                (document.activeElement as HTMLElement)?.blur();
-
-                filterAndSort();
-            }
+          const target = e.currentTarget as HTMLElement;
+          const value = target.dataset.value;
+          const text = target.innerText;
+          if (value) {
+            currentSortValue = value;
+            const span = sortFilterBtn.querySelector('span');
+            if (span) span.innerText = text;
+            sortFilterMenu.querySelectorAll('a').forEach(a => a.classList.remove('active', 'bg-primary', 'text-primary-content'));
+            target.classList.add('active', 'bg-primary', 'text-primary-content');
+            (document.activeElement as HTMLElement)?.blur();
+            filterAndSort();
+          }
         });
       });
-      
-      // 初始排序
+
+      // Initial render
       filterAndSort();
     });
   </script>

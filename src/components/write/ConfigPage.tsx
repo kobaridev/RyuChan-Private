@@ -256,7 +256,7 @@ export function ConfigPage() {
     // --- Playlist CRUD (歌单列表管理 - 管理歌单ID和名称) ---
     const addPlaylistEntry = () => {
         const playlists = [...(parsedConfig?.music?.playlists || [])]
-        const newId = `playlist_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
+        const newId = `__new_${playlists.length}`
         playlists.push({
             id: newId,
             name: '',
@@ -266,6 +266,8 @@ export function ConfigPage() {
         setSelectedPlaylistId(newId)
         toast.success('已添加歌单条目')
     }
+
+    const isTempId = (id: string) => !id || id.startsWith('__')
 
     const removePlaylistEntry = (index: number) => {
         const playlists = [...(parsedConfig?.music?.playlists || [])]
@@ -888,7 +890,7 @@ export function ConfigPage() {
                                                     const isSelected = selectedPlaylistId === item.id
                                                     return (
                                                         <div
-                                                            key={item.id || index}
+                                                            key={index}
                                                             onClick={() => setSelectedPlaylistId(item.id || null)}
                                                             className={`collapse collapse-arrow bg-base-200/50 rounded-xl border cursor-pointer transition-all ${isSelected ? 'border-primary/50 bg-primary/5' : 'border-base-300 hover:border-primary/30'}`}
                                                         >
@@ -901,7 +903,7 @@ export function ConfigPage() {
                                                             <div className="collapse-title text-sm font-medium flex items-center gap-3 pr-10 min-h-0 py-3">
                                                                 <span className={`badge badge-sm font-mono ${isSelected ? 'badge-primary' : ''}`}>{String(index + 1).padStart(2, '0')}</span>
                                                                 <span className="flex-1 truncate">{item.name || '未命名歌单'}</span>
-                                                                <span className="badge badge-xs badge-ghost font-mono text-xs truncate max-w-[100px]">{item.id || '无ID'}</span>
+                                                                <span className="badge badge-xs badge-ghost font-mono text-xs truncate max-w-[100px]">{isTempId(item.id) ? '未设置' : item.id}</span>
                                                             </div>
                                                             <div className="collapse-content">
                                                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2 pb-1">
@@ -910,14 +912,16 @@ export function ConfigPage() {
                                                                         <input type="text" className="input input-sm input-bordered w-full bg-base-100 focus:border-primary"
                                                                             placeholder="例如: 我的最爱"
                                                                             value={item.name || ''}
+                                                                            onClick={e => e.stopPropagation()}
                                                                             onChange={e => updatePlaylistEntry(index, 'name', e.target.value)} />
                                                                     </div>
                                                                     <div className="form-control w-full">
                                                                         <label className="label py-0.5"><span className="label-text text-xs text-base-content/60">网易云歌单 ID</span></label>
                                                                         <input type="text" className="input input-sm input-bordered w-full bg-base-100 focus:border-primary font-mono text-xs"
                                                                             placeholder="例如: 17957187425"
-                                                                            value={item.id || ''}
-                                                                            onChange={e => updatePlaylistEntry(index, 'id', e.target.value)} />
+                                                                            value={isTempId(item.id) ? '' : (item.id || '')}
+                                                                            onClick={e => e.stopPropagation()}
+                                                                            onChange={e => { const newVal = e.target.value || `__new_${index}`; updatePlaylistEntry(index, 'id', newVal); setSelectedPlaylistId(newVal); }} />
                                                                     </div>
                                                                 </div>
                                                                 <div className="flex items-center gap-2 mt-3 pt-2 border-t border-base-300">
