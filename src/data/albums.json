@@ -1,5 +1,27 @@
 [
   {
+    "id": "ba0eb988",
+    "date": "2026-05-15",
+    "event": "狐朋狗友",
+    "title": "搞笑日常",
+    "description": "记录好友的有趣时刻",
+    "icon": "📷",
+    "photos": [
+      {
+        "src": "https://imgbed.904002.xyz/file/blog/album/生活/1755706180351_blog_friends_聚会.jpg",
+        "variant": "9x16",
+        "title": "聚会",
+        "description": "干饭～干饭～"
+      },
+      {
+        "src": "https://imgbed.904002.xyz/file/blog/album/生活/blog_friends_偷感.png",
+        "variant": "1x1",
+        "title": "偷感",
+        "description": "正在进行某种古老的神秘仪式"
+      }
+    ]
+  },
+  {
     "id": "4f7a2b1c",
     "date": "2024-05-20",
     "event": "新世纪福音战士",
