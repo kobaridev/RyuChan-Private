@@ -33,15 +33,15 @@ import LinkCard from "../../components/mdx/LinkCard.astro";
 > - 仓库 **`Clone`** 到本地
 
 **参考视频**
-<div style="width:100%;max-width:1200px;margin:auto">
-  <div style="position:relative;padding-bottom:70%">
-    <iframe
-      src="https://picbed.131714.xyz/blog/SyncUpstream/syncUpstream.mp4"
-     style="position:absolute;top:0;left:0;width:100%;height:100%;border:none"
-      allowfullscreen
-      loading="lazy"
-    ></iframe>
-  </div>
+<div style={{ width: '100%', maxWidth: '1200px', margin: 'auto' }}>
+  <video 
+    src="https://picbed.131714.xyz/blog/SyncUpstream/syncUpstream.mp4" 
+    controls 
+    preload="metadata"
+    style={{ width: '100%', height: 'auto', display: 'block' }}
+  >
+    您的浏览器不支持 video 标签。
+  </video>
 </div>
 
 ## 1. 给仓库加上“上游”
@@ -80,7 +80,7 @@ git fetch upstream
 
 ## 5. 解决冲突（仅限冲突时）
 
-<Collapse title=‘’图文流程’’>
+<Collapse title="图文流程">
 
 1.  打开 VSCode 分支管理 查看存在冲突的文件。 
 2. 找到类似下面的标记：
@@ -107,7 +107,8 @@ git fetch upstream
 ---
 
 ## 6. 推送代码到 GitHub
-<Collapse title=‘’图文流程’’>
+
+<Collapse title="图文流程">
 
 1. 右键 **`main`**
 
