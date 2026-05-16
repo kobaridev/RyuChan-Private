@@ -92,11 +92,6 @@ site:
       href: /friend
       svg: material-symbols:supervisor-account-outline-rounded
       target: _self
-    # - id: about
-    #   text: 关于
-    #   href: /about
-    #   svg: material-symbols:info-outline-rounded
-    #   target: _self
   titleType: image
 anime:
   bilibili:
@@ -109,6 +104,10 @@ music:
     - id: '17933567326'
       name: 我的喜欢
       server: netease
+    - id: zjl
+      name: 周杰伦
+      server: netease
+      type: custom
     - id: '17964946766'
       name: 陶喆
       server: netease
