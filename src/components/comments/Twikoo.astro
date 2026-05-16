@@ -8,49 +8,180 @@ const {
   envId,
   lang = "zh-CN",
 } = Astro.props;
+
+// 判断是否为 Vercel 部署（envId 以 http 开头）
+const isVercel = envId.startsWith('http');
 ---
 
-<div id="tcomment" data-env-id={envId} data-lang={lang}></div>
+<div id="tcomment-container">
+  <!-- Loading Spinner -->
+  <div id="twikoo-loading" class="twikoo-loading">
+    <div class="twikoo-spinner"></div>
+    <p class="twikoo-loading-text">加载评论中...</p>
+  </div>
+  
+  <!-- Comments Container -->
+  <div id="tcomment" data-env-id={envId} data-lang={lang} class="twikoo-content hidden"></div>
+</div>
 
 <script is:inline>
   let twikooLoaded = false;
+  let observer = null;
+  let currentCDNIndex = 0;
 
-  function loadTwikoo() {
+  // CDN 列表，按优先级排序
+  const cdnUrls = [
+    // 优先使用国内 CDN
+    'https://registry.npmmirror.com/twikoo@1.7.9/files/dist/twikoo.min.js',
+    // 备用 CDN
+    'https://cdn.jsdelivr.net/npm/twikoo@1.7.9/dist/twikoo.min.js',
+    'https://s4.zstatic.net/npm/twikoo@1.7.9/dist/twikoo.min.js',
+  ];
+
+  function hideLoading() {
+    const loading = document.getElementById('twikoo-loading');
+    const content = document.getElementById('tcomment');
+    if (loading) loading.style.display = 'none';
+    if (content) content.classList.remove('hidden');
+  }
+
+  function loadTwikooWithCDN() {
     const commentsContainer = document.getElementById('tcomment');
     if (!commentsContainer || twikooLoaded) return;
 
     const envId = commentsContainer.dataset.envId;
     const lang = commentsContainer.dataset.lang;
 
+    // 超出 CDN 列表范围，显示错误
+    if (currentCDNIndex >= cdnUrls.length) {
+      hideLoading();
+      commentsContainer.innerHTML = '<p class="text-center text-gray-500">加载评论失败，请稍后重试。</p>';
+      return;
+    }
+
     const script = document.createElement('script');
-    script.src = 'https://unpkg.com/twikoo@1.7.9/dist/twikoo.all.min.js';
+    script.src = cdnUrls[currentCDNIndex];
     script.async = true;
+    script.crossOrigin = 'anonymous';
+    
     script.onload = () => {
       twikoo.init({
         envId: envId,
         el: '#tcomment',
         lang: lang,
+        path: window.location.pathname,
       });
       twikooLoaded = true;
+      hideLoading();
     };
+    
+    script.onerror = () => {
+      // 当前 CDN 加载失败，尝试下一个
+      currentCDNIndex++;
+      loadTwikooWithCDN();
+    };
+    
     document.body.appendChild(script);
   }
 
+  function loadTwikoo() {
+    loadTwikooWithCDN();
+  }
+
+  function setupLazyLoad() {
+    const container = document.getElementById('tcomment-container');
+    if (!container) return;
+
+    observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !twikooLoaded) {
+            loadTwikoo();
+            observer.disconnect();
+          }
+        });
+      },
+      {
+        rootMargin: '200px',
+        threshold: 0.1,
+      }
+    );
+
+    observer.observe(container);
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    setupLazyLoad();
+  });
+
   document.addEventListener('astro:after-swap', () => {
     twikooLoaded = false;
+    currentCDNIndex = 0;
+    if (observer) observer.disconnect();
     setTimeout(() => {
-      loadTwikoo();
+      setupLazyLoad();
     }, 100);
   });
 
-  document.addEventListener('DOMContentLoaded', () => {
-    loadTwikoo();
+  document.addEventListener('astro:page-load', () => {
+    twikooLoaded = false;
+    currentCDNIndex = 0;
+    if (observer) observer.disconnect();
+    setTimeout(() => {
+      setupLazyLoad();
+    }, 100);
   });
 </script>
 
 <style>
-  #tcomment {
+  #tcomment-container {
     margin-top: 2rem;
     margin-bottom: 2rem;
+  }
+
+  .twikoo-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem;
+    min-height: 150px;
+  }
+
+  .twikoo-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #e5e7eb;
+    border-top-color: #3b82f6;
+    border-radius: 50%;
+    animation: twikoo-spin 1s linear infinite;
+    margin-bottom: 1rem;
+  }
+
+  @keyframes twikoo-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .twikoo-loading-text {
+    color: #6b7280;
+    font-size: 0.875rem;
+    margin: 0;
+  }
+
+  .twikoo-content.hidden {
+    display: none;
+  }
+
+  #tcomment {
+    opacity: 0;
+    animation: twikoo-fade-in 0.3s ease-out forwards;
+  }
+
+  @keyframes twikoo-fade-in {
+    to {
+      opacity: 1;
+    }
   }
 </style>
