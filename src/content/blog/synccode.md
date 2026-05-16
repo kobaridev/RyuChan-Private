@@ -9,12 +9,22 @@ tags:
   - GitGraph
 categories:
   - 教程
+badge: ''
 ---
-> 适用于：  
-> - 用 VSCode 管理代码  
-> - fork 了 `某个项目` 并自己改内容  
-> - 上游更新后，想**保留自己改动**并**同步最新代码**
 
+import Collapse from "../../components/mdx/Collapse.astro";  
+import Info from "../../components/mdx/Info.astro";  
+import Success from "../../components/mdx/Success.astro";  
+import Warning from "../../components/mdx/Warning.astro";  
+import TimeLine from "../../components/mdx/TimeLine.astro";  
+import LinkCard from "../../components/mdx/LinkCard.astro";  
+
+<Info>
+适用于：  
+- 用 VSCode 管理代码  
+- fork 了 `某个项目` 并自己改内容  
+- 上游更新后，想**保留自己改动**并**同步最新代码**
+</Info>
 ---
 
 > 前期准备
@@ -27,7 +37,7 @@ categories:
   <div style="position:relative;padding-bottom:70%">
     <iframe
       src="https://picbed.131714.xyz/blog/SyncUpstream/syncUpstream.mp4"
-      style="position:absolute;top:0;left:0;width:100%;height:100%;border:none"
+     style="position:absolute;top:0;left:0;width:100%;height:100%;border:none"
       allowfullscreen
       loading="lazy"
     ></iframe>
@@ -42,6 +52,7 @@ git remote -v
 ```
 可看到`origin`、`upstream`
 若没有**upstream**则执行如下代码
+
 ```bash
 git remote add upstream https://github.com/YYsuni/2025-blog-public.git
 ```
@@ -69,6 +80,7 @@ git fetch upstream
 
 ## 5. 解决冲突（仅限冲突时）
 
+<Collapse title=‘’图文流程’’>
 1.  打开 VSCode 分支管理 查看存在冲突的文件
 2. 找到类似下面的标记：
 
@@ -88,18 +100,24 @@ git fetch upstream
 
 3. 把标记删掉，保留你想要的内容，**保存文件**。  
 4. 解决冲突后，暂存文件，**`commit`** (点击继续）
+
 ![](https://picbed.131714.xyz/blog/SyncUpstream/sync4.webp)
+</Collapse>
 ---
 
 ## 6. 推送代码到 GitHub
-> 右键 **`main`**
+<Collapse title=‘’图文流程’’>
+1.  右键 **`main`**
+
 ![](https://picbed.131714.xyz/blog/SyncUpstream/sync5.webp)
 
-> Push Branch(推送到远程)
+2. Push Branch(推送到远程)
+
 ![](https://picbed.131714.xyz/blog/SyncUpstream/sync6.webp)
 ![](https://picbed.131714.xyz/blog/SyncUpstream/sync7.webp)
 
-> **`main | origin`** 即推送成功
-![](https://picbed.131714.xyz/blog/SyncUpstream/sync8.webp)
+3. **`main | origin`** 即推送成功
 
-> 至此，便完成了与上游代码的**同步**!
+![](https://picbed.131714.xyz/blog/SyncUpstream/sync8.webp)
+</Collapse>
+<Success>至此，便完成了与上游代码的**同步**!</Success>
