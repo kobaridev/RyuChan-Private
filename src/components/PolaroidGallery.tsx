@@ -54,7 +54,7 @@ const PolaroidGallery = ({ images, event }: PolaroidGalleryProps) => {
         style={{ 
           width: `${totalWidth}px`, 
           height: "190px",
-          marginLeft: `${offsetLeft}px`
+          marginLeft: `${offsetLeft + 12}px`
         }}
       >
         {displayImages.map((image, index) => (

@@ -2,6 +2,7 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { Icon } from "astro-icon/components";
 import { albums } from "../../data/albums";
+import "@fancyapps/ui/dist/fancybox/fancybox.css";
 
 export async function getStaticPaths() {
   return albums.map((album) => ({
@@ -39,14 +40,14 @@ const photos = album?.photos || [];
         <p class="text-lg">暂无照片</p>
       </div>
     ) : (
-      <div class="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
+      <div id="photo-wall-grid" class="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
         {photos.map((photo) => (
           <div class="break-inside-avoid bg-base-100 rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-base-200 group">
             <div class="overflow-hidden rounded-t-3xl">
               <img
                 src={photo.src}
                 alt={photo.title || ''}
-                class="w-full h-auto rounded-t-3xl transform group-hover:scale-105 transition-transform duration-500 ease-out"
+                class="w-full h-auto rounded-t-3xl transform group-hover:scale-105 transition-transform duration-500 ease-out cursor-pointer"
                 loading="lazy"
               />
             </div>
@@ -66,3 +67,44 @@ const photos = album?.photos || [];
     <Icon name="lucide:heart" class="w-12 h-12 text-primary/50" />
   </div>
 </BaseLayout>
+
+<script>
+  import { Fancybox } from "@fancyapps/ui";
+
+  document.addEventListener("astro:page-load", () => {
+    const images = document.querySelectorAll("#photo-wall-grid img");
+
+    images.forEach((img) => {
+      // Skip if already wrapped in a link
+      if (img.closest("a")) return;
+
+      const link = document.createElement("a");
+      link.href = (img as HTMLImageElement).src;
+      link.dataset.fancybox = "gallery";
+      link.dataset.caption = (img as HTMLImageElement).alt || "";
+
+      if (img.parentNode) {
+        img.parentNode.insertBefore(link, img);
+        link.appendChild(img);
+      }
+    });
+
+    Fancybox.bind("[data-fancybox]", {
+      Toolbar: {
+        display: {
+          left: ["infobar"],
+          middle: [
+            "zoomIn",
+            "zoomOut",
+            "toggle1to1",
+            "rotateCCW",
+            "rotateCW",
+            "flipX",
+            "flipY",
+          ],
+          right: ["slideshow", "thumbs", "close"],
+        },
+      },
+    } as any);
+  });
+</script>
