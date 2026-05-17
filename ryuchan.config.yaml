@@ -4,7 +4,7 @@ site:
   title_type: image
   description: 🌸 轻盈、优雅、纯净 —— 用文字与图片记录生活与创意
   language: zh
-  favicon: https://hub.131714.xyz/favicon.png
+  favicon: /favicon.ico
   theme:
     light: valentine
     dark: night
@@ -165,6 +165,8 @@ user:
   site: https://hub.131714.xyz
   avatar: /profile.png
   title_image: /logo.png
+  qr_wechat: /WeChat.jpg
+  qr_alipay: /Alipay.jpg
   sidebar:
     social:
       - href: https://github.com/kobaridev
@@ -230,5 +232,4 @@ comments:
     reaction: false
     pageview: false
   twikoo:
-    envId: https://twikoo.131714.xyz
-    lang: zh-CN
+    envId: https://twikoo.131714.xyz/

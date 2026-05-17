@@ -1,6 +1,14 @@
 {
     "songs": [
         {
+            "title": "喜欢",
+            "artist": "阿肆",
+            "cover": "https://163.hyc.moe?server=netease&type=pic&id=109951173049150195",
+            "url": "https://163.hyc.moe?server=netease&type=url&id=526464145&br=320",
+            "lrc": "https://163.hyc.moe?server=netease&type=lrc&id=526464145&format=lrc&trans=true",
+            "duration": "04:10"
+        },
+        {
             "title": "STYX HELIX",
             "artist": "MYTH & ROID",
             "cover": "https://163.hyc.moe?server=netease&type=pic&id=109951171350916152",
@@ -399,6 +407,14 @@
             "url": "https://163.hyc.moe?server=netease&type=url&id=28151022&br=320",
             "lrc": "https://163.hyc.moe?server=netease&type=lrc&id=28151022&format=lrc&trans=true",
             "duration": "06:09"
+        },
+        {
+            "artist": "周杰伦",
+            "cover": "https://y.qq.com/music/photo_new/T002R300x300M000000MkMni19ClKG_5.jpg?max_age=2592000",
+            "duration": "04:29",
+            "lrc": "https://imgbed.904002.xyz/file/music/歌词/周杰伦/晴天.lrc",
+            "title": "晴天",
+            "url": "https://music1.904002.xyz/%E5%91%A8%E6%9D%B0%E4%BC%A6/晴天.flac"
         },
         {
             "title": "爱我还是他",
@@ -6434,7 +6450,8 @@
         }
     ],
     "playlistCounts": {
-        "17933567326": 50,
+        "17933567326": 51,
+        "zhoujielun": 1,
         "17964946766": 50,
         "17957187425": 50,
         "17956985703": 50,
@@ -6452,6 +6469,14 @@
     },
     "playlistSongs": {
         "17933567326": [
+            {
+                "title": "喜欢",
+                "artist": "阿肆",
+                "cover": "https://163.hyc.moe?server=netease&type=pic&id=109951173049150195",
+                "url": "https://163.hyc.moe?server=netease&type=url&id=526464145&br=320",
+                "lrc": "https://163.hyc.moe?server=netease&type=lrc&id=526464145&format=lrc&trans=true",
+                "duration": "04:10"
+            },
             {
                 "title": "STYX HELIX",
                 "artist": "MYTH & ROID",
@@ -6851,6 +6876,16 @@
                 "url": "https://163.hyc.moe?server=netease&type=url&id=28151022&br=320",
                 "lrc": "https://163.hyc.moe?server=netease&type=lrc&id=28151022&format=lrc&trans=true",
                 "duration": "06:09"
+            }
+        ],
+        "zhoujielun": [
+            {
+                "artist": "周杰伦",
+                "cover": "https://y.qq.com/music/photo_new/T002R300x300M000000MkMni19ClKG_5.jpg?max_age=2592000",
+                "duration": "04:29",
+                "lrc": "https://imgbed.904002.xyz/file/music/歌词/周杰伦/晴天.lrc",
+                "title": "晴天",
+                "url": "https://music1.904002.xyz/%E5%91%A8%E6%9D%B0%E4%BC%A6/晴天.flac"
             }
         ],
         "17964946766": [

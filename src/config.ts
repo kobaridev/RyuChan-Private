@@ -22,7 +22,7 @@ export const SITE_TITLE_TYPE = config.site.title_type || config.site.titleType |
 export const SITE_TITLE_IMAGE = config.user?.title_image || config.user?.titleImage || '';
 export const SITE_DESCRIPTION = config.site.description;
 export const SITE_LANGUAGE = config.site.language;
-export const SITE_FAVICON = config.site.favicon;
+export const SITE_FAVICON = config.site.favicon || '/favicon.ico';
 export const SITE_THEME = config.site.theme;
 export const DATE_FORMAT = config.site.date_format;
 
@@ -55,6 +55,8 @@ export const USER_NAME = config.user.name;
 export const USER_DESCRIPTION = config.user.description;
 export const USER_SITE = config.user.site;
 export const USER_AVATAR = config.user.avatar;
+export const USER_QR_WECHAT = config.user.qr_wechat || '/WeChat.jpg';
+export const USER_QR_ALIPAY = config.user.qr_alipay || '/Alipay.jpg';
 
 // 社交图标配置（侧边栏和页脚）
 export const USER_SIDEBAR_SOCIAL_ICONS = config.user.sidebar.social;
