@@ -146,7 +146,7 @@ export default function PhotoWallGrid({ initialAlbum, event }: Props) {
                       <div className="min-h-[88px]">
                         <h3 className="text-xl font-bold mb-2">{photo.title}</h3>
                         {photo.description && (
-                          <p className="text-base-content/70 text-sm">{photo.description}</p>
+                          <p className="text-base-content/85 text-base font-medium leading-relaxed">{photo.description}</p>
                         )}
                       </div>
 
