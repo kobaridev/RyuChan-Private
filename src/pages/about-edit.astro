@@ -1,0 +1,12 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro'
+import AboutEditCode from '@/components/write/AboutEditCode'
+// @ts-ignore
+import aboutRaw from '@/pages/about.astro?raw'
+
+const title = '编辑关于页代码'
+---
+
+<BaseLayout title={title} isIndexed={false} showSidebar={false} showBanner={false}>
+  <AboutEditCode client:only="react" initialCode={aboutRaw} />
+</BaseLayout>
