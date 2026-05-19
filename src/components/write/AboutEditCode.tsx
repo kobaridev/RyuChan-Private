@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo, useEffect, useRef, useCallback } from 'react'
+import { useState, useMemo, useEffect, useRef } from 'react'
 import { Toaster, toast } from 'sonner'
 import { useAuthStore } from './hooks/use-auth'
 import { saveAboutCodeToGitHub } from './services/about-service'
@@ -14,7 +14,6 @@ type Props = {
 export default function AboutEditCode({ initialCode }: Props) {
   const { isAuth, setPrivateKey } = useAuthStore()
   const keyInputRef = useRef<HTMLInputElement>(null)
-  const textareaRef = useRef<HTMLTextAreaElement>(null)
 
   const { prefix, suffix, innerContent } = useMemo(() => {
     const match = initialCode.match(/([\s\S]*?<Card[^>]*>\s*)([\s\S]*?)(\s*<\/Card>[\s\S]*)/)
@@ -30,18 +29,6 @@ export default function AboutEditCode({ initialCode }: Props) {
 
   const [code, setCode] = useState(innerContent)
   const [saving, setSaving] = useState(false)
-
-  const autoResize = useCallback(() => {
-    const el = textareaRef.current
-    if (el) {
-      el.style.height = '999999px'
-      el.style.height = Math.max(el.scrollHeight, 600) + 'px'
-    }
-  }, [])
-
-  useEffect(() => {
-    autoResize()
-  }, [code, autoResize])
 
   const handleImportKey = () => {
     keyInputRef.current?.click()
@@ -91,7 +78,7 @@ export default function AboutEditCode({ initialCode }: Props) {
           if (e.currentTarget) e.currentTarget.value = ''
         }}
       />
-      <div className="flex flex-col md:flex-row h-full w-full justify-center px-4 md:px-6 pt-12 pb-32">
+      <div className="flex flex-col md:flex-row h-full w-full justify-center px-4 md:px-6 pt-6 pb-12">
         <div className="flex-1 max-w-4xl w-full mx-auto relative group bg-base-100 rounded-2xl shadow-lg p-6 md:p-10 border border-base-200">
           <div className="flex items-center justify-between mb-6 pb-6 border-b border-base-200/50">
             <div className="flex items-center">
@@ -131,11 +118,10 @@ export default function AboutEditCode({ initialCode }: Props) {
           </div>
           <div className="bg-base-200/40 border border-base-200 rounded-xl p-4 md:p-6 transition-colors focus-within:border-primary/30 focus-within:bg-base-200/60 shadow-inner">
             <textarea
-              ref={textareaRef}
               value={code}
               onChange={(e) => setCode(e.target.value)}
               placeholder="在此编辑卡片内部内容..."
-              className="w-full min-h-[600px] resize-none overflow-hidden leading-relaxed focus:outline-none focus:ring-0 bg-transparent py-2 text-base md:text-[1.05rem] font-semibold font-sans whitespace-pre-wrap break-words"
+              className="w-full h-[650px] resize-none rounded-xl bg-transparent p-2 text-lg font-medium leading-relaxed focus:outline-none"
               spellCheck={false}
             />
           </div>
