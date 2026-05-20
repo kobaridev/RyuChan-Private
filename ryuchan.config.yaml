@@ -101,7 +101,7 @@ anime:
     listId: '8556173'
 music:
   playlists:
-    - id: '17933567326'
+    - id: '10116198879'
       name: 我的喜欢
       server: netease
     - id: zjl
@@ -147,10 +147,6 @@ music:
     - id: '17966019560'
       name: 告五人
       server: netease
-    - id: '14068521933'
-      name: R&B
-      server: netease
-      type: id
 github:
   owner: kobaridev
   repo: RyuChan-Private
@@ -158,7 +154,7 @@ github:
   appId: 在部署端配置环境变量
   encryptKey: wudishiduomejimo
 umami:
-  enable: true
+  enable: false
   baseUrl: https://umami.131714.xyz
   shareId: d62IQPHZDlNtHfC6
   websiteId: 01923022-a812-4369-b896-862fa37d32b1
