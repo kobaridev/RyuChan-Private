@@ -147,6 +147,10 @@ music:
     - id: '17966019560'
       name: 告五人
       server: netease
+    - id: '14068521933'
+      name: R&B
+      server: netease
+      type: id
 github:
   owner: kobaridev
   repo: RyuChan-Private
