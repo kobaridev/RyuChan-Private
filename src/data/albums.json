@@ -170,5 +170,69 @@
         "description": "Eight"
       }
     ]
+  },
+  {
+    "id": "3db11598",
+    "date": "2026-05-29",
+    "event": "向自由",
+    "title": "生活点滴",
+    "description": "记录生活、记录自己",
+    "icon": "📷",
+    "photos": [
+      {
+        "src": "https://img.131714.xyz/file/blog/Albums/向自由/Hello呀.webp",
+        "variant": "4x3",
+        "title": "Hello呀",
+        "description": "路边偶然看到，便记录下~"
+      },
+      {
+        "src": "https://img.131714.xyz/file/blog/Albums/向自由/操场.webp",
+        "variant": "4x5",
+        "title": "操场",
+        "description": "体育课突发奇想，拍一张~"
+      },
+      {
+        "src": "https://img.131714.xyz/file/blog/Albums/向自由/步行街路牌.webp",
+        "variant": "4x3",
+        "title": "步行街路牌",
+        "description": "上海步行街"
+      },
+      {
+        "src": "https://img.131714.xyz/file/blog/Albums/向自由/不一样的晚霞.webp",
+        "variant": "1x1",
+        "title": "不一样的晚霞",
+        "description": "老家去街上的路上拍的~"
+      },
+      {
+        "src": "https://img.131714.xyz/file/blog/Albums/向自由/栈桥风景.webp",
+        "variant": "1x1",
+        "title": "栈桥风景",
+        "description": "在青岛栈桥上拍的~"
+      },
+      {
+        "src": "https://img.131714.xyz/file/blog/Albums/向自由/沾点喜气.webp",
+        "variant": "4x5",
+        "title": "沾点喜气",
+        "description": "邻居结婚给的"
+      },
+      {
+        "src": "https://img.131714.xyz/file/blog/Albums/向自由/在路上.webp",
+        "variant": "4x3",
+        "title": "在路上",
+        "description": "放假回家喽~"
+      },
+      {
+        "src": "https://img.131714.xyz/file/blog/Albums/向自由/早八小路.webp",
+        "variant": "4x5",
+        "title": "早八小路",
+        "description": "上课的路上~"
+      },
+      {
+        "src": "https://img.131714.xyz/file/blog/Albums/向自由/包饺子.webp",
+        "variant": "9x16",
+        "title": "包饺子",
+        "description": "自己包的，嘿嘿"
+      }
+    ]
   }
 ]
