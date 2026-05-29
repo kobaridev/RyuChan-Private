@@ -180,6 +180,185 @@
     "icon": "📷",
     "photos": [
       {
+        "src": "https://img.131714.xyz/file/blog/Albums/向自由/小过山车.webp",
+        "variant": "1x1",
+        "title": "小过山车",
+        "description": "欢乐谷，应该是小朋友专属了~"
+      },
+      {
+        "src": "https://img.131714.xyz/file/blog/Albums/向自由/小黑咖.webp",
+        "variant": "1x1",
+        "title": "小黑咖",
+        "description": "不知什么时候，渐渐喜欢上喝黑咖了，想来应该是之前减肥慢慢养成的习惯吧"
+      },
+      {
+        "src": "https://img.131714.xyz/file/blog/Albums/向自由/武康大楼.webp",
+        "variant": "1x1",
+        "title": "武康大楼",
+        "description": "百年欧式建筑，一栋满载故事的“城市巨轮”"
+      },
+      {
+        "src": "https://img.131714.xyz/file/blog/Albums/向自由/五颜六色的灯笼.webp",
+        "variant": "1x1",
+        "title": "五颜六色的灯笼",
+        "description": "徐州乐园，晚上离场时，灯笼点上，炫彩夺目~"
+      },
+      {
+        "src": "https://img.131714.xyz/file/blog/Albums/向自由/万岁山三打祝家庄.webp",
+        "variant": "1x1",
+        "title": "万岁山三打祝家庄",
+        "description": "开封万岁上观看表演~"
+      },
+      {
+        "src": "https://img.131714.xyz/file/blog/Albums/向自由/五四广场.webp",
+        "variant": "1x1",
+        "title": "五四广场",
+        "description": "青岛五四广场，夜晚的灯光秀不错~"
+      },
+      {
+        "src": "https://img.131714.xyz/file/blog/Albums/向自由/文秀山音乐节.webp",
+        "variant": "1x1",
+        "title": "文秀山音乐节",
+        "description": "23年的某个傍晚，不错不错~"
+      },
+      {
+        "src": "https://img.131714.xyz/file/blog/Albums/向自由/无限城决战.webp",
+        "variant": "1x1",
+        "title": "无限城决战",
+        "description": "决战走起~"
+      },
+      {
+        "src": "https://img.131714.xyz/file/blog/Albums/向自由/文秀山.webp",
+        "variant": "1x1",
+        "title": "文秀山",
+        "description": "某个夏日，上课的路上，拍下这张照片，也算是对校园的一种记录留存吧"
+      },
+      {
+        "src": "https://img.131714.xyz/file/blog/Albums/向自由/通天阁.webp",
+        "variant": "1x1",
+        "title": "通天阁",
+        "description": "徐州宝莲寺~"
+      },
+      {
+        "src": "https://img.131714.xyz/file/blog/Albums/向自由/天主教堂.webp",
+        "variant": "1x1",
+        "title": "天主教堂",
+        "description": "一开始，在塔下没有好的角度，走了一段路，路过一所小学，角度不错，好机位一个，嘿嘿~"
+      },
+      {
+        "src": "https://img.131714.xyz/file/blog/Albums/向自由/天桥与车流.webp",
+        "variant": "1x1",
+        "title": "天桥与车流",
+        "description": "城市的快节奏~"
+      },
+      {
+        "src": "https://img.131714.xyz/file/blog/Albums/向自由/唐山舰.webp",
+        "variant": "4x3",
+        "title": "唐山舰",
+        "description": "052D驱逐舰，舷号122"
+      },
+      {
+        "src": "https://img.131714.xyz/file/blog/Albums/向自由/泰山.webp",
+        "variant": "1x1",
+        "title": "泰山",
+        "description": "夜爬泰山的第二天早晨，下山~"
+      },
+      {
+        "src": "https://img.131714.xyz/file/blog/Albums/向自由/泰山云海.webp",
+        "variant": "1x1",
+        "title": "泰山云海",
+        "description": "虽然没有看到日出比较遗憾，但是云海貌似也不错"
+      },
+      {
+        "src": "https://img.131714.xyz/file/blog/Albums/向自由/嵩山一览.webp",
+        "variant": "1x1",
+        "title": "嵩山一览",
+        "description": "登顶的路上，记录一下嵩山的山体特征性~"
+      },
+      {
+        "src": "https://img.131714.xyz/file/blog/Albums/向自由/台球.webp",
+        "variant": "1x1",
+        "title": "台球",
+        "description": "应该是某次期末考试，聚餐后的娱乐项目，嘿嘿~"
+      },
+      {
+        "src": "https://img.131714.xyz/file/blog/Albums/向自由/嵩山石碑.webp",
+        "variant": "1x1",
+        "title": "嵩山石碑",
+        "description": "记录一下，嵩山登山口的大石碑~"
+      },
+      {
+        "src": "https://img.131714.xyz/file/blog/Albums/向自由/双倍刮刮乐.webp",
+        "variant": "4x5",
+        "title": "双倍刮刮乐",
+        "description": "徐州，刮刮乐，两张中一张，但是总的来说 ，也是提款了10元大米，嘿嘿"
+      },
+      {
+        "src": "https://img.131714.xyz/file/blog/Albums/向自由/嵩山偶遇小咪.webp",
+        "variant": "9x16",
+        "title": "嵩山偶遇小咪",
+        "description": "登嵩山，遇到一个可爱的小猫咪🐈"
+      },
+      {
+        "src": "https://img.131714.xyz/file/blog/Albums/向自由/上海梧桐树.webp",
+        "variant": "1x1",
+        "title": "上海梧桐树",
+        "description": "算是上海的一个特色"
+      },
+      {
+        "src": "https://img.131714.xyz/file/blog/Albums/向自由/石老人海水浴场.webp",
+        "variant": "1x1",
+        "title": "石老人海水浴场",
+        "description": "石老人的朝霞真的夯爆了"
+      },
+      {
+        "src": "https://img.131714.xyz/file/blog/Albums/向自由/上海晚霞.webp",
+        "variant": "4x3",
+        "title": "上海晚霞",
+        "description": "路灯与晚霞，美丽的风景洗去一身疲惫"
+      },
+      {
+        "src": "https://img.131714.xyz/file/blog/Albums/向自由/上海街景.webp",
+        "variant": "1x1",
+        "title": "上海街景",
+        "description": "打卡老友记主题餐厅旁边的小桥上看到的无敌机位~"
+      },
+      {
+        "src": "https://img.131714.xyz/file/blog/Albums/向自由/上海外滩.webp",
+        "variant": "4x3",
+        "title": "上海外滩",
+        "description": "上海标志性建筑都在这了，哈哈"
+      },
+      {
+        "src": "https://img.131714.xyz/file/blog/Albums/向自由/上海欢乐谷.webp",
+        "variant": "1x1",
+        "title": "上海欢乐谷",
+        "description": "欢乐~欢乐、绝顶雄风好玩。"
+      },
+      {
+        "src": "https://img.131714.xyz/file/blog/Albums/向自由/商师小蛋糕.webp",
+        "variant": "1x1",
+        "title": "商师小蛋糕"
+      },
+      {
+        "src": "https://img.131714.xyz/file/blog/Albums/向自由/丧彪.webp",
+        "variant": "9x16",
+        "title": "丧彪",
+        "description": "犀利、王者的眼神，哈哈"
+      },
+      {
+        "src": "https://img.131714.xyz/file/blog/Albums/向自由/青岛街景.webp",
+        "variant": "1x1",
+        "title": "青岛街景",
+        "description": "记录青岛这座城市的街景，还是很怀念。"
+      },
+      {
+        "src": "https://img.131714.xyz/file/blog/Albums/向自由/情人坝晚霞.webp",
+        "variant": "4x3",
+        "title": "情人坝晚霞",
+        "description": "坐着看海、看日落、看晚霞，真的很惬意，怀念呀！"
+      },
+      {
         "src": "https://img.131714.xyz/file/blog/Albums/向自由/青岛与茶姬.webp",
         "variant": "4x5",
         "title": "青岛与茶姬",
@@ -199,7 +378,7 @@
       },
       {
         "src": "https://img.131714.xyz/file/blog/Albums/向自由/排队糊辣汤.webp",
-        "variant": "1x1",
+        "variant": "9x16",
         "title": "排队糊辣汤",
         "description": "开封逍遥镇胡辣汤，不得不说，真好喝~"
       },
@@ -235,7 +414,7 @@
       },
       {
         "src": "https://img.131714.xyz/file/blog/Albums/向自由/溜鸭子？.webp",
-        "variant": "1x1",
+        "variant": "4x5",
         "title": "溜鸭子？",
         "description": "还有溜鸭子🦆的吗？第一次见，哈哈😄"
       },
