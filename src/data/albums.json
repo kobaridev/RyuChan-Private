@@ -8,6 +8,12 @@
     "icon": "📷",
     "photos": [
       {
+        "src": "https://img.131714.xyz/file/blog/Albums/向自由/商师音乐节.webp",
+        "variant": "4x3",
+        "title": "商师音乐节",
+        "description": "也算是大学的最后一次校内音乐节了~"
+      },
+      {
         "src": "https://img.131714.xyz/file/blog/Albums/向自由/街拍.webp",
         "variant": "9x16",
         "title": "街拍",
@@ -670,13 +676,19 @@
     "icon": "📷",
     "photos": [
       {
-        "src": "https://imgbed.904002.xyz/file/blog/album/生活/1755706180351_blog_friends_聚会.jpg",
+        "src": "https://img.131714.xyz/file/blog/Albums/亲友集/寝室聚餐.webp",
+        "variant": "9x16",
+        "title": "寝室聚餐",
+        "description": "答辩完，小聚一下~"
+      },
+      {
+        "src": "https://img.131714.xyz/file/blog/Albums/亲友集/聚会.webp",
         "variant": "9x16",
         "title": "聚会",
         "description": "干饭～干饭～"
       },
       {
-        "src": "https://imgbed.904002.xyz/file/blog/album/生活/blog_friends_偷感.png",
+        "src": "https://img.131714.xyz/file/blog/Albums/亲友集/偷感.webp",
         "variant": "1x1",
         "title": "偷感",
         "description": "正在进行某种古老的神秘仪式"
