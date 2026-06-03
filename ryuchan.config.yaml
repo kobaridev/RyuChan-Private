@@ -108,15 +108,6 @@ music:
       name: 周杰伦
       server: netease
       type: custom
-    - id: '17964946766'
-      name: 陶喆
-      server: netease
-    - id: '17957187425'
-      name: 方大同
-      server: netease
-    - id: '17956985703'
-      name: G.E.M.邓紫棋
-      server: netease
     - id: '17957136689'
       name: 林俊杰
       server: netease
@@ -206,7 +197,7 @@ user:
         svg: ri:telegram-line
 comments:
   enable: true
-  type: twikoo
+  type: waline
   giscus:
     repo: kobaridev/gsc
     repoId: R_kgDOPTM-mA

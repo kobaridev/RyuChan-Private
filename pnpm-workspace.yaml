@@ -1,0 +1,6 @@
+allowBuilds:
+  esbuild: false
+  sharp: false
+  swup: set this to true or false
+  unrs-resolver: false
+  workerd: false

@@ -1,11 +1,11 @@
 ---
 import "../styles/global.scss";
-import "/node_modules/katex/dist/katex.min.css";
 import type { HeaderProps } from "@interfaces/data";
+import { SITE_TITLE_IMAGE, SITE_TITLE_TYPE, USER_AVATAR } from "../config";
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
-const { title, description, favicon, image } = Astro.props as HeaderProps;
+const { title, description, favicon, image, needsKatex = false } = Astro.props as HeaderProps & { needsKatex?: boolean };
 ---
 
 <meta charset="utf-8" />
@@ -37,10 +37,23 @@ const { title, description, favicon, image } = Astro.props as HeaderProps;
 
 <link rel="canonical" href={canonicalURL.toString()} />
 
+<!-- DNS Prefetch for external domains -->
+<link rel="dns-prefetch" href="https://umami.131714.xyz" />
+<link rel="dns-prefetch" href="https://t.alcy.cc" />
+
 <!-- Google Fonts -->
+<link rel="dns-prefetch" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link
   href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=M+PLUS+Rounded+1c:wght@400;500;700&family=Nunito:wght@400;600;700&family=ZCOOL+KuaiLe&display=swap"
   rel="stylesheet"
 />
+
+{needsKatex && <link rel="stylesheet" href="/node_modules/katex/dist/katex.min.css" />}
+
+<!-- Preload critical above-fold images -->
+{SITE_TITLE_TYPE === 'image' && SITE_TITLE_IMAGE && (
+  <link rel="preload" as="image" href={SITE_TITLE_IMAGE} />
+)}
+<link rel="preload" as="image" href={USER_AVATAR} />

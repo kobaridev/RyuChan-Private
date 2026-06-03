@@ -32,7 +32,7 @@ const typedMenu = SITE_MENU as MenuItem[];
 ---      
       
 <!-- 桌面端透明导航栏 -->      
-<nav class="fixed top-0 left-0 right-0 z-50 hidden md:block transition-opacity duration-500 opacity-100 pointer-events-auto" id="navbar-desktop">      
+<nav class="fixed top-0 left-0 right-0 z-50 hidden md:block transition-opacity duration-300 ease-out opacity-100 pointer-events-auto" id="navbar-desktop" style="will-change: opacity; transform: translateZ(0); backface-visibility: hidden;">      
   <div class="max-w-blog mx-auto px-4">      
     <!-- 透明背景，添加毛玻璃效果 -->      
     <div id="navbar-bg" class="bg-base-100/80 backdrop-blur-xl border border-white/20 px-6 py-0 rounded-full shadow-2xl transition-colors duration-300">
@@ -104,7 +104,7 @@ const typedMenu = SITE_MENU as MenuItem[];
 </nav>      
       
 <!-- 移动端顶部悬浮导航栏 -->
-<nav id="navbar-mobile" class="fixed top-0 left-0 right-0 z-50 md:hidden transition-all duration-500 ease-in-out">
+<nav id="navbar-mobile" class="fixed top-0 left-0 right-0 z-50 md:hidden transition-all duration-300 ease-out" style="will-change: transform, opacity; transform: translateZ(0); backface-visibility: hidden;">
   <div class="max-w-blog mx-auto px-2 pt-2">
     <div class="flex items-center justify-between px-4 py-3 bg-base-100/80 backdrop-blur-xl rounded-full shadow-2xl border border-white/20 w-full">
       <!-- 移动端头像 - 点击跳到首页 -->
@@ -175,6 +175,9 @@ const typedMenu = SITE_MENU as MenuItem[];
   document.addEventListener("astro:page-load", () => {
     // 导航栏淡入淡出逻辑
     let lastScrollY = window.scrollY;
+    let ticking = false;
+    const SCROLL_THRESHOLD = 80; // 滚动阈值，需要滚动超过这个距离才触发隐藏/显示
+    const BANNER_HEIGHT = 150; // Banner 高度，超过后开始判断滚动方向
     const navbarDesktop = document.getElementById("navbar-desktop");
     const navbarMobile = document.getElementById("navbar-mobile");
     const navbarBg = document.getElementById("navbar-bg");
@@ -182,15 +185,24 @@ const typedMenu = SITE_MENU as MenuItem[];
 
     function handleScroll() {
       const currentScrollY = window.scrollY;
-      const isScrollingDown = currentScrollY > lastScrollY && currentScrollY > 50;
-      const isScrolledPastBanner = currentScrollY > 100; // 假设 Banner 高度至少 100px，或者根据实际情况调整
+      const scrollDelta = Math.abs(currentScrollY - lastScrollY);
+      
+      // 只有滚动距离超过阈值才处理，防止微小滚动导致的抖动
+      if (scrollDelta < 5) {
+        ticking = false;
+        return;
+      }
+
+      // 判断滚动方向：只有超过 Banner 高度后才开始隐藏导航栏
+      const isScrollingDown = currentScrollY > lastScrollY && currentScrollY > BANNER_HEIGHT;
+      const isScrollingUp = currentScrollY < lastScrollY;
 
       // 桌面端处理
       if (navbarDesktop) {
-        if (isScrollingDown) {
+        if (isScrollingDown && currentScrollY - lastScrollY > SCROLL_THRESHOLD) {
           navbarDesktop.classList.add("opacity-0", "pointer-events-none");
           navbarDesktop.classList.remove("opacity-100", "pointer-events-auto");
-        } else {
+        } else if (isScrollingUp) {
           navbarDesktop.classList.remove("opacity-0", "pointer-events-none");
           navbarDesktop.classList.add("opacity-100", "pointer-events-auto");
         }
@@ -198,28 +210,25 @@ const typedMenu = SITE_MENU as MenuItem[];
 
       // 移动端处理
       if (navbarMobile) {
-        if (isScrollingDown) {
+        if (isScrollingDown && currentScrollY - lastScrollY > SCROLL_THRESHOLD) {
           // 向下滑动隐藏：向上平移并透明
           navbarMobile.classList.add("-translate-y-32", "opacity-0", "pointer-events-none");
-        } else {
+        } else if (isScrollingUp) {
           // 向上滑动显示：恢复原位
           navbarMobile.classList.remove("-translate-y-32", "opacity-0", "pointer-events-none");
         }
       }
 
       lastScrollY = currentScrollY;
+      ticking = false;
     }
 
-    let ticking = false;
     window.addEventListener("scroll", () => {
       if (!ticking) {
-        window.requestAnimationFrame(() => {
-          handleScroll();
-          ticking = false;
-        });
         ticking = true;
+        window.requestAnimationFrame(handleScroll);
       }
-    });
+    }, { passive: true });
     
     // 初始化执行一次以设置正确状态
     handleScroll();

@@ -49,6 +49,8 @@ const displayDate = blog.data.pubDate
   ? dayjs(blog.data.pubDate).format(DATE_FORMAT)
   : "";
 const url = new URL(`/blog/${blog.slug}`, Astro.url.origin);
+// 检测文章是否包含数学公式（KaTeX），仅在需要时加载 katex CSS
+const needsKatex = blog.body?.includes("$$") ?? false;
 ---
 
 <BaseLayout
@@ -57,6 +59,7 @@ const url = new URL(`/blog/${blog.slug}`, Astro.url.origin);
   headings={headings}
   showTOC={true}
   isPostPage={true}
+  needsKatex={needsKatex}
 >
   <MainCard
     title={blog.data.title}

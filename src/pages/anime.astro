@@ -6,110 +6,111 @@ import { TMDB_CONFIG, BILIBILI_CONFIG } from "@config";
 import * as fs from "node:fs";
 import * as path from "node:path";
 
-// 追番数据处理
 const TMDB_IMG = "https://image.tmdb.org/t/p/w500";
-
 const TMDB_API_KEY = TMDB_CONFIG?.apiKey || import.meta.env.TMDB_API_KEY;
 const TMDB_LIST_ID = TMDB_CONFIG?.listId || "8556173";
+const BILIBILI_UID = BILIBILI_CONFIG?.uid;
 
-// 1. 尝试读取本地数据作为默认值
+const fetchWithTimeout = async (url: string, options: any = {}, timeout = 10000) => {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), timeout);
+  try {
+    return await fetch(url, { ...options, signal: controller.signal });
+  } finally {
+    clearTimeout(timeoutId);
+  }
+};
+
 let animeData: any[] = [];
 try {
   const localPath = path.resolve("public/anime-list.json");
   if (fs.existsSync(localPath)) {
-    const fileContent = fs.readFileSync(localPath, "utf-8");
-    animeData = JSON.parse(fileContent);
+    animeData = JSON.parse(fs.readFileSync(localPath, "utf-8"));
   }
-} catch (e) {
+} catch {
   console.warn("Local anime-list.json not found or invalid.");
 }
 
-// 2. 如果配置了 API Key，尝试从 TMDB 获取最新数据
-if (TMDB_API_KEY) {
+// 并行获取 TMDB 和 Bilibili 数据
+let bilibiliItems: any[] = [];
+if (TMDB_API_KEY || BILIBILI_UID) {
+  const [tmdbResult, biliResult] = await Promise.all([
+    TMDB_API_KEY ? fetchTMDB() : Promise.resolve([]),
+    BILIBILI_UID ? fetchBilibili() : Promise.resolve([])
+  ]);
+  if (tmdbResult.length > 0) animeData = tmdbResult;
+  bilibiliItems = biliResult;
+}
+
+async function fetchTMDB(): Promise<any[]> {
+  console.log(`Fetching TMDB list: ${TMDB_LIST_ID}...`);
   try {
-    console.log(`Fetching TMDB list: ${TMDB_LIST_ID}...`);
+    const res = await fetchWithTimeout(
+      `https://api.themoviedb.org/3/list/${TMDB_LIST_ID}?api_key=${TMDB_API_KEY}&language=zh-CN&page=1`,
+      {},
+      10000
+    );
     
-    // 第一次请求获取总页数
-    const firstResponse = await fetch(`https://api.themoviedb.org/3/list/${TMDB_LIST_ID}?api_key=${TMDB_API_KEY}&language=zh-CN&page=1`);
+    if (!res.ok) {
+      console.error(`TMDB request failed: ${res.status}`);
+      return [];
+    }
     
-    if (firstResponse.ok) {
-      const firstData = await firstResponse.json();
-      const totalPages = firstData.total_pages || 1;
+    const data = await res.json();
+    const totalPages = data.total_pages || 1;
+    let allItems = [...(data.items || [])];
+    
+    if (totalPages > 1) {
+      const promises = Array.from({ length: totalPages - 1 }, (_, i) =>
+        fetchWithTimeout(
+          `https://api.themoviedb.org/3/list/${TMDB_LIST_ID}?api_key=${TMDB_API_KEY}&language=zh-CN&page=${i + 2}`,
+          {},
+          10000
+        )
+          .then(r => r.json())
+          .then(d => d.items || [])
+          .catch(() => [])
+      );
       
-      // 收集所有页面的数据
-      let allItems = [...(firstData.items || [])];
-      
-      // 如果有多页，并发请求剩余页面
-      if (totalPages > 1) {
-        const promises = [];
-        for (let page = 2; page <= totalPages; page++) {
-          promises.push(
-            fetch(`https://api.themoviedb.org/3/list/${TMDB_LIST_ID}?api_key=${TMDB_API_KEY}&language=zh-CN&page=${page}`)
-              .then(res => res.json())
-              .then(data => data.items || [])
-          );
-        }
-        
-        const remainingItems = await Promise.all(promises);
-        remainingItems.forEach(items => allItems.push(...items));
-      }
-      
-      // 构造符合本地结构的数据（数组包裹一个对象，对象包含 items）
-      animeData = [{
-        ...firstData,
-        items: allItems
-      }];
-      
-      console.log(`Successfully fetched ${allItems.length} items from TMDB (Total pages: ${totalPages}).`);
-    } else {
-      console.error(`Failed to fetch TMDB list: ${firstResponse.status} ${firstResponse.statusText}`);
+      const results = await Promise.all(promises);
+      results.forEach(items => allItems.push(...items));
     }
-  } catch (error: any) {
-    console.error("Error fetching TMDB list:", error.message);
-    if (error.cause?.code === 'UND_ERR_CONNECT_TIMEOUT' || error.message.includes('fetch failed')) {
-      console.warn("\n[提示] TMDB API 连接失败，这通常是因为网络问题（中国大陆无法直连）。");
-      console.warn("如果你正在使用 VPN，请在终端设置代理环境变量，例如：");
-      console.warn("PowerShell: $env:https_proxy=\"http://127.0.0.1:7890\"");
-      console.warn("CMD: set https_proxy=http://127.0.0.1:7890");
-      console.warn("（请将 7890 替换为你实际的代理端口）");
-      console.warn("然后重新运行构建命令。\n");
-    }
+    
+    console.log(`TMDB fetched: ${allItems.length} items`);
+    return [{ ...data, items: allItems }];
+  } catch (e) {
+    console.error("TMDB fetch failed:", e);
+    return [];
   }
 }
 
-// 3. 如果配置了 Bilibili UID，尝试获取 Bilibili 追番列表
-const BILIBILI_UID = BILIBILI_CONFIG?.uid;
-let bilibiliItems: any[] = [];
-
-if (BILIBILI_UID) {
-  try {
-    console.log(`Fetching Bilibili list for UID: ${BILIBILI_UID}...`);
-    const ps = 30;
-    let pn = 1;
-    let hasMore = true;
-
-    while (hasMore) {
-      const res = await fetch(`https://api.bilibili.com/x/space/bangumi/follow/list?type=1&vmid=${BILIBILI_UID}&pn=${pn}&ps=${ps}`);
+async function fetchBilibili(): Promise<any[]> {
+  console.log(`Fetching Bilibili list for UID: ${BILIBILI_UID}...`);
+  const items: any[] = [];
+  let page = 1;
+  
+  while (page <= 20) {
+    try {
+      const res = await fetchWithTimeout(
+        `https://api.bilibili.com/x/space/bangumi/follow/list?type=1&vmid=${BILIBILI_UID}&pn=${page}&ps=30`,
+        {},
+        10000
+      );
+      
       const json = await res.json();
+      if (!json.data?.list?.length) break;
       
-      if (json.code === 0 && json.data && json.data.list && json.data.list.length > 0) {
-        bilibiliItems.push(...json.data.list);
-        if (json.data.total > bilibiliItems.length) {
-            pn++;
-        } else {
-            hasMore = false;
-        }
-      } else {
-        hasMore = false;
-      }
-      
-      // Safety break to prevent infinite loops
-      if (pn > 20) break; 
+      items.push(...json.data.list);
+      if (items.length >= json.data.total) break;
+      page++;
+    } catch (e) {
+      console.warn(`Bilibili page ${page} failed, stopping`);
+      break;
     }
-    console.log(`Successfully fetched ${bilibiliItems.length} items from Bilibili.`);
-  } catch (e) {
-    console.error("Error fetching Bilibili list:", e);
   }
+  
+  console.log(`Bilibili fetched: ${items.length} items`);
+  return items;
 }
 
 // 确保 animeData 是数组（处理本地文件可能是单个对象的情况）
