@@ -1,6 +1,14 @@
 {
     "songs": [
         {
+            "title": "小半",
+            "artist": "陈粒",
+            "cover": "https://163.hyc.moe?server=netease&type=pic&id=1371091013186741",
+            "url": "https://163.hyc.moe?server=netease&type=url&id=421423806&br=320",
+            "lrc": "https://163.hyc.moe?server=netease&type=lrc&id=421423806&format=lrc&trans=true",
+            "duration": "04:57"
+        },
+        {
             "title": "走马",
             "artist": "陈粒",
             "cover": "https://163.hyc.moe?server=netease&type=pic&id=7721870161993398",
@@ -5386,7 +5394,7 @@
         }
     ],
     "playlistCounts": {
-        "10116198879": 62,
+        "10116198879": 63,
         "zjl": 128,
         "17957136689": 48,
         "17959800111": 50,
@@ -5401,6 +5409,14 @@
     },
     "playlistSongs": {
         "10116198879": [
+            {
+                "title": "小半",
+                "artist": "陈粒",
+                "cover": "https://163.hyc.moe?server=netease&type=pic&id=1371091013186741",
+                "url": "https://163.hyc.moe?server=netease&type=url&id=421423806&br=320",
+                "lrc": "https://163.hyc.moe?server=netease&type=lrc&id=421423806&format=lrc&trans=true",
+                "duration": "04:57"
+            },
             {
                 "title": "走马",
                 "artist": "陈粒",
@@ -10921,6 +10937,6 @@
             }
         ]
     },
-    "_urlFingerprint": "fcce0be9bc7232eb857e1d9a34b7f8bf24795e42528a598e42aa3248b5c10884",
+    "_urlFingerprint": "456dcd95b827fdd4734b16c465cbfd190e8126de0ccfad1fec713b8dc62b9f6b",
     "_configFingerprint": "336a459f22106dd1806af01c33cd82fc9bcc1a1d033443792064e93d64a7a4ab"
 }
