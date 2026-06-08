@@ -2,7 +2,7 @@
 title: To The Infinite Castle
 description: 柱集结，决战无限城！
 pubDate: 2026-01-05T18:53
-image: /images/infinite_castle/d9adaf5e2c924330.png
+image: https://img.131714.xyz/file/blog/Article/infinite_castle/cover.webp
 draft: false
 tags:
   - 鬼灭之刃

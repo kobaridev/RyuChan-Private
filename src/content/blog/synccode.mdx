@@ -2,7 +2,7 @@
 title: VSCode Sync Upstream
 description: 利用VSCode 及Git graph插件实现可视化的同步上游代码。
 pubDate: 2026-05-16T12:45
-image: https://picbed.131714.xyz/blog/SyncUpstream/cover.png
+image: https://img.131714.xyz/file/blog/Article/SyncUpstream/cover.webp
 draft: false
 tags:
   - Sync
@@ -35,7 +35,7 @@ import LinkCard from "../../components/mdx/LinkCard.astro";
 **参考视频**
 <div style={{ width: '100%', maxWidth: '1200px', margin: 'auto' }}>
   <video 
-    src="https://picbed.131714.xyz/blog/SyncUpstream/syncUpstream.mp4" 
+    src="https://img.131714.xyz/file/blog/Article/SyncUpstream/syncUpstream.mp4" 
     controls 
     preload="metadata"
     style={{ width: '100%', height: 'auto', display: 'block' }}
@@ -69,14 +69,14 @@ git pull origin main
 git fetch upstream
 ```
 
-![](https://picbed.131714.xyz/blog/SyncUpstream/sync1.webp)
+![](https://img.131714.xyz/file/blog/Article/SyncUpstream/sync1.webp)
 
 ---
 ## 4. 打开Git Graph插件
 - **Merge into current branch**
-![](https://picbed.131714.xyz/blog/SyncUpstream/sync2.webp)
+![](https://img.131714.xyz/file/blog/Article/SyncUpstream/sync2.webp)
 > 记得勾选 **`No Commit`**
-![](https://picbed.131714.xyz/blog/SyncUpstream/sync3.webp)
+![](https://img.131714.xyz/file/blog/Article/SyncUpstream/sync3.webp)
 
 ## 5. 解决冲突（仅限冲突时）
 
@@ -90,11 +90,7 @@ git fetch upstream
 ```
 
 ```json
-<<<<<<< HEAD
 ...你原来的内容...
-=======
-...上游的新内容...
->>>>>>> upstream/main
 ```
 
 
@@ -102,7 +98,7 @@ git fetch upstream
 3. 把标记删掉，保留你想要的内容，**保存文件**。  
 4. 解决冲突后，暂存文件，**`commit`** (点击继续）
 
-![](https://picbed.131714.xyz/blog/SyncUpstream/sync4.webp)
+![](https://img.131714.xyz/file/blog/Article/SyncUpstream/sync4.webp)
 </Collapse>
 ---
 
@@ -112,15 +108,15 @@ git fetch upstream
 
 1. 右键 **`main`**
 
-![](https://picbed.131714.xyz/blog/SyncUpstream/sync5.webp)
+![](https://img.131714.xyz/file/blog/Article/SyncUpstream/sync5.webp)
 
 2. Push Branch(推送到远程)
 
-![](https://picbed.131714.xyz/blog/SyncUpstream/sync6.webp)
-![](https://picbed.131714.xyz/blog/SyncUpstream/sync7.webp)
+![](https://img.131714.xyz/file/blog/Article/SyncUpstream/sync6.webp)
+![](https://img.131714.xyz/file/blog/Article/SyncUpstream/sync7.webp)
 
 3. **`main | origin`** 即推送成功
 
-![](https://picbed.131714.xyz/blog/SyncUpstream/sync8.webp)
+![](https://img.131714.xyz/file/blog/Article/SyncUpstream/sync8.webp)
 </Collapse>
 <Success>至此，便完成了与上游代码的**同步**!</Success>

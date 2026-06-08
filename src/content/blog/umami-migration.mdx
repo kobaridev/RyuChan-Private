@@ -2,7 +2,7 @@
 title: "🚀 Umami 官方CSV数据导入自建Umami后端MySQL/PostgreSQL数据库"  
 description: "将Umami云服务的CSV数据导入到自建MySQL或PostgreSQL数据库的完整解决方案，支持批量处理和自动去重。"  
 pubDate: "Aug 14 2025"  
-image: https://img.131714.xyz/file/post/3q9dhQwh.jpg 
+image: https://img.131714.xyz/file/blog/Article/umami/cover.webp
 categories:  
   - Course  
 tags:  
@@ -40,7 +40,7 @@ import LinkCard from "../../components/mdx/LinkCard.astro";
 ## 核心思路  
   
 1. 官方数据导出
-![](https://img.131714.xyz/file/umami/FCkmzRDT.png)
+![](https://img.131714.xyz/file/blog/Article/umami/umami6.webp)
 2. 读取CSV → 清洗数据 → 分表插入  
 3. MySQL使用`INSERT IGNORE`，PostgreSQL使用`ON CONFLICT DO NOTHING`  
 4. 批量处理提升性能  
@@ -66,9 +66,9 @@ MYSQL_CONFIG = {
 
 **PostgreSQL版本（Neon数据库）**
 <Collapse title="PostgreSQL连接信息获取（Neon）">
-![](https://img.131714.xyz/file/umami/EI8EPOlC.png)
-![](https://img.131714.xyz/file/umami/AE8tP3Vz.png)
-![](https://img.131714.xyz/file/umami/1wohUTiF.png)
+![](https://img.131714.xyz/file/blog/Article/umami/umami7.webp)
+![](https://img.131714.xyz/file/blog/Article/umami/umami8.webp)
+![](https://img.131714.xyz/file/blog/Article/umami/umami9.webp)
 </Collapse>
 
 ```python
