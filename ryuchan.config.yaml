@@ -138,6 +138,10 @@ music:
     - id: '17966019560'
       name: 告五人
       server: netease
+    - id: '18049089928'
+      name: demo
+      server: netease
+      type: id
 github:
   owner: kobaridev
   repo: RyuChan-Private
