@@ -142,6 +142,10 @@ music:
       name: demo
       server: netease
       type: id
+    - id: wang_li_hong
+      name: 王力宏
+      server: netease
+      type: custom
 github:
   owner: kobaridev
   repo: RyuChan-Private
