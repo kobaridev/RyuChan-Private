@@ -146,6 +146,14 @@ music:
       name: demo
       server: netease
       type: id
+    - id: '18057106567'
+      name: 汪苏泷
+      server: netease
+      type: id
+    - id: '18056988299'
+      name: 许嵩
+      server: netease
+      type: id
 github:
   owner: kobaridev
   repo: RyuChan-Private
