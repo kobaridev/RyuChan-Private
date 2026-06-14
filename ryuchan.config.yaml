@@ -108,6 +108,10 @@ music:
       name: 周杰伦
       server: netease
       type: custom
+    - id: wang_li_hong
+      name: 王力宏
+      server: netease
+      type: custom
     - id: '17957136689'
       name: 林俊杰
       server: netease
@@ -142,10 +146,6 @@ music:
       name: demo
       server: netease
       type: id
-    - id: wang_li_hong
-      name: 王力宏
-      server: netease
-      type: custom
 github:
   owner: kobaridev
   repo: RyuChan-Private

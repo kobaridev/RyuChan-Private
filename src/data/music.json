@@ -4857,6 +4857,14 @@
             "duration": "05:08"
         },
         {
+            "title": "唯一",
+            "artist": "王力宏",
+            "url": "https://s2.cldisk.com/sv-w8/audio/3e/23/2c/88e31093df3eb7a58125c94d98499dae/audio.mp3?at_=1781415208171&ak_=f817c47ebc87df1a8d24fd23b3f584dc&ad_=a0ab007d76781a7ea78684cdc2d75401",
+            "cover": "https://y.qq.com/music/photo_new/T002R300x300M000000D1ceU2ibOvS_3.jpg?max_age=2592000",
+            "lrc": "https://163.hyc.moe/?server=tencent&type=lrc&id=0031tvqb2vMdXU&format=lrc",
+            "duration": "04:22"
+        },
+        {
             "title": "爱错",
             "artist": "王力宏",
             "url": "https://s2.cldisk.com/sv-w7/audio/cb/df/e5/ec912148f7c9a140c2dff1c2be1c96ef/audio.mp3?at_=1781405629880&ak_=0a2b9946c0ba34eab519f37f829c09b8&ad_=e8a0c439dae455f604ba36e509550ca5",
@@ -4910,7 +4918,7 @@
         "17966003938": 50,
         "17965962224": 50,
         "17966019560": 50,
-        "wang_li_hong": 5
+        "wang_li_hong": 6
     },
     "playlistSongs": {
         "10116198879": [
@@ -9978,6 +9986,14 @@
             }
         ],
         "wang_li_hong": [
+            {
+                "title": "唯一",
+                "artist": "王力宏",
+                "url": "https://s2.cldisk.com/sv-w8/audio/3e/23/2c/88e31093df3eb7a58125c94d98499dae/audio.mp3?at_=1781415208171&ak_=f817c47ebc87df1a8d24fd23b3f584dc&ad_=a0ab007d76781a7ea78684cdc2d75401",
+                "cover": "https://y.qq.com/music/photo_new/T002R300x300M000000D1ceU2ibOvS_3.jpg?max_age=2592000",
+                "lrc": "https://163.hyc.moe/?server=tencent&type=lrc&id=0031tvqb2vMdXU&format=lrc",
+                "duration": "04:22"
+            },
             {
                 "title": "爱错",
                 "artist": "王力宏",
