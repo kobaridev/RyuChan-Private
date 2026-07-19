@@ -1,6 +1,8 @@
 'use client'
 
 import { useState, useEffect, useCallback, useRef } from 'react'
+import { Fancybox } from '@fancyapps/ui'
+import '@fancyapps/ui/dist/fancybox/fancybox.css'
 import { Camera, ImageOff, ChevronLeft, ChevronRight } from 'lucide-react'
 import { useAlbumStore } from '@/stores/album-store'
 import type { AlbumItem, Photo } from '@/data/albums'
@@ -49,16 +51,23 @@ function PhotoImage({ photo }: { photo: Photo }) {
           <span className="loading loading-infinity w-10 text-primary/80"></span>
         </div>
       )}
-      <img
-        src={photo.src}
-        alt={photo.title || ''}
-        width={dims.w}
-        height={dims.h}
-        className={`w-full h-full object-cover transform group-hover:scale-105 transition-all duration-500 ease-out ${loaded ? 'opacity-100' : 'opacity-0'}`}
-        loading="lazy"
-        onLoad={() => setLoaded(true)}
-        onError={() => { setLoaded(true); setError(true) }}
-      />
+      <a
+        href={photo.src}
+        data-fancybox="gallery"
+        data-caption={photo.title || ''}
+        className="block w-full h-full"
+      >
+        <img
+          src={photo.src}
+          alt={photo.title || ''}
+          width={dims.w}
+          height={dims.h}
+          className={`w-full h-full object-cover transform group-hover:scale-105 transition-all duration-500 ease-out ${loaded ? 'opacity-100' : 'opacity-0'}`}
+          loading="lazy"
+          onLoad={() => setLoaded(true)}
+          onError={() => { setLoaded(true); setError(true) }}
+        />
+      </a>
     </>
   )
 }
@@ -141,6 +150,39 @@ export default function PhotoWallGrid({ initialAlbum, event }: Props) {
     return () => window.removeEventListener('resize', update)
   }, [])
 
+  // Fancybox lifecycle: bind after render, cleanup on unmount
+  const gridRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (!gridRef.current || photos.length === 0) return
+
+    Fancybox.bind(gridRef.current, '[data-fancybox]', {
+      Hash: false,
+      Toolbar: {
+        display: {
+          left: ['infobar'],
+          middle: [
+            'zoomIn',
+            'zoomOut',
+            'toggle1to1',
+            'rotateCCW',
+            'rotateCW',
+            'flipX',
+            'flipY',
+          ],
+          right: ['slideshow', 'thumbs', 'close'],
+        },
+      },
+    } as any)
+
+    return () => {
+      if (gridRef.current) {
+        Fancybox.unbind(gridRef.current)
+      }
+      Fancybox.destroy()
+    }
+  }, [photos])
+
   const cols: Photo[][] = Array.from({ length: colCount }, () => [])
   photos.forEach((photo, i) => {
     cols[i % colCount].push(photo)
@@ -159,7 +201,7 @@ export default function PhotoWallGrid({ initialAlbum, event }: Props) {
           )}
         </div>
       ) : (
-        <div id="photo-wall-grid" className="flex gap-4 items-start">
+        <div ref={gridRef} id="photo-wall-grid" className="flex gap-4 items-start">
           {cols.map((colPhotos, colIdx) => (
             <div key={colIdx} className="flex-1 min-w-0 flex flex-col gap-4">
               {colPhotos.map((photo, row) => {

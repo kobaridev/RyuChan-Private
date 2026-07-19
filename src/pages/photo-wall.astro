@@ -3,7 +3,6 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import { Icon } from "astro-icon/components";
 import { albums } from "../data/albums";
 import PhotoWallGrid from "../components/admin/PhotoWallGrid";
-import "@fancyapps/ui/dist/fancybox/fancybox.css";
 
 const id = Astro.url.searchParams.get("id") || "";
 const album = id ? albums.find((a) => a.id === id) : null;
@@ -33,63 +32,3 @@ const album = id ? albums.find((a) => a.id === id) : null;
     <Icon name="lucide:heart" class="w-12 h-12 text-primary/50" />
   </div>
 </BaseLayout>
-
-<script>
-  import { Fancybox } from "@fancyapps/ui";
-
-  let fancyboxInitialized = false;
-
-  function initFancybox() {
-    if (fancyboxInitialized) return;
-    const grid = document.getElementById("photo-wall-grid");
-    if (!grid) return;
-
-    const images = grid.querySelectorAll("img");
-    if (images.length === 0) return;
-
-    images.forEach((img) => {
-      if (img.closest("a")) return;
-
-      const link = document.createElement("a");
-      link.href = (img as HTMLImageElement).src;
-      link.dataset.fancybox = "gallery";
-      link.dataset.caption = (img as HTMLImageElement).alt || "";
-
-      if (img.parentNode) {
-        img.parentNode.insertBefore(link, img);
-        link.appendChild(img);
-      }
-    });
-
-    Fancybox.bind("[data-fancybox]", {
-      Hash: false,
-      Toolbar: {
-        display: {
-          left: ["infobar"],
-          middle: [
-            "zoomIn",
-            "zoomOut",
-            "toggle1to1",
-            "rotateCCW",
-            "rotateCW",
-            "flipX",
-            "flipY",
-          ],
-          right: ["slideshow", "thumbs", "close"],
-        },
-      },
-    } as any);
-
-    fancyboxInitialized = true;
-  }
-
-  document.addEventListener("astro:page-load", () => {
-    fancyboxInitialized = false;
-    let attempts = 0;
-    const interval = setInterval(() => {
-      initFancybox();
-      attempts++;
-      if (fancyboxInitialized || attempts > 20) clearInterval(interval);
-    }, 500);
-  });
-</script>
