@@ -153,6 +153,11 @@ export default function PhotoWallGrid({ initialAlbum, event }: Props) {
   // Fancybox lifecycle: bind after render, cleanup on unmount
   const gridRef = useRef<HTMLDivElement>(null)
 
+  // Destroy only on component unmount, never during photos re-renders
+  useEffect(() => {
+    return () => { Fancybox.destroy() }
+  }, [])
+
   useEffect(() => {
     if (!gridRef.current || photos.length === 0) return
 
@@ -179,7 +184,6 @@ export default function PhotoWallGrid({ initialAlbum, event }: Props) {
       if (gridRef.current) {
         Fancybox.unbind(gridRef.current)
       }
-      Fancybox.destroy()
     }
   }, [photos])
 

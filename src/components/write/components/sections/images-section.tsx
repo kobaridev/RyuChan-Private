@@ -25,12 +25,12 @@ export function ImagesSection({ delay = 0 }: ImagesSectionProps) {
 				<input
 					type='text'
 					placeholder='https://...'
-					className='input input-bordered input-sm flex-1 bg-base-100 focus:input-primary'
+					className='input input-bordered input-sm flex-1 min-w-0 bg-base-100 focus:input-primary'
 					value={urlInput}
 					onChange={e => setUrlInput(e.target.value)}
 				/>
 				<button
-					className='btn btn-sm btn-ghost border-base-300'
+					className='btn btn-sm btn-ghost border-base-300 shrink-0'
 					onClick={() => {
 						const v = urlInput.trim()
 						if (!v) return

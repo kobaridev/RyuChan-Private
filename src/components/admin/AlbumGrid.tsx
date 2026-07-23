@@ -82,7 +82,20 @@ export default function AlbumGrid() {
                 <div>
                   <h2 className="text-lg font-semibold flex items-center gap-2">
                     {album.icon && (
-                      <span className="text-xl">{album.icon}</span>
+                      album.icon.includes(':') ? (
+                        (() => {
+                          const ci = album.icon.indexOf(':')
+                          const p = album.icon.slice(0, ci)
+                          const n = album.icon.slice(ci + 1)
+                          return (
+                            <object data={`https://api.iconify.design/${p}/${n}.svg`} type="image/svg+xml" className="w-5 h-5 pointer-events-none shrink-0" aria-label={album.icon}>
+                              <span className="w-5 h-5" />
+                            </object>
+                          )
+                        })()
+                      ) : (
+                        <span className="text-xl">{album.icon}</span>
+                      )
                     )}
                     <a
                       href={`/photo-wall?id=${album.id}`}

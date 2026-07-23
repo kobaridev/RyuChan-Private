@@ -72,6 +72,30 @@ export default function AlbumAdmin() {
   const [photoTab, setPhotoTab] = useState<'add' | 'list'>('list')
   const [deleteConfirm, setDeleteConfirm] = useState(false)
 
+  // Icon search
+  const [iconQuery, setIconQuery] = useState('')
+  const [iconResults, setIconResults] = useState<string[]>([])
+  const [iconSearching, setIconSearching] = useState(false)
+  const iconTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  const searchIconify = async (query: string) => {
+    if (!query.trim()) { setIconResults([]); return }
+    setIconSearching(true)
+    try {
+      const res = await fetch(`https://api.iconify.design/search?query=${encodeURIComponent(query)}&limit=20`)
+      if (!res.ok) throw new Error()
+      const data = await res.json()
+      setIconResults((data.icons || []) as string[])
+    } catch { setIconResults([]) }
+    finally { setIconSearching(false) }
+  }
+
+  const handleIconInput = (val: string) => {
+    setIconQuery(val)
+    if (iconTimer.current) clearTimeout(iconTimer.current)
+    iconTimer.current = setTimeout(() => searchIconify(val), 350)
+  }
+
   // New photo form state
   const [newPhotos, setNewPhotos] = useState<{ photo: Photo; file?: File }[]>([])
   const [urlInput, setUrlInput] = useState('')
@@ -390,17 +414,46 @@ export default function AlbumAdmin() {
                       </div>
                       <div>
                         <label className="text-sm font-semibold text-base-content/70 mb-1.5 block">
-                          图标（Emoji）
+                          图标（Emoji 或 Iconify）
                         </label>
                         <input
                           type="text"
                           value={album.icon || ''}
-                          onChange={(e) => updateField('icon', e.target.value)}
+                          onChange={(e) => { updateField('icon', e.target.value); setIconResults([]) }}
                           disabled={!canEdit}
                           className="input input-bordered w-full"
-                          placeholder="🌊"
-                          maxLength={4}
+                          placeholder="🌊 或 lucide:camera"
                         />
+                        <div className="relative mt-1.5">
+                          <input
+                            type="text"
+                            value={iconQuery}
+                            onChange={(e) => handleIconInput(e.target.value)}
+                            disabled={!canEdit}
+                            className="input input-sm input-bordered w-full bg-base-100 pr-8"
+                            placeholder="搜索矢量图标..."
+                          />
+                          {iconSearching && <span className="absolute right-3 top-1/2 -translate-y-1/2 loading loading-spinner loading-xs text-primary" />}
+                        </div>
+                        {iconResults.length > 0 && (
+                          <div className="grid grid-cols-6 gap-1.5 mt-2 max-h-32 overflow-y-auto p-1">
+                            {iconResults.map(ic => {
+                              const ci = ic.indexOf(':')
+                              const p = ic.slice(0, ci)
+                              const n = ic.slice(ci + 1)
+                              return (
+                                <button key={ic} type="button"
+                                  onClick={() => { updateField('icon', ic); setIconResults([]); setIconQuery('') }}
+                                  className="flex flex-col items-center gap-0.5 p-1.5 rounded-lg border bg-base-100 border-base-200 hover:border-primary/30 hover:bg-primary/5 transition-colors">
+                                  <object data={`https://api.iconify.design/${p}/${n}.svg?width=20&height=20`} type="image/svg+xml" className="w-5 h-5 pointer-events-none" aria-label={ic}>
+                                    <span className="w-5 h-5" />
+                                  </object>
+                                  <span className="text-[9px] text-base-content/40 truncate w-full text-center">{n}</span>
+                                </button>
+                              )
+                            })}
+                          </div>
+                        )}
                       </div>
                     </div>
                     <div>
@@ -424,7 +477,20 @@ export default function AlbumAdmin() {
                       </p>
                       <div className="flex items-center gap-3">
                         {album.icon && (
-                          <span className="text-3xl">{album.icon}</span>
+                          album.icon.includes(':') ? (
+                            (() => {
+                              const ci = album.icon.indexOf(':')
+                              const p = album.icon.slice(0, ci)
+                              const n = album.icon.slice(ci + 1)
+                              return (
+                                <object data={`https://api.iconify.design/${p}/${n}.svg`} type="image/svg+xml" className="w-8 h-8 pointer-events-none shrink-0" aria-label={album.icon}>
+                                  <span className="w-8 h-8" />
+                                </object>
+                              )
+                            })()
+                          ) : (
+                            <span className="text-3xl">{album.icon}</span>
+                          )
                         )}
                         <div>
                           <h3 className="font-bold text-base">{album.event}</h3>

@@ -50,10 +50,13 @@ export default function NavEditPage({ initialNavData = [] }: Props) {
   const [categoryDropdownOpen, setCategoryDropdownOpen] = useState(false)
 
   // === Icon search ===
-  const [iconSearchQuery, setIconSearchQuery] = useState('')
-  const [iconSearchResults, setIconSearchResults] = useState<string[]>([])
-  const [iconSearching, setIconSearching] = useState(false)
-  const [iconSearchTarget, setIconSearchTarget] = useState<'badge' | 'cover'>('badge')
+  const [coverIconQuery, setCoverIconQuery] = useState('')
+  const [coverIconResults, setCoverIconResults] = useState<string[]>([])
+  const [coverIconSearching, setCoverIconSearching] = useState(false)
+  const [showCoverSearch, setShowCoverSearch] = useState(false)
+  const [badgeIconQuery, setBadgeIconQuery] = useState('')
+  const [badgeIconResults, setBadgeIconResults] = useState<string[]>([])
+  const [badgeIconSearching, setBadgeIconSearching] = useState(false)
   const iconSearchTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
 
@@ -156,7 +159,8 @@ export default function NavEditPage({ initialNavData = [] }: Props) {
     setAddItem({ ...NEW_ITEM_DEFAULT, category: activeFilter === 'all' ? '' : activeFilter })
     setAddAvatarFile(null); setAddAvatarPreview('')
     setAddCategoryMode('select'); setAddCategoryCustom('')
-    setIconSearchQuery(''); setIconSearchResults([]); setIconSearchTarget('badge')
+    setCoverIconQuery(''); setCoverIconResults([]); setShowCoverSearch(false)
+    setBadgeIconQuery(''); setBadgeIconResults([])
     setCategoryDropdownOpen(false)
     setShowAddPage(true)
   }
@@ -199,7 +203,8 @@ export default function NavEditPage({ initialNavData = [] }: Props) {
     setEditItem({ ...item })
     setEditAvatarFile(null); setEditAvatarPreview('')
     setEditCategoryMode('select'); setEditCategoryCustom(item.category || '')
-    setIconSearchQuery(''); setIconSearchResults([]); setIconSearchTarget('badge')
+    setCoverIconQuery(''); setCoverIconResults([]); setShowCoverSearch(false)
+    setBadgeIconQuery(''); setBadgeIconResults([])
     setCategoryDropdownOpen(false)
     setShowEditPage(true)
   }
@@ -266,36 +271,45 @@ export default function NavEditPage({ initialNavData = [] }: Props) {
     return url
   }
 
-  const searchIconify = async (query: string) => {
-    if (!query.trim()) { setIconSearchResults([]); return }
-    setIconSearching(true)
+  const searchIconify = async (query: string, target: 'badge' | 'cover') => {
+    if (!query.trim()) {
+      target === 'cover' ? setCoverIconResults([]) : setBadgeIconResults([])
+      return
+    }
+    target === 'cover' ? setCoverIconSearching(true) : setBadgeIconSearching(true)
     try {
       const res = await fetch(`https://api.iconify.design/search?query=${encodeURIComponent(query)}&limit=20`)
       if (!res.ok) throw new Error('search failed')
       const data = await res.json()
-      setIconSearchResults((data.icons || []) as string[])
-    } catch { setIconSearchResults([]) }
-    finally { setIconSearching(false) }
+      const icons = (data.icons || []) as string[]
+      target === 'cover' ? setCoverIconResults(icons) : setBadgeIconResults(icons)
+    } catch {
+      target === 'cover' ? setCoverIconResults([]) : setBadgeIconResults([])
+    } finally {
+      target === 'cover' ? setCoverIconSearching(false) : setBadgeIconSearching(false)
+    }
   }
 
   const handleIconSearchInput = (val: string, target: 'badge' | 'cover') => {
-    setIconSearchTarget(target)
-    setIconSearchQuery(val)
+    if (target === 'cover') setCoverIconQuery(val)
+    else setBadgeIconQuery(val)
     if (iconSearchTimer.current) clearTimeout(iconSearchTimer.current)
-    iconSearchTimer.current = setTimeout(() => searchIconify(val), 350)
+    iconSearchTimer.current = setTimeout(() => searchIconify(val, target), 350)
   }
 
-  const selectSearchIcon = (iconName: string, setItem: (updater: (prev: Partial<NavItem>) => Partial<NavItem>) => void) => {
-    if (iconSearchTarget === 'cover') {
+  const selectSearchIcon = (iconName: string, target: 'badge' | 'cover', setItem: (updater: (prev: Partial<NavItem>) => Partial<NavItem>) => void) => {
+    if (target === 'cover') {
       const ci = iconName.indexOf(':')
       const p = ci > -1 ? iconName.slice(0, ci) : 'lucide'
       const n = ci > -1 ? iconName.slice(ci + 1) : iconName
       setItem(prev => ({ ...prev, avatar: `https://api.iconify.design/${p}/${n}.svg` }))
+      setCoverIconResults([])
+      setCoverIconQuery('')
     } else {
       setItem(prev => ({ ...prev, badgeIcon: iconName }))
+      setBadgeIconResults([])
+      setBadgeIconQuery('')
     }
-    setIconSearchResults([])
-    setIconSearchQuery('')
   }
 
   const inputCls = 'input input-sm input-bordered w-full bg-base-100 focus:border-primary text-sm'
@@ -399,6 +413,14 @@ export default function NavEditPage({ initialNavData = [] }: Props) {
     categories: string[],
     categoryDropdownOpen: boolean,
     setCategoryDropdownOpen: (v: boolean) => void,
+    coverQuery: string,
+    coverResults: string[],
+    coverSearching: boolean,
+    showCover: boolean,
+    setShowCover: (v: boolean) => void,
+    badgeQuery: string,
+    badgeResults: string[],
+    badgeSearching: boolean,
   ) => (
     <div className="space-y-5">
       <div>
@@ -421,31 +443,31 @@ export default function NavEditPage({ initialNavData = [] }: Props) {
             <input className={`${inputCls} text-xs`} value={item.avatar || ''} onChange={e => setItem(prev => ({ ...prev, avatar: e.target.value }))} placeholder="封面 URL" />
             <div className="flex gap-2">
               <button type="button" onClick={() => avatarRef.current?.click()} className="btn btn-xs btn-ghost rounded-lg text-primary">上传图片</button>
-              <button type="button" onClick={() => { setIconSearchTarget('cover'); setIconSearchQuery(''); setIconSearchResults([]) }} className="btn btn-xs btn-ghost rounded-lg text-primary">使用图标</button>
+              <button type="button" onClick={() => { setShowCover(true); handleIconSearchInput('', 'cover') }} className="btn btn-xs btn-ghost rounded-lg text-primary">使用图标</button>
             </div>
           </div>
         </div>
         {/* Cover icon search */}
-        {iconSearchTarget === 'cover' && (
+        {showCover && (
           <div className="mt-3">
             <div className="relative mb-2">
               <input
                 className="input input-bordered w-full bg-base-100 text-sm pr-8"
-                value={iconSearchQuery}
+                value={coverQuery}
                 onChange={e => handleIconSearchInput(e.target.value, 'cover')}
                 placeholder="搜索图标作为封面..."
               />
-              {iconSearching && <span className="absolute right-3 top-1/2 -translate-y-1/2 loading loading-spinner loading-xs text-primary" />}
+              {coverSearching && <span className="absolute right-3 top-1/2 -translate-y-1/2 loading loading-spinner loading-xs text-primary" />}
             </div>
-            {iconSearchResults.length > 0 && (
+            {coverResults.length > 0 && (
               <div className="grid grid-cols-5 gap-2 max-h-36 overflow-y-auto p-1">
-                {iconSearchResults.map((ic: string) => {
+                {coverResults.map((ic: string) => {
                   const colonIdx = ic.indexOf(':')
                   const prefix = ic.slice(0, colonIdx)
                   const name = ic.slice(colonIdx + 1)
                   const svgUrl = `https://api.iconify.design/${prefix}/${name}.svg?width=24&height=24`
                   return (
-                    <button type="button" key={ic} onClick={() => selectSearchIcon(ic, setItem)}
+                    <button type="button" key={ic} onClick={() => selectSearchIcon(ic, 'cover', setItem)}
                       className="flex flex-col items-center gap-1 p-2 rounded-xl border bg-base-100 border-base-200 hover:border-primary/30 hover:bg-primary/5 transition-colors">
                       <object data={svgUrl} type="image/svg+xml" className="w-6 h-6 pointer-events-none" aria-label={ic}>
                         <div className="w-6 h-6 bg-base-200 rounded flex items-center justify-center text-[8px] text-base-content/30">{name.slice(0, 3)}</div>
@@ -535,22 +557,22 @@ export default function NavEditPage({ initialNavData = [] }: Props) {
         <div className="relative mb-2">
           <input
             className="input input-bordered w-full bg-base-100 text-base pr-8"
-            value={iconSearchQuery}
+            value={badgeQuery}
             onChange={e => handleIconSearchInput(e.target.value, 'badge')}
             placeholder="在线搜索图标 (如 home, star, heart)..."
           />
-          {iconSearching && <span className="absolute right-3 top-1/2 -translate-y-1/2 loading loading-spinner loading-xs text-primary" />}
+          {badgeSearching && <span className="absolute right-3 top-1/2 -translate-y-1/2 loading loading-spinner loading-xs text-primary" />}
         </div>
-        {iconSearchResults.length > 0 && (
+        {badgeResults.length > 0 && (
           <div className="grid grid-cols-5 gap-2 mb-2 max-h-44 overflow-y-auto p-1">
-            {iconSearchResults.map(ic => {
+            {badgeResults.map(ic => {
               const colonIdx = ic.indexOf(':')
               const prefix = ic.slice(0, colonIdx)
               const name = ic.slice(colonIdx + 1)
               const svgUrl = `https://api.iconify.design/${prefix}/${name}.svg?width=24&height=24`
               const isSelected = item.badgeIcon === ic
               return (
-                <button key={ic} onClick={() => selectSearchIcon(ic, setItem)}
+                <button key={ic} onClick={() => selectSearchIcon(ic, 'badge', setItem)}
                   className={`flex flex-col items-center gap-1 p-2 rounded-xl border transition-colors ${isSelected ? 'bg-primary/10 border-primary/30 ring-1 ring-primary/30' : 'bg-base-100 border-base-200 hover:border-primary/30 hover:bg-primary/5'}`}>
                   <object data={svgUrl} type="image/svg+xml" className="w-6 h-6 pointer-events-none" aria-label={ic}>
                     <div className="w-6 h-6 bg-base-200 rounded flex items-center justify-center text-[8px] text-base-content/30">{name.slice(0, 3)}</div>
@@ -599,7 +621,7 @@ export default function NavEditPage({ initialNavData = [] }: Props) {
             <button onClick={closeAddPage} className="btn btn-ghost btn-sm gap-2 rounded-xl mb-6">{svg.arrowLeft} 返回导航列表</button>
             <div className="bg-base-100 rounded-3xl p-6 md:p-10 shadow-lg border border-base-200">
               <h2 className="text-2xl font-bold mb-8 flex items-center gap-2 text-primary">{svg.plus}<span>添加导航项目</span></h2>
-              {renderFormFields(addItem, fn => setAddItem(fn), addAvatarPreview, addAvatarRef, addCategoryMode, setAddCategoryMode, addCategoryCustom, setAddCategoryCustom, filterCategories, categoryDropdownOpen, setCategoryDropdownOpen)}
+              {renderFormFields(addItem, fn => setAddItem(fn), addAvatarPreview, addAvatarRef, addCategoryMode, setAddCategoryMode, addCategoryCustom, setAddCategoryCustom, filterCategories, categoryDropdownOpen, setCategoryDropdownOpen, coverIconQuery, coverIconResults, coverIconSearching, showCoverSearch, setShowCoverSearch, badgeIconQuery, badgeIconResults, badgeIconSearching)}
               <div className="flex gap-3 mt-8">
                 <button onClick={closeAddPage} className="btn btn-ghost flex-1 rounded-xl">取消</button>
                 <button onClick={submitAddPage} className="btn btn-primary flex-1 rounded-xl shadow-lg shadow-primary/20 font-semibold text-base">添加</button>
@@ -622,7 +644,7 @@ export default function NavEditPage({ initialNavData = [] }: Props) {
             <button onClick={closeEditPage} className="btn btn-ghost btn-sm gap-2 rounded-xl mb-6">{svg.arrowLeft} 返回导航列表</button>
             <div className="bg-base-100 rounded-3xl p-6 md:p-10 shadow-lg border border-base-200">
               <h2 className="text-2xl font-bold mb-8 flex items-center gap-2 text-primary">{svg.edit}<span>编辑导航项目</span></h2>
-              {renderFormFields(editItem, fn => setEditItem(fn), editAvatarPreview, editAvatarRef, editCategoryMode, setEditCategoryMode, editCategoryCustom, setEditCategoryCustom, filterCategories, categoryDropdownOpen, setCategoryDropdownOpen)}
+              {renderFormFields(editItem, fn => setEditItem(fn), editAvatarPreview, editAvatarRef, editCategoryMode, setEditCategoryMode, editCategoryCustom, setEditCategoryCustom, filterCategories, categoryDropdownOpen, setCategoryDropdownOpen, coverIconQuery, coverIconResults, coverIconSearching, showCoverSearch, setShowCoverSearch, badgeIconQuery, badgeIconResults, badgeIconSearching)}
               <div className="flex gap-3 mt-8">
                 <button onClick={closeEditPage} className="btn btn-ghost flex-1 rounded-xl">取消</button>
                 <button onClick={submitEditPage} className="btn btn-primary flex-1 rounded-xl shadow-lg shadow-primary/20 font-semibold text-base">保存修改</button>
