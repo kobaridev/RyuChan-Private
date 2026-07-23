@@ -952,13 +952,7 @@ const initialSong = musicList[0] || {};
             const lines = lrcText.split('\n');
             const result = [];
             const timeReg = /\[(\d{2}):(\d{2})\.(\d{2,3})\]/;
-            
-            // To handle translations, we use a map since they appear sequentially 
-            // after the original text or interleaved with identical timestamps.
-            // Since we observed format=lrc&trans=true returns lines with identical timestamps:
-            // [00:19.00]絶景と言うけれど
-            // [00:19.00]虽说是绝景
-            
+
             const tempLines = [];
 
             for (const line of lines) {
@@ -1005,20 +999,13 @@ const initialSong = musicList[0] || {};
                 }
             }
 
-            // Consolidate duplicate timestamps (original + translation)
             for (let i = 0; i < tempLines.length; i++) {
                 const current = tempLines[i];
-                // Check if this is exactly matching the previous timestamp
-                if (result.length > 0 && Math.abs(result[result.length - 1].time - current.time) < 0.01) {
-                    result[result.length - 1].translation = current.text;
-                } else {
-                    result.push({
-                        time: current.time,
-                        text: current.text,
-                        translation: '',
-                        words: current.words
-                    });
-                }
+                result.push({
+                    time: current.time,
+                    text: current.text,
+                    words: current.words
+                });
             }
 
             return result;
@@ -1032,17 +1019,12 @@ const initialSong = musicList[0] || {};
                 
                 if (line.words && line.words.length > 0) {
                      // Support word-by-word
-                     let wordHtml = line.words.map((w, wIdx) => {
+                     let wordHtml = line.words.map((w) => {
                           return `<span class="lyric-word transition-colors duration-150 inline-block" data-time="${w.time}">${w.text}</span>`;
                      }).join('');
                      lineHTML += `<div>${wordHtml}</div>`;
                 } else {
-                     // Standard line
                      lineHTML += `<div>${line.text}</div>`;
-                }
-
-                if (line.translation) {
-                     lineHTML += `<div class="text-xs opacity-70 mt-1">${line.translation}</div>`;
                 }
 
                 return `<div class="lyric-line transition-all duration-300 py-2 leading-6 text-neu-text-muted hover:text-neu-text cursor-pointer text-sm font-medium tracking-wide text-center" data-time="${line.time}" data-index="${index}"><div class="lyric-line-inner">${lineHTML}</div></div>`;

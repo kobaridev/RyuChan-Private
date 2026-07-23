@@ -107,8 +107,9 @@ export function ConfigPage() {
         if (configContent && mode === 'visual') {
             try {
                 const parsed = yaml.load(configContent) as any
-                // 确保 music.playlists 存在
-                if (!parsed.music) parsed.music = { playlists: [] }
+                // 确保 music 配置结构完整
+                if (!parsed.music) parsed.music = { api: 'https://163.hyc.moe', playlists: [] }
+                if (!parsed.music.api) parsed.music.api = 'https://163.hyc.moe'
                 if (!parsed.music.playlists) parsed.music.playlists = []
                 setParsedConfig(parsed)
             } catch (e) {
@@ -216,7 +217,8 @@ export function ConfigPage() {
                     setConfigContent(content)
                     try {
                         const parsed = yaml.load(content) as any
-                        if (!parsed.music) parsed.music = { playlists: [] }
+                        if (!parsed.music) parsed.music = { api: 'https://163.hyc.moe', playlists: [] }
+                        if (!parsed.music.api) parsed.music.api = 'https://163.hyc.moe'
                         if (!parsed.music.playlists) parsed.music.playlists = []
                         // 如果远程配置没有歌单，使用服务端注入的本地歌单
                         if (parsed.music.playlists.length === 0) {
@@ -383,7 +385,7 @@ export function ConfigPage() {
             id: newId,
             name: '',
             server: 'netease',
-            type: 'id' // 'id' 或 'custom'
+            type: 'id' // 'id' 或 'custom'；新建默认为在线平台歌单
         })
         updateConfigValue('music.playlists', playlists)
         setSelectedPlaylistId(newId)
@@ -484,6 +486,16 @@ export function ConfigPage() {
         }
 
         playlists[index][field] = value
+
+        // 自定义歌单不依赖 server，切换类型时清理/补默认值，避免写入无意义字段
+        if (field === 'type') {
+            if (value === 'custom') {
+                delete playlists[index].server
+            } else if (!playlists[index].server) {
+                playlists[index].server = 'netease'
+            }
+        }
+
         updateConfigValue('music.playlists', playlists)
     }
 
@@ -1221,23 +1233,29 @@ export function ConfigPage() {
                                     </div>
                                     <div className="card bg-base-100 shadow-sm border border-base-200 p-6 rounded-2xl space-y-8">
 
-                                        {/* Meting 歌词翻译 */}
+                                        {/* Meting API 地址 */}
                                         <div className="space-y-3">
-                                            <div className="flex items-center justify-between">
-                                                <div className="flex items-center gap-2">
-                                                    <div className="badge badge-accent badge-outline">Meting</div>
-                                                    <span className="text-sm font-medium">歌词翻译</span>
-                                                </div>
-                                                <label className="cursor-pointer label p-0 gap-2">
-                                                    <span className="label-text font-medium text-sm">解析并显示译文</span>
-                                                    <input type="checkbox" className="toggle toggle-md toggle-primary"
-                                                        checked={parsedConfig?.site?.meting?.trans !== false}
-                                                        onChange={e => updateConfigValue('site.meting.trans', e.target.checked)} />
+                                            <div className="flex items-center gap-2">
+                                                <div className="badge badge-accent badge-outline">API</div>
+                                                <span className="text-sm font-medium">音乐 API 地址</span>
+                                            </div>
+                                            <div className="form-control w-full">
+                                                <input
+                                                    type="url"
+                                                    className="input input-sm input-bordered w-full bg-base-100 focus:border-primary font-mono text-xs"
+                                                    placeholder="https://meting.mikus.ink/api"
+                                                    value={parsedConfig?.music?.api || ''}
+                                                    onChange={e => updateConfigValue('music.api', e.target.value.trim())}
+                                                />
+                                                <label className="label py-1">
+                                                    <span className="label-text-alt text-base-content/50">
+                                                        填写可拼接查询参数的 API 基址（不要带 ? 及后面的参数）。请求时会自动追加
+                                                        ?server=netease|tencent&amp;type=playlist&amp;id=歌单ID，
+                                                        例如 https://meting.mikus.ink/api 或 https://163.hyc.moe
+                                                    </span>
                                                 </label>
                                             </div>
                                         </div>
-
-                                        <div className="divider my-0"></div>
 
                                         {/* 歌单列表管理 */}
                                         <div className="space-y-3">
@@ -1265,6 +1283,11 @@ export function ConfigPage() {
                                                             <div className="collapse-title text-sm font-medium flex items-center gap-3 pr-10 min-h-0 py-3">
                                                                 <span className={`badge badge-sm font-mono ${isSelected ? 'badge-primary' : ''}`}>{String(index + 1).padStart(2, '0')}</span>
                                                                 <span className="flex-1 truncate">{item.name || '未命名歌单'}</span>
+                                                                {item.type !== 'custom' && (
+                                                                    <span className="badge badge-xs badge-outline font-mono text-xs shrink-0">
+                                                                        {(item.server || 'netease') === 'tencent' ? 'QQ音乐' : '网易云'}
+                                                                    </span>
+                                                                )}
                                                                 <span className={`badge badge-xs font-mono text-xs truncate max-w-[100px] ${item.type === 'custom' ? 'badge-info' : 'badge-ghost'}`}>
                                                                     {item.type === 'custom' ? '自定义' : (isTempId(item.id) ? '未设置' : item.id)}
                                                                 </span>
@@ -1287,7 +1310,7 @@ export function ConfigPage() {
                                                                                     value={item.type || 'id'}
                                                                                     onChange={val => updatePlaylistEntry(index, 'type', val)}
                                                                                     options={[
-                                                                                        { value: 'id', label: '网易云歌单 ID' },
+                                                                                        { value: 'id', label: '在线平台歌单 ID' },
                                                                                         { value: 'custom', label: '自定义音乐 (JSON)' }
                                                                                     ]}
                                                                                     className="w-full"
@@ -1296,11 +1319,37 @@ export function ConfigPage() {
                                                                         </div>
                                                                     </div>
 
+                                                                    {/* 在线平台歌单：来源选择 */}
+                                                                    {(item.type || 'id') !== 'custom' && (
+                                                                        <div className="form-control w-full">
+                                                                            <label className="label py-0.5"><span className="label-text text-xs text-base-content/60">音乐来源</span></label>
+                                                                            <div onClick={e => e.stopPropagation()}>
+                                                                                <CustomSelect
+                                                                                    value={item.server || 'netease'}
+                                                                                    onChange={val => updatePlaylistEntry(index, 'server', val)}
+                                                                                    options={[
+                                                                                        { value: 'netease', label: '网易云音乐 (netease)' },
+                                                                                        { value: 'tencent', label: 'QQ 音乐 (tencent)' }
+                                                                                    ]}
+                                                                                    className="w-full"
+                                                                                />
+                                                                            </div>
+                                                                        </div>
+                                                                    )}
+
                                                                     {/* 歌单 ID 编辑（两种类型都显示） */}
                                                                     <div className="form-control w-full">
-                                                                        <label className="label py-0.5"><span className="label-text text-xs text-base-content/60">{item.type === 'id' ? '网易云歌单 ID' : '自定义歌单 ID'}</span></label>
+                                                                        <label className="label py-0.5">
+                                                                            <span className="label-text text-xs text-base-content/60">
+                                                                                {item.type === 'custom'
+                                                                                    ? '自定义歌单 ID'
+                                                                                    : ((item.server || 'netease') === 'tencent' ? 'QQ 音乐歌单 ID' : '网易云歌单 ID')}
+                                                                            </span>
+                                                                        </label>
                                                                         <input type="text" className="input input-sm input-bordered w-full bg-base-100 focus:border-primary font-mono text-xs"
-                                                                            placeholder={item.type === 'id' ? "例如: 17957187425" : "例如: my_playlist_01"}
+                                                                            placeholder={item.type === 'custom'
+                                                                                ? '例如: my_playlist_01'
+                                                                                : ((item.server || 'netease') === 'tencent' ? '例如: 8252069661' : '例如: 17957187425')}
                                                                             defaultValue={isTempId(item.id) ? '' : (item.id || '')}
                                                                             onClick={e => e.stopPropagation()}
                                                                             onBlur={e => {

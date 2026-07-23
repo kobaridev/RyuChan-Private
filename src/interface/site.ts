@@ -98,12 +98,6 @@ export interface SiteConfig {
     dark: string;
     code: string;
   };
-  meting?: {
-    server?: string;
-    id?: string;
-    br?: string;
-    trans?: boolean;
-  };
   date_format: string;
   blog: BlogConfig;
   menu: MenuItem[];
@@ -187,10 +181,15 @@ export interface AnimeConfig {
 export interface PlaylistEntry {
   id: string;
   name: string;
-  server?: string;
+  /** 音乐平台来源：netease（网易云）/ tencent（QQ音乐）等 */
+  server?: 'netease' | 'tencent' | string;
+  /** 歌单类型：id（在线平台歌单）/ custom（自定义 JSON） */
+  type?: 'id' | 'custom' | string;
 }
 
 export interface MusicConfig {
+  /** Meting 音乐 API 基址，例如 https://meting.mikus.ink/api（不要带 ?server= 参数） */
+  api?: string;
   playlists?: PlaylistEntry[];
 }
 

@@ -75,13 +75,14 @@ export const TRANSLATIONS = translationsConfig;
 // 评论系统配置
 export const commentsConfig = config.comments;
 
-// Meting 配置
-export const METING_CONFIG = config.site.meting || {
-  server: 'netease',
-  id: '8900628861',
-  br: '320',
-  trans: true
+// Music 配置
+export const MUSIC_CONFIG = config.music || {
+  api: 'https://meting.mikus.ink/api',
+  playlists: []
 };
+
+// 音乐 API 基址（Meting 兼容）
+export const MUSIC_API = config.music?.api || 'https://meting.mikus.ink/api';
 
 // 创建翻译缓存
 const translationCache: Record<string, string> = {};
@@ -118,11 +119,6 @@ export function t(key: string): string {
   translationCache[key] = typeof result === "string" ? result : key;
   return translationCache[key];
 }
-
-// Music 配置
-export const MUSIC_CONFIG = config.music || {
-  playlists: []
-};
 
 // Umami 配置接口
 export interface UmamiConfig {

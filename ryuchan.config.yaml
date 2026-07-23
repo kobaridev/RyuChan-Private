@@ -51,11 +51,6 @@ site:
     music:
       title: Cloud Music
       subtitle: 沉浸式享受音乐时光
-  meting:
-    server: netease
-    id: '17933567326'
-    br: '400'
-    trans: true
   menu:
     - id: write
       text: 写作
@@ -100,12 +95,23 @@ anime:
     apiKey: 08a6bef260044f70c150251c79f2e476
     listId: '8556173'
 music:
+  # Meting API 基址：不要带 ?server=... 参数，脚本会自动拼接
+  api: https://meting.mikus.ink/api
   playlists:
     - id: '10116198879'
       name: 我的喜欢
       server: netease
-    - id: zjl
+    - id: '7039749142'
       name: 周杰伦
+      server: tencent
+    - id: '7559655733'
+      name: 王力宏
+      server: tencent
+    - id: '17966019560'
+      name: 告五人
+      server: netease
+    - id: zjl
+      name: 自定义
       server: netease
       type: custom
     - id: wang_li_hong
@@ -142,10 +148,6 @@ music:
     - id: '17966019560'
       name: 告五人
       server: netease
-    - id: '18049089928'
-      name: demo
-      server: netease
-      type: id
     - id: '18057106567'
       name: 汪苏泷
       server: netease
