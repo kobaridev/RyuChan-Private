@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { toast, Toaster } from 'sonner'
 import { useAuthStore } from './hooks/use-auth'
 import { readFileAsText } from '@/lib/file-utils'
@@ -20,12 +20,24 @@ export default function FriendsEditPage({ initialFriends = [] }: Props) {
   )
   const [globalEditMode, setGlobalEditMode] = useState(false)
   const [saving, setSaving] = useState(false)
-  const [editingIndex, setEditingIndex] = useState<number | null>(null)
+  const [editingIndices, setEditingIndices] = useState<Set<number>>(new Set())
   const [pendingAvatars, setPendingAvatars] = useState<Record<number, { file: File; previewUrl: string }>>({})
   const [avatarTargetIndex, setAvatarTargetIndex] = useState<number | null>(null)
+  const [scrollToIndex, setScrollToIndex] = useState<number | null>(null)
   const { isAuth, setPrivateKey } = useAuthStore()
   const keyInputRef = useRef<HTMLInputElement>(null)
   const avatarInputRef = useRef<HTMLInputElement>(null)
+  const cardRefs = useRef<Record<number, HTMLDivElement | null>>({})
+
+  // Scroll a newly added card into view once it renders
+  useEffect(() => {
+    if (scrollToIndex === null) return
+    const el = cardRefs.current[scrollToIndex]
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    }
+    setScrollToIndex(null)
+  }, [scrollToIndex])
 
   const hasChanges = () => {
     return JSON.stringify(friends) !== JSON.stringify(originalFriends) || Object.keys(pendingAvatars).length > 0
@@ -43,7 +55,7 @@ export default function FriendsEditPage({ initialFriends = [] }: Props) {
     Object.values(pendingAvatars).forEach(({ previewUrl }) => URL.revokeObjectURL(previewUrl))
     setPendingAvatars({})
     setGlobalEditMode(false)
-    setEditingIndex(null)
+    setEditingIndices(new Set())
   }
 
   const handleSaveAll = async () => {
@@ -61,7 +73,7 @@ export default function FriendsEditPage({ initialFriends = [] }: Props) {
       setOriginalFriends(JSON.parse(JSON.stringify(cleanFriends)))
       setFriends(cleanFriends)
       setGlobalEditMode(false)
-      setEditingIndex(null)
+      setEditingIndices(new Set())
     } catch {
       // error handled in service
     } finally {
@@ -80,7 +92,8 @@ export default function FriendsEditPage({ initialFriends = [] }: Props) {
     }
     const newIndex = friends.length
     setFriends([...friends, newFriend])
-    setEditingIndex(newIndex)
+    setEditingIndices(prev => new Set(prev).add(newIndex))
+    setScrollToIndex(newIndex)
   }
 
   const handleDelete = (index: number) => {
@@ -88,7 +101,15 @@ export default function FriendsEditPage({ initialFriends = [] }: Props) {
     const updated = [...friends]
     updated.splice(index, 1)
     setFriends(updated)
-    if (editingIndex === index) setEditingIndex(null)
+    // Re-index editing set (indices shift after splice)
+    setEditingIndices(prev => {
+      const next = new Set<number>()
+      prev.forEach(i => {
+        if (i === index) return
+        next.add(i > index ? i - 1 : i)
+      })
+      return next
+    })
     setPendingAvatars(prev => {
       const next: Record<number, { file: File; previewUrl: string }> = {}
       for (const [keyStr, value] of Object.entries(prev)) {
@@ -105,11 +126,24 @@ export default function FriendsEditPage({ initialFriends = [] }: Props) {
     })
   }
 
+  const swapEditing = (a: number, b: number) => {
+    setEditingIndices(prev => {
+      const next = new Set(prev)
+      const hasA = prev.has(a)
+      const hasB = prev.has(b)
+      next.delete(a); next.delete(b)
+      if (hasA) next.add(b)
+      if (hasB) next.add(a)
+      return next
+    })
+  }
+
   const handleMoveUp = (index: number) => {
     if (index <= 0) return
     const updated = [...friends]
     ;[updated[index - 1], updated[index]] = [updated[index], updated[index - 1]]
     setFriends(updated)
+    swapEditing(index, index - 1)
     setPendingAvatars(prev => {
       const next: Record<number, { file: File; previewUrl: string }> = {}
       for (const [keyStr, value] of Object.entries(prev)) {
@@ -131,6 +165,7 @@ export default function FriendsEditPage({ initialFriends = [] }: Props) {
     const updated = [...friends]
     ;[updated[index], updated[index + 1]] = [updated[index + 1], updated[index]]
     setFriends(updated)
+    swapEditing(index, index + 1)
     setPendingAvatars(prev => {
       const next: Record<number, { file: File; previewUrl: string }> = {}
       for (const [keyStr, value] of Object.entries(prev)) {
@@ -148,7 +183,7 @@ export default function FriendsEditPage({ initialFriends = [] }: Props) {
   }
 
   const handleStartEdit = (index: number) => {
-    setEditingIndex(index)
+    setEditingIndices(prev => new Set(prev).add(index))
   }
 
   const handleCancelEdit = (index: number) => {
@@ -164,6 +199,15 @@ export default function FriendsEditPage({ initialFriends = [] }: Props) {
       const updated = [...friends]
       updated.splice(index, 1)
       setFriends(updated)
+      // Re-index editing set (indices shift after splice)
+      setEditingIndices(prev => {
+        const next = new Set<number>()
+        prev.forEach(i => {
+          if (i === index) return
+          next.add(i > index ? i - 1 : i)
+        })
+        return next
+      })
     } else {
       const updated = [...friends]
       const orig = originalFriends[index]
@@ -173,8 +217,12 @@ export default function FriendsEditPage({ initialFriends = [] }: Props) {
         updated[index] = { ...friends[index], _draft: false }
       }
       setFriends(updated)
+      setEditingIndices(prev => {
+        const next = new Set(prev)
+        next.delete(index)
+        return next
+      })
     }
-    setEditingIndex(null)
   }
 
   const handleCompleteEdit = (index: number) => {
@@ -190,7 +238,11 @@ export default function FriendsEditPage({ initialFriends = [] }: Props) {
     const updated = [...friends]
     updated[index] = { ...item, _draft: false }
     setFriends(updated)
-    setEditingIndex(null)
+    setEditingIndices(prev => {
+      const next = new Set(prev)
+      next.delete(index)
+      return next
+    })
   }
 
   const updateFriend = (index: number, field: keyof FriendEditState, value: any) => {
@@ -248,20 +300,23 @@ export default function FriendsEditPage({ initialFriends = [] }: Props) {
     )
   }
 
-  // ====== Render avatar ======
-  const renderAvatar = (friend: FriendEditState, index: number, isEditing: boolean) => {
+  // ====== Render view-only name ======
+  const renderViewName = (friend: FriendEditState) => {
+    return (
+      <h3 className="font-bold text-base text-base-content truncate">
+        {friend.name}
+      </h3>
+    )
+  }
+
+  // ====== Render avatar (view mode only) ======
+  const renderAvatar = (friend: FriendEditState, index: number) => {
     const pendingAvatar = pendingAvatars[index]
     const displaySrc = pendingAvatar?.previewUrl || friend.avatar
 
     return (
       <div className="shrink-0">
-        <div
-          className={`group relative rounded-full bg-base-200/50 p-0.5 ring-2 ring-base-200 transition-all duration-300 ${isEditing ? 'w-20 h-20' : 'w-16 h-16'} ${
-            isEditing ? 'cursor-pointer hover:ring-primary/50 hover:shadow-md' : ''
-          }`}
-          onClick={() => isEditing && handleAvatarClick(index)}
-          title={isEditing ? '点击上传头像' : undefined}
-        >
+        <div className="group relative w-16 h-16 rounded-full bg-base-200/50 p-0.5 ring-2 ring-base-200 transition-all duration-300">
           {displaySrc ? (
             <img
               alt={friend.name}
@@ -273,68 +328,13 @@ export default function FriendsEditPage({ initialFriends = [] }: Props) {
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
             </div>
           )}
-          {isEditing && (
-            <div className="pointer-events-none absolute inset-0 flex items-center justify-center rounded-full bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity">
-              <span className="text-xs text-white font-semibold">点击更换</span>
-            </div>
-          )}
         </div>
-        {isEditing && (
-          <input
-            className="input input-xs input-bordered w-full bg-base-100 focus:border-primary text-xs mt-1.5"
-            value={friend.avatar || ''}
-            onChange={e => updateFriend(index, 'avatar', e.target.value)}
-            placeholder="或输入图片URL"
-          />
-        )}
       </div>
     )
   }
 
-  // ====== Render name row ======
-  const renderNameRow = (friend: FriendEditState, index: number, isEditing: boolean) => {
-    if (isEditing) {
-      return (
-        <input
-          className="input input-sm input-bordered w-full bg-base-100 focus:border-primary text-base font-semibold"
-          value={friend.name}
-          onChange={e => updateFriend(index, 'name', e.target.value)}
-          placeholder="好友名称"
-        />
-      )
-    }
-    return (
-      <h3 className="font-bold text-base text-base-content truncate">
-        {friend.name}
-      </h3>
-    )
-  }
-
-  // ====== Render badge editor ======
-  const renderBadgeEditor = (friend: FriendEditState, index: number) => {
-    return (
-      <input
-        className="input input-sm input-bordered w-full bg-base-100 focus:border-primary text-sm mt-2"
-        value={friend.badge || ''}
-        onChange={e => updateFriend(index, 'badge', e.target.value)}
-        placeholder="徽章文字（如 邻居、室友）"
-      />
-    )
-  }
-
-  // ====== Render description ======
-  const renderDescription = (friend: FriendEditState, index: number, isEditing: boolean) => {
-    if (isEditing) {
-      return (
-        <textarea
-          className="textarea textarea-bordered w-full bg-base-100 focus:border-primary text-sm leading-relaxed resize-none"
-          rows={2}
-          value={friend.description}
-          onChange={e => updateFriend(index, 'description', e.target.value)}
-          placeholder="好友描述"
-        />
-      )
-    }
+  // ====== Render description (view mode only) ======
+  const renderDescription = (friend: FriendEditState) => {
     return (
       <p className="text-xs text-base-content/60 line-clamp-2 leading-relaxed">
         {friend.description}
@@ -342,19 +342,8 @@ export default function FriendsEditPage({ initialFriends = [] }: Props) {
     )
   }
 
-  // ====== Render URL ======
-  const renderUrl = (friend: FriendEditState, index: number, isEditing: boolean) => {
-    if (isEditing) {
-      return (
-        <input
-          className="input input-bordered w-full bg-base-100 focus:border-primary text-base"
-          value={friend.url}
-          onChange={e => updateFriend(index, 'url', e.target.value)}
-          placeholder="网站链接"
-          type="url"
-        />
-      )
-    }
+  // ====== Render URL link (view mode only) ======
+  const renderUrl = (friend: FriendEditState) => {
     return (
       <a
         href={friend.url}
@@ -449,100 +438,166 @@ export default function FriendsEditPage({ initialFriends = [] }: Props) {
       {friends.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
           {friends.map((friend, index) => {
-            const isEditing = editingIndex === index
+            const isEditing = editingIndices.has(index)
 
             return (
               <div
                 key={index}
-                className="group relative block h-full bg-base-100 rounded-2xl border border-base-200 hover:border-primary/40 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden"
+                ref={el => { cardRefs.current[index] = el }}
+                className={`group relative block bg-base-100 rounded-2xl border border-base-200 hover:border-primary/40 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden ${
+                  isEditing ? 'ring-2 ring-primary/30' : ''
+                }`}
               >
-                <div className="p-4 flex flex-col h-full">
-                  {/* Global edit mode: Move up/down + Edit + Delete buttons on their own row */}
+                <div className={`flex flex-col h-full ${isEditing ? '' : 'p-4'}`}>
+                  {/* Global edit mode toolbar for non-editing cards */}
                   {globalEditMode && !isEditing && (
-                    <div className="flex justify-end gap-2 mb-2">
-                      {index > 0 && (
+                    <div className="px-4 pt-4 pb-2">
+                      <div className="flex justify-end gap-2">
+                        {index > 0 && (
+                          <button
+                            onClick={(e) => { e.preventDefault(); handleMoveUp(index) }}
+                            className="btn btn-sm btn-ghost text-primary/50 hover:text-primary hover:bg-primary/10 rounded-lg px-2"
+                            title="上移"
+                          >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+                          </button>
+                        )}
+                        {index < friends.length - 1 && (
+                          <button
+                            onClick={(e) => { e.preventDefault(); handleMoveDown(index) }}
+                            className="btn btn-sm btn-ghost text-primary/50 hover:text-primary hover:bg-primary/10 rounded-lg px-2"
+                            title="下移"
+                          >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                          </button>
+                        )}
                         <button
-                          onClick={(e) => { e.preventDefault(); handleMoveUp(index) }}
-                          className="btn btn-sm btn-ghost text-primary/50 hover:text-primary hover:bg-primary/10 rounded-lg px-2"
-                          title="上移"
+                          onClick={(e) => { e.preventDefault(); handleStartEdit(index) }}
+                          className="btn btn-sm btn-ghost text-primary hover:bg-primary/10 rounded-lg px-2"
+                          title="编辑"
                         >
-                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>
                         </button>
-                      )}
-                      {index < friends.length - 1 && (
                         <button
-                          onClick={(e) => { e.preventDefault(); handleMoveDown(index) }}
-                          className="btn btn-sm btn-ghost text-primary/50 hover:text-primary hover:bg-primary/10 rounded-lg px-2"
-                          title="下移"
+                          onClick={(e) => { e.preventDefault(); handleDelete(index) }}
+                          className="btn btn-sm btn-ghost text-error hover:bg-error/10 rounded-lg px-2"
+                          title="删除"
                         >
-                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
                         </button>
-                      )}
-                      <button
-                        onClick={(e) => { e.preventDefault(); handleStartEdit(index) }}
-                        className="btn btn-sm btn-ghost text-primary hover:bg-primary/10 rounded-lg px-2"
-                        title="编辑"
-                      >
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>
-                      </button>
-                      <button
-                        onClick={(e) => { e.preventDefault(); handleDelete(index) }}
-                        className="btn btn-sm btn-ghost text-error hover:bg-error/10 rounded-lg px-2"
-                        title="删除"
-                      >
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
-                      </button>
+                      </div>
                     </div>
                   )}
 
-                  {/* Badge: absolute top-right in view mode */}
-                  {!isEditing && !globalEditMode && friend.badge && (
-                    <div className="absolute top-2 right-2 z-10">
-                      {renderBadge(friend.badge)}
-                    </div>
-                  )}
-
-                  {/* Main content: Avatar + Name + Description */}
-                  <div className={`flex items-start gap-4 flex-1 ${globalEditMode ? 'relative' : ''}`}>
-                    {renderAvatar(friend, index, isEditing)}
-
-                    <div className="flex-1 min-w-0 flex flex-col justify-center">
-                      <div className="flex items-center justify-between mb-1">
-                        {renderNameRow(friend, index, isEditing)}
+                  {isEditing ? (
+                    /* ====== Inline Edit Form — single card, vertical layout ====== */
+                    <div className="p-4 space-y-3">
+                      {/* Avatar row: 1/3 avatar + 2/3 name/badge */}
+                      <div className="flex items-start gap-3">
+                        <div className="w-1/3 shrink-0">
+                          <div
+                            className="group relative aspect-square w-full rounded-xl bg-base-200/50 p-0.5 cursor-pointer hover:ring-2 hover:ring-primary/50 hover:shadow-md transition-all duration-300"
+                            onClick={() => handleAvatarClick(index)}
+                            title="点击上传头像"
+                          >
+                            {(pendingAvatars[index]?.previewUrl || friend.avatar) ? (
+                              <img
+                                alt={friend.name}
+                                className="w-full h-full rounded-lg object-cover"
+                                src={pendingAvatars[index]?.previewUrl || friend.avatar}
+                              />
+                            ) : (
+                              <div className="flex items-center justify-center w-full h-full rounded-lg bg-base-300 text-base-content/40">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+                              </div>
+                            )}
+                            <div className="pointer-events-none absolute inset-0 flex items-center justify-center rounded-xl bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity">
+                              <span className="text-xs text-white font-semibold">更换</span>
+                            </div>
+                          </div>
+                          <input
+                            className="input input-xs input-bordered w-full bg-base-100 focus:border-primary text-xs font-medium mt-1.5"
+                            value={friend.avatar || ''}
+                            onChange={e => updateFriend(index, 'avatar', e.target.value)}
+                            placeholder="图片URL"
+                          />
+                        </div>
+                        <div className="w-2/3 min-w-0 flex flex-col gap-2">
+                          <input
+                            className="input input-sm input-bordered w-full bg-base-100 focus:border-primary text-sm font-medium"
+                            value={friend.name}
+                            onChange={e => updateFriend(index, 'name', e.target.value)}
+                            placeholder="好友名称"
+                          />
+                          <input
+                            className="input input-sm input-bordered w-full bg-base-100 focus:border-primary text-sm"
+                            value={friend.badge || ''}
+                            onChange={e => updateFriend(index, 'badge', e.target.value)}
+                            placeholder="徽章（如 邻居、室友）"
+                          />
+                          <textarea
+                            className="textarea textarea-bordered w-full flex-1 min-h-0 bg-base-100 focus:border-primary text-sm leading-relaxed resize-none"
+                            value={friend.description}
+                            onChange={e => updateFriend(index, 'description', e.target.value)}
+                            placeholder="好友描述"
+                          />
+                        </div>
                       </div>
 
-                      {/* Badge editor in edit mode */}
-                      {isEditing && renderBadgeEditor(friend, index)}
+                      {/* URL */}
+                      <input
+                        className="input input-sm input-bordered w-full bg-base-100 focus:border-primary text-sm"
+                        value={friend.url}
+                        onChange={e => updateFriend(index, 'url', e.target.value)}
+                        placeholder="网站链接 https://..."
+                        type="url"
+                      />
 
-                      {/* Description */}
-                      <div className="mb-1.5">
-                        {renderDescription(friend, index, isEditing)}
+                      {/* Action buttons */}
+                      <div className="flex gap-3 pt-2 border-t border-base-200/50">
+                        <button onClick={() => handleCancelEdit(index)} className="btn btn-ghost btn-sm flex-1 rounded-xl text-base-content/60 font-semibold">
+                          取消
+                        </button>
+                        <button onClick={() => handleCompleteEdit(index)} className="btn btn-primary btn-sm flex-1 rounded-xl font-semibold shadow-lg shadow-primary/20">
+                          完成
+                        </button>
                       </div>
                     </div>
+                  ) : (
+                    /* ====== View Mode — original compact card ====== */
+                    <>
+                      {/* Badge in view mode */}
+                      {!globalEditMode && friend.badge && (
+                        <div className="absolute top-2 right-2 z-10">
+                          {renderBadge(friend.badge)}
+                        </div>
+                      )}
 
-                    {/* Badge: top-right inside content area in global edit mode */}
-                    {globalEditMode && !isEditing && friend.badge && (
-                      <div className="absolute top-0 right-0">
-                        {renderBadge(friend.badge)}
+                      {/* Main content: Avatar + Name + Description */}
+                      <div className={`flex items-start gap-4 flex-1 ${globalEditMode ? 'relative' : ''}`}>
+                        {renderAvatar(friend, index)}
+                        <div className="flex-1 min-w-0 flex flex-col justify-center">
+                          <div className="flex items-center justify-between mb-1">
+                            {renderViewName(friend)}
+                          </div>
+                          <div className="mb-1.5">
+                            {renderDescription(friend)}
+                          </div>
+                        </div>
                       </div>
-                    )}
-                  </div>
 
-                  {/* Footer: URL at bottom-right */}
-                  <div className="pt-2 border-t border-base-200/50 mt-auto">
-                    {renderUrl(friend, index, isEditing)}
-                  </div>
+                      {/* Badge: top-right inside content area in global edit mode */}
+                      {globalEditMode && friend.badge && (
+                        <div className="absolute top-0 right-0">
+                          {renderBadge(friend.badge)}
+                        </div>
+                      )}
 
-                  {/* Card editing mode: Cancel + Complete buttons at bottom */}
-                  {isEditing && (
-                    <div className="w-full mt-3">
-                      <button onClick={() => handleCancelEdit(index)} className="btn btn-sm btn-ghost w-full rounded-lg text-base-content/60 font-semibold mb-1.5">
-                        取消
-                      </button>
-                      <button onClick={() => handleCompleteEdit(index)} className="btn btn-sm btn-primary w-full rounded-lg font-semibold">
-                        完成
-                      </button>
-                    </div>
+                      {/* Footer: URL at bottom-right */}
+                      <div className="px-4 pt-2 border-t border-base-200/50">
+                        {renderUrl(friend)}
+                      </div>
+                    </>
                   )}
                 </div>
               </div>

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { toast, Toaster } from 'sonner'
 import { useAuthStore } from './hooks/use-auth'
 import { readFileAsText } from '@/lib/file-utils'
@@ -20,12 +20,24 @@ export default function ProjectsEditPage({ initialProjects = [] }: Props) {
   )
   const [globalEditMode, setGlobalEditMode] = useState(false)
   const [saving, setSaving] = useState(false)
-  const [editingIndex, setEditingIndex] = useState<number | null>(null)
+  const [editingIndices, setEditingIndices] = useState<Set<number>>(new Set())
   const [pendingAvatars, setPendingAvatars] = useState<Record<number, { file: File; previewUrl: string }>>({})
   const [avatarTargetIndex, setAvatarTargetIndex] = useState<number | null>(null)
+  const [scrollToIndex, setScrollToIndex] = useState<number | null>(null)
   const { isAuth, setPrivateKey } = useAuthStore()
   const keyInputRef = useRef<HTMLInputElement>(null)
   const avatarInputRef = useRef<HTMLInputElement>(null)
+  const cardRefs = useRef<Record<number, HTMLDivElement | null>>({})
+
+  // Scroll a newly added card into view once it renders
+  useEffect(() => {
+    if (scrollToIndex === null) return
+    const el = cardRefs.current[scrollToIndex]
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    }
+    setScrollToIndex(null)
+  }, [scrollToIndex])
 
   const hasChanges = () => {
     return JSON.stringify(projects) !== JSON.stringify(originalProjects) || Object.keys(pendingAvatars).length > 0
@@ -44,7 +56,7 @@ export default function ProjectsEditPage({ initialProjects = [] }: Props) {
     Object.values(pendingAvatars).forEach(({ previewUrl }) => URL.revokeObjectURL(previewUrl))
     setPendingAvatars({})
     setGlobalEditMode(false)
-    setEditingIndex(null)
+    setEditingIndices(new Set())
   }
 
   const handleSaveAll = async () => {
@@ -63,7 +75,7 @@ export default function ProjectsEditPage({ initialProjects = [] }: Props) {
       setOriginalProjects(JSON.parse(JSON.stringify(cleanProjects)))
       setProjects(cleanProjects)
       setGlobalEditMode(false)
-      setEditingIndex(null)
+      setEditingIndices(new Set())
     } catch {
       // error handled in service
     } finally {
@@ -77,16 +89,13 @@ export default function ProjectsEditPage({ initialProjects = [] }: Props) {
       avatar: '',
       description: '',
       url: '',
-      year: new Date().getFullYear(),
-      tags: [],
-      github: '',
-      npm: '',
       badge: '',
       _draft: true
     }
     const newIndex = projects.length
     setProjects([...projects, newProject])
-    setEditingIndex(newIndex)
+    setEditingIndices(prev => new Set(prev).add(newIndex))
+    setScrollToIndex(newIndex)
   }
 
   const handleDelete = (index: number) => {
@@ -94,7 +103,15 @@ export default function ProjectsEditPage({ initialProjects = [] }: Props) {
     const updated = [...projects]
     updated.splice(index, 1)
     setProjects(updated)
-    if (editingIndex === index) setEditingIndex(null)
+    // Re-index editing set (indices shift after splice)
+    setEditingIndices(prev => {
+      const next = new Set<number>()
+      prev.forEach(i => {
+        if (i === index) return
+        next.add(i > index ? i - 1 : i)
+      })
+      return next
+    })
     // Clean up and re-index pending avatars (indices shift after splice)
     setPendingAvatars(prev => {
       const next: Record<number, { file: File; previewUrl: string }> = {}
@@ -112,11 +129,25 @@ export default function ProjectsEditPage({ initialProjects = [] }: Props) {
     })
   }
 
+  // Swap membership of two indices in the editing set
+  const swapEditing = (a: number, b: number) => {
+    setEditingIndices(prev => {
+      const next = new Set(prev)
+      const hasA = prev.has(a)
+      const hasB = prev.has(b)
+      next.delete(a); next.delete(b)
+      if (hasA) next.add(b)
+      if (hasB) next.add(a)
+      return next
+    })
+  }
+
   const handleMoveUp = (index: number) => {
     if (index <= 0) return
     const updated = [...projects]
     ;[updated[index - 1], updated[index]] = [updated[index], updated[index - 1]]
     setProjects(updated)
+    swapEditing(index, index - 1)
     setPendingAvatars(prev => {
       const next: Record<number, { file: File; previewUrl: string }> = {}
       for (const [keyStr, value] of Object.entries(prev)) {
@@ -138,6 +169,7 @@ export default function ProjectsEditPage({ initialProjects = [] }: Props) {
     const updated = [...projects]
     ;[updated[index], updated[index + 1]] = [updated[index + 1], updated[index]]
     setProjects(updated)
+    swapEditing(index, index + 1)
     setPendingAvatars(prev => {
       const next: Record<number, { file: File; previewUrl: string }> = {}
       for (const [keyStr, value] of Object.entries(prev)) {
@@ -155,7 +187,7 @@ export default function ProjectsEditPage({ initialProjects = [] }: Props) {
   }
 
   const handleStartEdit = (index: number) => {
-    setEditingIndex(index)
+    setEditingIndices(prev => new Set(prev).add(index))
   }
 
   const handleCancelEdit = (index: number) => {
@@ -172,6 +204,15 @@ export default function ProjectsEditPage({ initialProjects = [] }: Props) {
       const updated = [...projects]
       updated.splice(index, 1)
       setProjects(updated)
+      // Re-index editing set (indices shift after splice)
+      setEditingIndices(prev => {
+        const next = new Set<number>()
+        prev.forEach(i => {
+          if (i === index) return
+          next.add(i > index ? i - 1 : i)
+        })
+        return next
+      })
     } else {
       const updated = [...projects]
       const orig = originalProjects[index]
@@ -181,8 +222,12 @@ export default function ProjectsEditPage({ initialProjects = [] }: Props) {
         updated[index] = { ...projects[index], _draft: false }
       }
       setProjects(updated)
+      setEditingIndices(prev => {
+        const next = new Set(prev)
+        next.delete(index)
+        return next
+      })
     }
-    setEditingIndex(null)
   }
 
   const handleCompleteEdit = (index: number) => {
@@ -191,14 +236,18 @@ export default function ProjectsEditPage({ initialProjects = [] }: Props) {
       toast.error('项目名称不能为空')
       return
     }
-    if (!item.url.trim() && !item.github?.trim() && !item.npm?.trim()) {
-      toast.error('请至少填写一个链接（网站 / GitHub / NPM）')
+    if (!item.url.trim()) {
+      toast.error('请填写项目链接')
       return
     }
     const updated = [...projects]
     updated[index] = { ...item, _draft: false }
     setProjects(updated)
-    setEditingIndex(null)
+    setEditingIndices(prev => {
+      const next = new Set(prev)
+      next.delete(index)
+      return next
+    })
   }
 
   const updateProject = (index: number, field: keyof ProjectEditState, value: any) => {
@@ -260,20 +309,14 @@ export default function ProjectsEditPage({ initialProjects = [] }: Props) {
     )
   }
 
-  // ====== Render avatar ======
-  const renderAvatar = (project: ProjectEditState, index: number, isEditing: boolean) => {
+  // ====== Render avatar (view mode only) ======
+  const renderAvatar = (project: ProjectEditState, index: number) => {
     const pendingAvatar = pendingAvatars[index]
     const displaySrc = pendingAvatar?.previewUrl || project.avatar
 
     return (
       <div className="shrink-0">
-        <div
-          className={`group relative w-16 h-16 rounded-xl bg-base-200/50 p-1 transition-all duration-300 ${
-            isEditing ? 'cursor-pointer hover:bg-primary/10 hover:shadow-md' : ''
-          }`}
-          onClick={() => isEditing && handleAvatarClick(index)}
-          title={isEditing ? '点击上传头像' : undefined}
-        >
+        <div className="group relative w-16 h-16 rounded-xl bg-base-200/50 p-1 transition-all duration-300">
           {displaySrc ? (
             <img
               alt={project.name}
@@ -285,36 +328,13 @@ export default function ProjectsEditPage({ initialProjects = [] }: Props) {
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
             </div>
           )}
-          {isEditing && (
-            <div className="pointer-events-none absolute inset-0 flex items-center justify-center rounded-xl bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity">
-              <span className="text-xs text-white font-semibold">点击更换</span>
-            </div>
-          )}
         </div>
-        {isEditing && (
-          <input
-            className="input input-xs input-bordered w-full bg-base-100 focus:border-primary text-xs mt-1.5"
-            value={project.avatar || ''}
-            onChange={e => updateProject(index, 'avatar', e.target.value)}
-            placeholder="或输入图片URL"
-          />
-        )}
       </div>
     )
   }
 
-  // ====== Render title row ======
-  const renderTitleRow = (project: ProjectEditState, index: number, isEditing: boolean) => {
-    if (isEditing) {
-      return (
-        <input
-          className="input input-sm input-bordered w-full bg-base-100 focus:border-primary text-base font-semibold"
-          value={project.name}
-          onChange={e => updateProject(index, 'name', e.target.value)}
-          placeholder="项目名称"
-        />
-      )
-    }
+  // ====== Render title (view mode only) ======
+  const renderTitleRow = (project: ProjectEditState) => {
     return (
       <h3 className="font-bold text-lg text-base-content truncate">
         {project.name}
@@ -322,91 +342,8 @@ export default function ProjectsEditPage({ initialProjects = [] }: Props) {
     )
   }
 
-  // ====== Render badge input (edit mode only) ======
-  const renderBadgeEditor = (project: ProjectEditState, index: number) => {
-    return (
-      <input
-        className="input input-sm input-bordered w-full bg-base-100 focus:border-primary text-sm mt-2"
-        value={project.badge || ''}
-        onChange={e => updateProject(index, 'badge', e.target.value)}
-        placeholder="徽章文字（如 Web、Tool、Media）"
-      />
-    )
-  }
-
-  // ====== Render tags ======
-  const [editingTagInputs, setEditingTagInputs] = useState<Record<number, string>>({})
-
-  const renderTags = (project: ProjectEditState, index: number, isEditing: boolean) => {
-    if (isEditing) {
-      const currentTags = Array.isArray(project.tags) ? project.tags : []
-      const tagInput = editingTagInputs[index] || ''
-
-      const addTag = (value: string) => {
-        const tag = value.trim()
-        if (!tag || currentTags.includes(tag)) return
-        updateProject(index, 'tags', [...currentTags, tag])
-        setEditingTagInputs(prev => ({ ...prev, [index]: '' }))
-      }
-
-      const removeTag = (tagIndex: number) => {
-        updateProject(index, 'tags', currentTags.filter((_, i) => i !== tagIndex))
-      }
-
-      const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === 'Enter') {
-          e.preventDefault()
-          addTag(tagInput)
-        } else if (e.key === 'Backspace' && !tagInput && currentTags.length > 0) {
-          removeTag(currentTags.length - 1)
-        }
-      }
-
-      return (
-        <div className="flex flex-wrap gap-1.5 mt-2 p-2 rounded-xl border border-base-200 bg-base-100 focus-within:border-primary transition-colors">
-          {currentTags.map((tag: string, ti: number) => (
-            <span key={ti} className="inline-flex items-center gap-0.5 text-xs font-medium text-primary bg-primary/10 rounded-lg pl-2 pr-1 py-1">
-              {tag}
-              <button type="button" onClick={() => removeTag(ti)} className="shrink-0 p-0.5 rounded-md hover:bg-primary/20 transition-colors">
-                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-              </button>
-            </span>
-          ))}
-          <input
-            placeholder={currentTags.length === 0 ? '输入标签，回车添加' : '添加标签...'}
-            className="flex-1 min-w-[80px] bg-transparent text-sm outline-none border-none py-0.5"
-            value={tagInput}
-            onChange={e => setEditingTagInputs(prev => ({ ...prev, [index]: e.target.value }))}
-            onKeyDown={handleKeyDown}
-          />
-        </div>
-      )
-    }
-    if (!project.tags || project.tags.length === 0) return null
-    return (
-      <div className="flex flex-wrap gap-1 mt-1.5">
-        {project.tags.map((tag: string) => (
-          <span key={tag} className="text-xs text-primary bg-primary/5 rounded px-1.5 py-0.5">
-            {tag}
-          </span>
-        ))}
-      </div>
-    )
-  }
-
-  // ====== Render description ======
-  const renderDescription = (project: ProjectEditState, index: number, isEditing: boolean) => {
-    if (isEditing) {
-      return (
-        <textarea
-          className="textarea textarea-bordered w-full bg-base-100 focus:border-primary text-sm leading-relaxed resize-none"
-          rows={2}
-          value={project.description}
-          onChange={e => updateProject(index, 'description', e.target.value)}
-          placeholder="项目描述"
-        />
-      )
-    }
+  // ====== Render description (view mode only) ======
+  const renderDescription = (project: ProjectEditState) => {
     return (
       <p className="text-sm text-base-content/70 line-clamp-2 leading-relaxed">
         {project.description}
@@ -414,36 +351,9 @@ export default function ProjectsEditPage({ initialProjects = [] }: Props) {
     )
   }
 
-  // ====== Render links ======
-  const renderLinks = (project: ProjectEditState, index: number, isEditing: boolean) => {
-    if (isEditing) {
-      return (
-        <div className="flex flex-wrap gap-2">
-          <input
-            placeholder="网站 URL"
-            className="input input-sm input-bordered flex-1 bg-base-100 focus:border-primary min-w-[100px] text-sm"
-            type="url"
-            value={project.url}
-            onChange={e => updateProject(index, 'url', e.target.value)}
-          />
-          <input
-            placeholder="GitHub URL（可选）"
-            className="input input-sm input-bordered flex-1 bg-base-100 focus:border-primary min-w-[100px] text-sm"
-            type="url"
-            value={project.github || ''}
-            onChange={e => updateProject(index, 'github', e.target.value)}
-          />
-          <input
-            placeholder="NPM URL（可选）"
-            className="input input-sm input-bordered flex-1 bg-base-100 focus:border-primary min-w-[100px] text-sm"
-            type="url"
-            value={project.npm || ''}
-            onChange={e => updateProject(index, 'npm', e.target.value)}
-          />
-        </div>
-      )
-    }
-
+  // ====== Render links (view mode only) ======
+  const renderLinks = (project: ProjectEditState) => {
+    if (!project.url) return null
     return (
       <div className="flex flex-wrap gap-1.5">
         <a
@@ -455,28 +365,6 @@ export default function ProjectsEditPage({ initialProjects = [] }: Props) {
           <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
           Website
         </a>
-        {project.github && (
-          <a
-            href={project.github}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1 text-sm font-medium text-primary bg-primary/5 hover:bg-primary/10 rounded-md px-2 py-1 transition-colors"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-            GitHub
-          </a>
-        )}
-        {project.npm && (
-          <a
-            href={project.npm}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1 text-sm font-medium text-primary bg-primary/5 hover:bg-primary/10 rounded-md px-2 py-1 transition-colors"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M1.763 0C.786 0 0 .786 0 1.763v20.474C0 23.214.786 24 1.763 24h20.474c.977 0 1.763-.786 1.763-1.763V1.763C24 .786 23.214 0 22.237 0zM5.13 5.323l13.837.019-.009 13.836h-3.464l.01-10.382h-3.456L12.04 19.17H5.113z"/></svg>
-            NPM
-          </a>
-        )}
       </div>
     )
   }
@@ -562,88 +450,156 @@ export default function ProjectsEditPage({ initialProjects = [] }: Props) {
       {projects.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
           {projects.map((project, index) => {
-            const isEditing = editingIndex === index
+            const isEditing = editingIndices.has(index)
 
             return (
               <div
                 key={index}
-                className="group block h-full bg-base-100 rounded-2xl border border-base-200 hover:border-primary/40 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden"
+                ref={el => { cardRefs.current[index] = el }}
+                className={`group block bg-base-100 rounded-2xl border border-base-200 hover:border-primary/40 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden ${
+                  isEditing ? 'ring-2 ring-primary/30' : ''
+                }`}
               >
-                <div className="p-4 flex flex-col h-full">
-                  {/* Global edit mode: Move up/down + Edit + Delete buttons on their own row */}
+                <div className={`flex flex-col h-full ${isEditing ? '' : 'p-4'}`}>
+                  {/* Global edit mode toolbar for non-editing cards */}
                   {globalEditMode && !isEditing && (
-                    <div className="flex justify-end gap-2 mb-2">
-                      {index > 0 && (
+                    <div className="px-4 pt-4 pb-2">
+                      <div className="flex justify-end gap-2">
+                        {index > 0 && (
+                          <button
+                            onClick={(e) => { e.preventDefault(); handleMoveUp(index) }}
+                            className="btn btn-sm btn-ghost text-primary/50 hover:text-primary hover:bg-primary/10 rounded-lg px-2"
+                            title="上移"
+                          >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+                          </button>
+                        )}
+                        {index < projects.length - 1 && (
+                          <button
+                            onClick={(e) => { e.preventDefault(); handleMoveDown(index) }}
+                            className="btn btn-sm btn-ghost text-primary/50 hover:text-primary hover:bg-primary/10 rounded-lg px-2"
+                            title="下移"
+                          >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                          </button>
+                        )}
                         <button
-                          onClick={(e) => { e.preventDefault(); handleMoveUp(index) }}
-                          className="btn btn-sm btn-ghost text-primary/50 hover:text-primary hover:bg-primary/10 rounded-lg px-2"
-                          title="上移"
+                          onClick={(e) => { e.preventDefault(); handleStartEdit(index) }}
+                          className="btn btn-sm btn-ghost text-primary hover:bg-primary/10 rounded-lg px-2"
+                          title="编辑"
                         >
-                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>
                         </button>
-                      )}
-                      {index < projects.length - 1 && (
                         <button
-                          onClick={(e) => { e.preventDefault(); handleMoveDown(index) }}
-                          className="btn btn-sm btn-ghost text-primary/50 hover:text-primary hover:bg-primary/10 rounded-lg px-2"
-                          title="下移"
+                          onClick={(e) => { e.preventDefault(); handleDelete(index) }}
+                          className="btn btn-sm btn-ghost text-error hover:bg-error/10 rounded-lg px-2"
+                          title="删除"
                         >
-                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
                         </button>
-                      )}
-                      <button
-                        onClick={(e) => { e.preventDefault(); handleStartEdit(index) }}
-                        className="btn btn-sm btn-ghost text-primary hover:bg-primary/10 rounded-lg px-2"
-                        title="编辑"
-                      >
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>
-                      </button>
-                      <button
-                        onClick={(e) => { e.preventDefault(); handleDelete(index) }}
-                        className="btn btn-sm btn-ghost text-error hover:bg-error/10 rounded-lg px-2"
-                        title="删除"
-                      >
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
-                      </button>
+                      </div>
                     </div>
                   )}
 
-                  {/* Header: Avatar + Title + Badge */}
-                  <div className="flex items-start gap-3 mb-2">
-                    {renderAvatar(project, index, isEditing)}
-                    <div className="flex-1 min-w-0 pt-0.5">
-                      {renderTitleRow(project, index, isEditing)}
-                      {isEditing && renderBadgeEditor(project, index)}
-                      {renderTags(project, index, isEditing)}
-                    </div>
-                    {/* Badge: right-aligned, horizontally aligned with avatar */}
-                    {!isEditing && (
-                      <div className="shrink-0 pt-0.5">
-                        {renderBadge(project.badge)}
+                  {isEditing ? (
+                    /* ====== Inline Edit Form — single card, vertical layout ====== */
+                    <div className="p-4 space-y-3">
+                      {/* Avatar row: 1/3 avatar + 2/3 name/badge */}
+                      <div className="flex items-start gap-3">
+                        <div className="w-1/3 shrink-0">
+                          <div
+                            className="group relative aspect-square w-full rounded-xl bg-base-200/50 p-1 cursor-pointer hover:bg-primary/10 hover:shadow-md transition-all duration-300"
+                            onClick={() => handleAvatarClick(index)}
+                            title="点击上传头像"
+                          >
+                            {(pendingAvatars[index]?.previewUrl || project.avatar) ? (
+                              <img
+                                alt={project.name}
+                                className="w-full h-full rounded-lg object-cover"
+                                src={pendingAvatars[index]?.previewUrl || project.avatar}
+                              />
+                            ) : (
+                              <div className="flex items-center justify-center w-full h-full rounded-lg bg-base-300 text-base-content/40">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+                              </div>
+                            )}
+                            <div className="pointer-events-none absolute inset-0 flex items-center justify-center rounded-xl bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity">
+                              <span className="text-xs text-white font-semibold">更换</span>
+                            </div>
+                          </div>
+                          <input
+                            className="input input-xs input-bordered w-full bg-base-100 focus:border-primary text-xs font-medium mt-1.5"
+                            value={project.avatar || ''}
+                            onChange={e => updateProject(index, 'avatar', e.target.value)}
+                            placeholder="图片URL"
+                          />
+                        </div>
+                        <div className="w-2/3 min-w-0 flex flex-col gap-2">
+                          <input
+                            className="input input-sm input-bordered w-full bg-base-100 focus:border-primary text-sm font-medium"
+                            value={project.name}
+                            onChange={e => updateProject(index, 'name', e.target.value)}
+                            placeholder="项目名称"
+                          />
+                          <input
+                            className="input input-sm input-bordered w-full bg-base-100 focus:border-primary text-sm"
+                            value={project.badge || ''}
+                            onChange={e => updateProject(index, 'badge', e.target.value)}
+                            placeholder="徽章（如 Web、Tool）"
+                          />
+                          <textarea
+                            className="textarea textarea-bordered w-full flex-1 min-h-0 bg-base-100 focus:border-primary text-sm leading-relaxed resize-none"
+                            value={project.description}
+                            onChange={e => updateProject(index, 'description', e.target.value)}
+                            placeholder="项目描述"
+                          />
+                        </div>
                       </div>
-                    )}
-                  </div>
 
-                  {/* Description */}
-                  <div className="mb-2 flex-grow">
-                    {renderDescription(project, index, isEditing)}
-                  </div>
+                      {/* Links */}
+                      <input
+                        className="input input-sm input-bordered w-full bg-base-100 focus:border-primary text-sm"
+                        value={project.url}
+                        onChange={e => updateProject(index, 'url', e.target.value)}
+                        placeholder="项目链接 URL"
+                        type="url"
+                      />
 
-                  {/* Links */}
-                  <div className="pt-2 border-t border-base-200/50 mt-auto">
-                    {renderLinks(project, index, isEditing)}
-                  </div>
-
-                  {/* Card editing mode: Cancel + Complete buttons at bottom */}
-                  {isEditing && (
-                    <div className="w-full mt-3">
-                      <button onClick={() => handleCancelEdit(index)} className="btn btn-sm btn-ghost w-full rounded-lg text-base-content/60 font-semibold mb-1.5">
-                        取消
-                      </button>
-                      <button onClick={() => handleCompleteEdit(index)} className="btn btn-sm btn-primary w-full rounded-lg font-semibold">
-                        完成
-                      </button>
+                      {/* Action buttons */}
+                      <div className="flex gap-3 pt-2 border-t border-base-200/50">
+                        <button onClick={() => handleCancelEdit(index)} className="btn btn-ghost btn-sm flex-1 rounded-xl text-base-content/60 font-semibold">
+                          取消
+                        </button>
+                        <button onClick={() => handleCompleteEdit(index)} className="btn btn-primary btn-sm flex-1 rounded-xl font-semibold shadow-lg shadow-primary/20">
+                          完成
+                        </button>
+                      </div>
                     </div>
+                  ) : (
+                    /* ====== View Mode — original compact card ====== */
+                    <>
+                      {/* Header: Avatar + Title + Badge */}
+                      <div className="flex items-start gap-3 mb-2">
+                        {renderAvatar(project, index)}
+                        <div className="flex-1 min-w-0 pt-0.5">
+                          {renderTitleRow(project)}
+                        </div>
+                        {/* Badge: right-aligned */}
+                        <div className="shrink-0 pt-0.5">
+                          {renderBadge(project.badge)}
+                        </div>
+                      </div>
+
+                      {/* Description */}
+                      <div className="mb-2">
+                        {renderDescription(project)}
+                      </div>
+
+                      {/* Links */}
+                      <div className="pt-2 border-t border-base-200/50 mt-auto">
+                        {renderLinks(project)}
+                      </div>
+                    </>
                   )}
                 </div>
               </div>
