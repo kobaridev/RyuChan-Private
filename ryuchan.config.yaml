@@ -95,7 +95,6 @@ anime:
     apiKey: 08a6bef260044f70c150251c79f2e476
     listId: '8556173'
 music:
-  # Meting API 基址：不要带 ?server=... 参数，脚本会自动拼接
   api: https://meting.mikus.ink/api
   playlists:
     - id: '10116198879'
@@ -114,10 +113,10 @@ music:
       name: 自定义
       server: netease
       type: custom
-    - id: wang_li_hong
-      name: 王力宏
+    - id: '18378675150'
+      name: 邓紫棋
       server: netease
-      type: custom
+      type: id
     - id: '17957136689'
       name: 林俊杰
       server: netease
@@ -141,12 +140,6 @@ music:
       server: netease
     - id: '17966003938'
       name: 毛不易
-      server: netease
-    - id: '17965962224'
-      name: 五月天
-      server: netease
-    - id: '17966019560'
-      name: 告五人
       server: netease
     - id: '18057106567'
       name: 汪苏泷
