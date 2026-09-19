@@ -6,3 +6,6 @@ allowBuilds:
   sharp: false
   unrs-resolver: false
   workerd: false
+
+patchedDependencies:
+  '@applemusic-like-lyrics/core': patches/@applemusic-like-lyrics__core.patch
